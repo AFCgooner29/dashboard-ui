@@ -1,19 +1,16 @@
 <template>
-  <h1>Hello world</h1>
-  <Carousel />
+  
+    <Hero />
+  
 </template>
 
 <script>
-import Carousel from './components/Carousel.vue';
+import Hero from "./components/Hero.vue";
 export default {
-  
-  components:{
-    Carousel,
+  components: {
+    Hero,
   }
-
 }
 </script>
 
-<style>
-
-</style>
+<style></style>
