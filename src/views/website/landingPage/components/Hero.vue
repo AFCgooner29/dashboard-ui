@@ -19,7 +19,7 @@
         height: 85vh;
         width: 55%;
         text-align: center;
-        padding: 20px;
+        padding: 10px;
         box-sizing: border-box;
     }
 
@@ -34,7 +34,6 @@
     .hero .sub-heading{
         font-size: 1.5em;
         margin-bottom: 40px;
-        
         font-weight: 300;
         color: #808080;
     }
