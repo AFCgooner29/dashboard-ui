@@ -33,6 +33,11 @@ const routes: Array<RouteRecordRaw> = [
         component: ()=> import('../views/client/chat/Chat.vue'),
       },
       {
+        path:'document',
+        name:'document',
+        component: ()=> import('../views/client/documents/Documents.vue'),
+      },
+      {
         path:'dashboard',
         name:'clientdashboard',
         component: ()=> import('../views/client/dashboard/Dashboard.vue'),
