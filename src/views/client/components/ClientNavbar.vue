@@ -1,48 +1,30 @@
 <template>
-    <nav class="navbar navbar-expand-lg">
-        <div class="container-fluid">
-            <RouterLink class="navbar-brand client-navbar-logo" :to="{ name: 'Website' }">Enable AI</RouterLink>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item hidden-sm">
-                        <RouterLink class="nav-link" :to="{ name: 'clientdashboard' }">Dashboard</RouterLink>
-                    </li>
-                    <li class="nav-item hidden-sm">
-                        <RouterLink class="nav-link" :to="{ name: 'chat' }">Chat</RouterLink>
-                    </li>
-                    <li class="nav-item hidden-sm">
-                        <RouterLink class="nav-link" :to="{ name: 'clientsettings' }">Settings</RouterLink>
-                    </li>
-                </ul>
-            </div>
-            <button class="btn btn-dark ms-3" @click="goToSignUp">Log out</button>
-        </div>
-    </nav>
+  <VaNavbar color="primary" class="mb-0">
+    <template #left>
+        <VaButton class="mr-6 mb-2"><RouterLink :to="{ name: 'landing' }" style="color:white; text-decoration:none;">Enable AI</RouterLink></VaButton>
+    </template>
+    <template #right>
+      <VaNavbarItem>
+        <VaButton class="mr-6 mb-2"><RouterLink :to="{ name: 'chat' }" style="color:white; text-decoration:none;">Chat</RouterLink></VaButton>
+      </VaNavbarItem>
+      <VaNavbarItem>
+        <VaButton class="mr-6 mb-2"><RouterLink :to="{ name: 'document' }" style="color:white; text-decoration:none;">Doc Builder</RouterLink></VaButton>
+      </VaNavbarItem>
+      <VaNavbarItem>
+        <VaButton class="mr-6 mb-2" ><RouterLink :to="{ name: 'clientdashboard' }" style="color:white; text-decoration:none;">Dashboard</RouterLink></VaButton>
+      </VaNavbarItem>
+      <VaNavbarItem>
+        <VaButton class="mr-6 mb-2" ><RouterLink :to="{ name: 'searchPlayground' }" style="color:white; text-decoration:none;">Search Playground</RouterLink></VaButton>
+      </VaNavbarItem>
+      <VaNavbarItem>
+        <VaButton class="mr-6 mb-2" ><RouterLink :to="{ name: 'clientsettings' }" style="color:white; text-decoration:none;">Settings</RouterLink></VaButton>
+      </VaNavbarItem>
+    </template>
+  </VaNavbar>
 </template>
-
-<script setup>
-import { computed } from "vue";
-
-
+<script setup lang="ts">
 </script>
 
+
 <style scoped>
-.client-navbar-logo {
-    font-weight: 600;
-    font-size: 1.5rem;
-}
-
-.hidden-sm {
-    display: none;
-}
-
-@media (min-width: 576px) {
-    .hidden-sm {
-        display: block;
-    }
-}
 </style>

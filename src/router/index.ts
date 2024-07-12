@@ -4,10 +4,10 @@ import Website from '@/views/website/Website.vue';
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    name: 'Website',
+    name: 'website',
     component: Website,
     children:[
-      { path: '', component: ()=> Landing },
+      { path: '', name: 'landing', component: ()=> Landing },
       {
         path: 'login',
         name: 'login',
@@ -41,6 +41,11 @@ const routes: Array<RouteRecordRaw> = [
         path:'dashboard',
         name:'clientdashboard',
         component: ()=> import('../views/client/dashboard/Dashboard.vue'),
+      },
+      {
+        path:'searchplayground',
+        name:'searchPlayground',
+        component: ()=> import('../views/client/searchPlayground/Search.vue'),
       },
       {
         path:'settings',
