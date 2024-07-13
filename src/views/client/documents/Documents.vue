@@ -1,5 +1,5 @@
 <template>
-  <VaForm ref="formRef" class="flex flex-col items-baseline gap-6" style="box-sizing: border-box; margin: 20px;">
+  <VaForm ref="formRef" class="flex flex-col items-baseline gap-6" style="box-sizing: border-box; margin: 50px; margin-top: 100px;">
     <h1 class="mb-4">Document Builder</h1>
 
     <!-- Enterprise ID Input -->
@@ -22,6 +22,7 @@
       style="margin-top: 6px; width: 80%"
     />
     <VaDivider />
+
     <!-- Chapters Section -->
     <div
       v-for="(chapter, chapterIndex) in document.chapters"
@@ -86,7 +87,7 @@
           v-model="section.enabled"
           label="Enabled"
           style="display: block"
-          @change="section.enabled = !section.enabled"
+          @change="toggleSection(section)"
         />
       </div>
 
@@ -120,6 +121,7 @@
 
 <script setup>
 import { ref } from "vue";
+import { useFetch } from "../../../util/useFetch";
 
 const message = ref("Required Field");
 
@@ -140,6 +142,10 @@ const document = ref({
     },
   ],
 });
+
+const toggleSection = (section)=>{
+  section.value.enabled = !section.value.enabled;
+}
 
 const addChapter = () => {
   document.value.chapters.push({
@@ -179,10 +185,28 @@ const removeSection = (chapterIndex, sectionIndex) => {
   }
 };
 
+const Submit = ()=>{
+  const requestObj = new Request("/auth/admin/ingest/v1/relevance/doc",{
+    method: 'POST',
+    headers: {
+        'API_KEY': 'd4b719f6-02b9-4ae1-bc0a-1b4d83eedba2',
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(document)
+  })
+
+  try{
+    const response = useFetch(requestObj);
+    if(response){
+      alert("Document submitted");
+    }
+  }
+  catch(error){
+    console.error(error);
+  }
+}
+
 // Apis to server.
-const Submit = () => {
-  console.log(document.value);
-};
 </script>
 
 <style></style>
