@@ -1,12 +1,12 @@
 <template>
   <VaScrollContainer
     class="max-h-[200px]"
-    :color="currentColor"
+    :color="chatStore.backgroundColor"
     vertical
     style="min-height: 350px; max-height: 350px"
   >
     <div
-      v-for="message in props.chat"
+      v-for="message in chatStore.chat"
       :key="message.id"
       style="display: flex; flex-direction: column"
     >
@@ -41,10 +41,8 @@
 </template>
 
 <script setup>
-import { ref, defineProps} from 'vue';
-
-const props = defineProps([ 'chat' ]);
-const currentColor = ref("#FFFFFF");
+import { useChatStore } from "@/stores/client/ChatStore";
+const chatStore = useChatStore();
 </script>
 
 <style></style>

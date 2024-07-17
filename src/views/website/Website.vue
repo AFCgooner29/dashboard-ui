@@ -1,8 +1,8 @@
 <template>
   <AppNavbar />
   <div class="container-website">
-  <router-view />
-</div>
+    <router-view />
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -10,7 +10,7 @@ import AppNavbar from "../../components/AppNavbar.vue";
 </script>
 
 <style>
-.container-website{
+.container-website {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;

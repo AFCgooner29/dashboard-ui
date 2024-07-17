@@ -1,12 +1,12 @@
 <template>
   <VaForm ref="formRef" class="flex flex-col items-baseline gap-6">
     <div class="form-group">
-      <label for="indexSelect" style="display: block">Index</label>
       <VaSelect
         v-model="slectedIndex"
         :options="indexes"
+        label="Index"
         placeholder="Select an option"
-        style="width: 100%"
+        style="width: 100%; margin-top: 5px"
         
       />
     </div>
@@ -20,11 +20,11 @@
       />
     </div>
     <div class="form-group">
-      <label for="searchableFields">Searchable Fields</label><br />
       <VaSelect
         v-model="searchableSelected"
         :options="options"
-        style="width: 600px"
+        style="width: 600px; margin-top: 5px"
+        label="Searchable Fields"
         multiple
       />
     </div>
