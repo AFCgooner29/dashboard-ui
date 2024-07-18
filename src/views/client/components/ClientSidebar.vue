@@ -3,7 +3,7 @@
     <VaSidebarItem
       v-for="item in chatStore.conversations"
       :key="item.id"
-      :active="chatStore.activeChat"
+      :active="item.active"
       @click="handleClick(item.id)"
     >
       <VaSidebarItemContent>
@@ -22,7 +22,7 @@ const chatIcon = "history";
 const chatStore = useChatStore();
 
 function handleClick(item) {
-  chatStore.visitPreviousChat(item);
+  // chatStore.visitPreviousChat(item);
 }
 </script>
 

@@ -41,6 +41,7 @@
 </template>
 
 <script setup>
+import { onBeforeMount } from "vue";
 import { useChatStore } from "@/stores/client/ChatStore";
 const chatStore = useChatStore();
 </script>

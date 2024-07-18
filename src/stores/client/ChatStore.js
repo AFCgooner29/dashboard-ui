@@ -9,58 +9,64 @@ export const useChatStore = defineStore("chat", {
   state: () => {
     return {
       input: "",
-      chat: [],
       isNewTopic: false,
       discussionId: null,
-      conversations: [],
-      activeChat: null,
+      chat: [],
+      conversations: [
+        {
+          id:1,
+          title:"New chat",
+          chat: [],
+          active: false,
+          icon: 'history',
+        }
+      ],
       backgroundColor: "#ffffff",
     };
   },
+
   actions: {
     toggleNewTopic() {
       this.isNewTopic = !this.isNewTopic;
     },
-    clearChat() {
-      this.chat = [];
-    },
     addChat(question, response) {
-      this.chat.push({ question, response });
+      this.chat.push({
+        id: this.chat.length + 1,
+        question: question,
+        response: response,
+      });
     },
     setDiscussionId(id) {
       this.discussionId = id;
     },
-    createEmptyChat() {
-      this.conversations.push({
-        id: 0,
-        title: "New Conversation",
-        chat: [],
-        icon: "history",
-      });
-      this.activeChat = this.conversations[this.conversations.length-1];
-      this.input = "";
+    // createEmptyChat() {
+    //   this.conversations.push({
+    //     id: this.conversations.length+1,
+    //     title: "New Conversation",
+    //     chat: [],
+    //     icon: "history",
+    //   });
+    //   this.activeChat = this.conversations.length - 1;
+    //   this.input = "";
+    // },
+    createNewChat(){
+      
     },
+    // createNewChat() {
+    //   if (this.conversations[this.activeChat]?.chat.length > 0) {
+    //     const title =
+    //       this.conversations[this.activeChat].chat[0].question
+    //         .toUpperCase()
+    //         .substring(0, 17) + "...";
+    //     this.conversations[this.activeChat].title = title;
+    //     this.createEmptyChat();
+    //   }
+    // },
 
+    // visitPreviousChat(previousChatIndex) {
+    //   this.activeChat = previousChatIndex;
+    // },
 
-    createNewChat() {
-      if (this.chat.length > 0) {
-        const title =
-          this.chat[0].question.toUpperCase().substring(0, 17) + "...";
-        this.conversations[this.conversations.length-1].title = title;
-        this.createEmptyChat();
-        // this.chat = this.conversations[this.conversations.length-1].chat;
-      }
-    },
-
-    visitPreviousChat(previousChatIndex) {
-      const previousChat = this.conversations[previousChatIndex - 1];
-      debugger;
-      if (previousChat) {
-        this.clearChat();
-        this.chat = previousChat.chat;
-        this.activeChat = previousChat;
-      }
-    },
     // Api Methods:
     async sendMessage() {
       const inputvalue = this.input;

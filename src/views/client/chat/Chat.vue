@@ -16,7 +16,7 @@
 </template>
 
 <script setup>
-import { onMounted } from "vue";
+
 import ClientSidebar from "../components/ClientSidebar.vue";
 import ChatInput from "./components/ChatInput.vue";
 import ConversationBox from "./components/ConversationBox.vue";
@@ -24,6 +24,6 @@ import { useChatStore } from "@/stores/client/ChatStore";
 
 const chatStore = useChatStore();
 
-onMounted(() => chatStore.createEmptyChat());
+
 </script>
 
