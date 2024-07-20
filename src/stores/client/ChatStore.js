@@ -14,12 +14,12 @@ export const useChatStore = defineStore("chat", {
       chat: [],
       conversations: [
         {
-          id:1,
-          title:"New chat",
+          id: 1,
+          title: "New chat",
           chat: [],
           active: false,
-          icon: 'history',
-        }
+          icon: "history",
+        },
       ],
       backgroundColor: "#ffffff",
     };
@@ -36,55 +36,25 @@ export const useChatStore = defineStore("chat", {
         response: response,
       });
     },
-    setDiscussionId(id) {
-      this.discussionId = id;
-    },
-    // createEmptyChat() {
-    //   this.conversations.push({
-    //     id: this.conversations.length+1,
-    //     title: "New Conversation",
-    //     chat: [],
-    //     icon: "history",
-    //   });
-    //   this.activeChat = this.conversations.length - 1;
-    //   this.input = "";
-    // },
-    createNewChat(){
-      
-    },
-    // createNewChat() {
-    //   if (this.conversations[this.activeChat]?.chat.length > 0) {
-    //     const title =
-    //       this.conversations[this.activeChat].chat[0].question
-    //         .toUpperCase()
-    //         .substring(0, 17) + "...";
-    //     this.conversations[this.activeChat].title = title;
-    //     this.createEmptyChat();
-    //   }
-    // },
-
-    // visitPreviousChat(previousChatIndex) {
-    //   this.activeChat = previousChatIndex;
-    // },
+    createNewChat() {},
 
     // Api Methods:
     async sendMessage() {
-      const inputvalue = this.input;
-      if (inputvalue) {
-        this.addChat(inputvalue, "Hey there how can i help you today");
-        this.input = "";
-        // let response = null;
-        // if (discussionId === null || isNewTopic) {
-        //     response = await initiateDiscussion(inputvalue);
-        //     if(response.ok)
-        //       setDiscussionId(response.data.discussionId);
-        // } else {
-        //     response = await continueDiscussion(inputvalue, isNewTopic);
-        // }
-        // if(response){
-        //   addChat(inputvalue, response.data.answer);
-        // }
-        // input = "";
+      const inputvalue = this.input.trim();
+      this.input = "";
+      if (!inputvalue) {
+        window.alert("Please enter any query!");
+        return;
+      }
+      let response = null;
+      if (this.discussionId === null || this.isNewTopic) {
+        response = await this.initiateDiscussion(inputvalue);
+      } else {
+        response = await this.continueDiscussion(inputvalue, this.isNewTopic);
+      }
+      if (response) {
+        this.addChat(response.data.question, response.data.response);
+        this.discussionId = response.data.discussionId;
       }
     },
 
@@ -97,8 +67,8 @@ export const useChatStore = defineStore("chat", {
             API_KEY: apiKey,
             "Content-Type": "application/json",
           },
-          data: JSON.stringify({
-            requesterId: "user2",
+          body: JSON.stringify({
+            requdataesterId: "user2",
             question: inputvalue,
             isNewTopic: true,
           }),
@@ -109,14 +79,19 @@ export const useChatStore = defineStore("chat", {
         return response;
       } catch (error) {
         console.error("Failed to initiate discussion.", error);
-        throw new Error("Failed to initiate discussion.");
+        return {
+          data:{
+            question:inputvalue,
+            response:"Failed to initiate discussion.",
+            discussionId:null
+          }
+        };
       }
     },
 
     async continueDiscussion(inputvalue, isNewTopic) {
-      return;
       const requestObj = new Request(
-        `${apiPrefix}auth/api/v1/discuss/${discussionId}/converse`,
+        `${apiPrefix}auth/api/v1/discuss/${this.discussionId}/converse`,
         {
           method: "POST",
           headers: {
@@ -136,7 +111,13 @@ export const useChatStore = defineStore("chat", {
         return response;
       } catch (error) {
         console.error("Failed to continue discussion.", error);
-        throw new Error("Failed to continue discussion.");
+        return {
+          data:{
+            question:inputvalue,
+            response:"Failed to continue discussion.",
+            discussionId:null
+          }
+        };
       }
     },
   },

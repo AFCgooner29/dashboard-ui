@@ -1,118 +1,29 @@
 <template>
-  <VaForm ref="formRef" class="flex flex-col items-baseline gap-6" style="box-sizing: border-box; margin: 50px; margin-top: 100px;">
+  <VaForm
+    ref="formRef"
+    class="flex flex-col items-baseline gap-6"
+    style="box-sizing: border-box; margin: 50px; margin-top: 100px"
+  >
     <h1 class="mb-4">Document Builder</h1>
 
     <!-- Enterprise ID Input -->
-    <VaInput
-      v-model="enterpriseId"
-      class="mb-6"
-      :messages="message"
-      label="Enterprise ID:"
-      placeholder="Enter Enterprise ID"
-      style="margin-top: 6px; width: 80%"
-    />
-
-    <!-- Document Name Input -->
-    <VaInput
-      v-model="document.documentName"
-      class="mb-6"
-      :messages="message"
-      label="Document Name:"
-      placeholder="Enter Document Name:"
-      style="margin-top: 6px; width: 80%"
-    />
+    <DocBuilderHeader />
     <VaDivider />
 
     <!-- Chapters Section -->
-    <div
-      v-for="(chapter, chapterIndex) in document.chapters"
-      :key="chapterIndex"
-      id="chapterList"
-      class="container-fluid"
-      style="width: 70%"
-    >
-      <VaButton
-        @click="removeChapter(chapterIndex)"
-        color="danger"
-        gradient
-        class="mr-6 mb-2"
-        style="margin-top: 6px"
-      >
-        Remove Chapter Below </VaButton
-      ><br />
-      <VaInput
-        v-model="chapter.chapterName"
-        class="mb-6"
-        :messages="message"
-        label="Chaper name:"
-        placeholder="Enter Chaper name"
-        style="margin-top: 6px; width: 80%"
-      />
-      <!-- Section Area -->
-      <div
-        v-for="(section, sectionIndex) in chapter.sections"
-        :key="sectionIndex"
-        class="container-fluid"
-        style="width: 70%"
-      >
-        <VaButton
-          color="danger"
-          class="mr-6 mb-2"
-          @click="removeSection(chapterIndex, sectionIndex)"
-          style="margin-top: 6px"
-        >
-          Delete Section Below
-        </VaButton>
-        <VaInput
-          v-model="section.sectionName"
-          class="mb-6"
-          :messages="message"
-          label="Section name:"
-          placeholder="Enter Section name"
-          style="margin-top: 6px; width: 80%"
-        />
-        <VaTextarea
-          v-model="section.sectionDocTextBody"
-          max-length="200"
-          label="Section text"
-          counter
-          required-mark
-          :rules="[
-            (v) => (v && v.length > 5) || 'Min length 5',
-            (v) => (v && v.length < 200) || 'Max length 200',
-          ]"
-          style="display: block"
-        />
-        <VaCheckbox
-          v-model="section.enabled"
-          label="Enabled"
-          style="display: block"
-          @change="toggleSection(section)"
-        />
-      </div>
-
-      <VaButton
-        @click="addSection(chapterIndex)"
-        preset="primary"
-        class="mr-6 mb-2"
-        style="margin-top: 6px"
-      >
-        Add Section
-      </VaButton>
-    </div>
-
+    <ChapterSection />
     <!-- Add Chapter Button -->
     <VaButton
-      @click="addChapter"
+      @click="documentBuilderStore.addChapter"
       preset="primary"
       class="mr-6 mb-2"
       style="margin-top: 6px"
     >
       Add Chapter
     </VaButton>
-    <div class="">
+    <div>
       <!-- Build Payload & Submit Button -->
-      <VaButton @click="Submit" color="info" gradient class="mr-6 mb-2">
+      <VaButton @click="documentBuilderStore.Submit" color="info" gradient class="mr-6 mb-2">
         Build Payload & Submit
       </VaButton>
     </div>
@@ -120,91 +31,11 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { useFetch } from "../../../util/useFetch";
+import { useDocumentBuilder } from "@/stores/client/DocumentBuilderStore";
+import DocBuilderHeader from "./components/DocBuilderHeader.vue";
+import ChapterSection from "./components/ChapterSection.vue";
+const documentBuilderStore = useDocumentBuilder();
 
-const message = ref("Required Field");
-
-const enterpriseId = ref();
-const document = ref({
-  documentName: "",
-  documentType: "",
-  chapters: [
-    {
-      chapterName: "",
-      sections: [
-        {
-          sectionName: "",
-          sectionDocTextBody: "",
-          enabled: false,
-        },
-      ],
-    },
-  ],
-});
-
-const toggleSection = (section)=>{
-  section.value.enabled = !section.value.enabled;
-}
-
-const addChapter = () => {
-  document.value.chapters.push({
-    chapterName: "",
-    sections: [
-      {
-        sectionName: "",
-        sectionDocTextBody: "",
-        enabled: false,
-      },
-    ],
-  });
-};
-
-const removeChapter = (chapterIndex) => {
-  if (chapterIndex < document.value.chapters.length) {
-    document.value.chapters.splice(chapterIndex, 1);
-  }
-};
-
-const addSection = (chapterIndex) => {
-  if (chapterIndex < document.value.chapters.length) {
-    document.value.chapters[chapterIndex].sections.push({
-      sectionName: "",
-      sectionDocTextBody: "",
-      enabled: true,
-    });
-  }
-};
-
-const removeSection = (chapterIndex, sectionIndex) => {
-  if (
-    chapterIndex < document.value.chapters.length &&
-    sectionIndex < document.value.chapters[chapterIndex].sections.length
-  ) {
-    document.value.chapters[chapterIndex].sections.splice(sectionIndex, 1);
-  }
-};
-
-const Submit = ()=>{
-  const requestObj = new Request("/auth/admin/ingest/v1/relevance/doc",{
-    method: 'POST',
-    headers: {
-        'API_KEY': 'd4b719f6-02b9-4ae1-bc0a-1b4d83eedba2',
-        'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(document)
-  })
-
-  try{
-    const response = useFetch(requestObj);
-    if(response){
-      alert("Document submitted");
-    }
-  }
-  catch(error){
-    console.error(error);
-  }
-}
 
 // Apis to server.
 </script>
