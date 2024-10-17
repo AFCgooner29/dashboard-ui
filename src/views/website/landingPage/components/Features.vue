@@ -1,89 +1,86 @@
 <template>
-  <div class="feature-container">
-    
-    <div class="feature-header">
-      <div class="custom-key-features">Key Features</div>
-      <h1 class="heading">Powerful AI Capabilities at Your Fingertips</h1>
-      <h4>
-        Our AI SaaS solution offers a wide range of features to streamline your
-        business operations and drive innovation.
-      </h4>
-    </div>
-    <div class="feature-body">
-      <div class="feature-list">
-        <div v-for="feature in features" :key="feature.id" class="feature">
-          <h3>{{ feature.title }}</h3>
-          <p>{{ feature.body }}</p>
-        </div>
-      </div>
-      <div class="feature-graphic">
-        <img :src="featureImage" width="550" height="310" alt="Feature" />
-      </div>
-    </div>
+  <div class="product-card-container">
+    <VaCard v-for="product in products" :key="product.id" class="product-card" @click="goToClientPage(product.link)"
+      outlined hover>
+      <h3>{{ product.name }}</h3>
+      <VaCardContent>
+        <p>{{ product.description }}</p>
+        <li v-for="feature in product.features">
+          {{ feature }}
+        </li>
+      </VaCardContent>
+    </VaCard>
   </div>
 </template>
-<script setup lang="ts">
+
+<script setup>
 import { ref } from "vue";
-import featureImage from "../../../../assets/feature-image-landing-page.jpeg";
-const features = ref([
+import { useRouter } from "vue-router";
+
+// Sample products data
+const products = ref([
   {
     id: 1,
-    title: "Automated Workflows",
-    body: "Streamline your business processes with our AI-powered automation tools.",
+    name: "AI-Powered Search & Discovery",
+    description:
+      "Enhance product discovery within your app and increase add-to-cart rates and cart values with our AI-powered search engine.",
+    features: [
+      "Smart, intuitive search",
+      "Personalized product suggestions",
+      "Seamless integration with your app"
+    ],
+    link: "/client/searchplayground",
   },
   {
     id: 2,
-    title: "Predictive Analytics",
-    body: "Gain valuable insights and make data-driven decisions with our advanced analytics.",
-  },
-  {
-    id: 3,
-    title: "Natural Language Processing",
-    body: "Leverage AI to understand and respond to natural language inputs.",
+    name: "AI Chatbot – Intelligent Customer Support",
+    description:
+      "Our AI Chatbot uses your business domain data to derive meaningful responses for customer queries, improving efficiency and satisfaction.",
+    features: [
+      "Automated Customer Support",
+      "Domain-Specific Intelligence",
+      "24/7 Availability"
+    ],
+    link: "/client/chat",
   },
 ]);
+
+// Vue Router
+const router = useRouter();
+const goToClientPage = (link) => {
+  router.push(link);
+};
 </script>
-<style>
-.feature-container {
-  box-sizing: border-box;
+
+<style scoped>
+.product-card-container {
   display: flex;
-  justify-content: center;
-  flex-direction: column;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 100vh;
-}
-.custom-key-features {
-  display: inline-block; /* inline-block */
-  border-radius: 0.5rem; /* rounded-lg */
-  background-color: #4b4b4b; /* bg-muted (you might need to adjust the color) */
-  padding: 0.25rem 0.75rem; /* px-3 py-1 */
-  font-size: 0.875rem; /* text-sm */
-  color: white;
-  margin-bottom: 20px;
-}
-.feature-header {
-  box-sizing: border-box;
-  width:55%;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: center;
-  margin-bottom: 30px;
-}
-.feature-header h1 {
-  font-weight: 750;
+  justify-content: space-between;
+  /* Ensure space between the cards */
+  align-items: stretch;
+  /* Make sure all cards have the same height */
+  gap: 20px;
+  /* Space between cards */
+  padding: 20px;
 }
 
-.feature-body {
-  display: flex;
-  justify-content: space-evenly;
-  align-content: center;
+.product-card {
+  flex: 1;
+  /* Make sure each card takes equal space */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
-.feature {
-  width: 450px;
+
+.product-card:hover {
+  background-color: #a7a7a7;
 }
-.feature-graphic img {
-  border-radius: 60px;
+
+.product-card h3 {
+  margin: 10px;
+  color: #333;
+}
+
+.product-card p {
+  color: inherit;
 }
 </style>

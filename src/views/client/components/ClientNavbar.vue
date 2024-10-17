@@ -5,20 +5,23 @@
     </template>
     <template #right>
       <VaNavbarItem>
-        <VaButton class="mr-6 mb-2"><RouterLink :to="{ name: 'chat' }" style="color:white; text-decoration:none;">Chat</RouterLink></VaButton>
+        <VaButton class="mr-6 mb-2"><RouterLink :to="{ name: 'chat' }" style="color:white; text-decoration:none;">AI Assistant</RouterLink></VaButton>
       </VaNavbarItem>
-      <VaNavbarItem>
+      <!-- <VaNavbarItem>
         <VaButton class="mr-6 mb-2"><RouterLink :to="{ name: 'document' }" style="color:white; text-decoration:none;">Doc Builder</RouterLink></VaButton>
-      </VaNavbarItem>
-      <VaNavbarItem>
+      </VaNavbarItem> -->
+      <!-- <VaNavbarItem>
         <VaButton class="mr-6 mb-2" ><RouterLink :to="{ name: 'clientdashboard' }" style="color:white; text-decoration:none;">Dashboard</RouterLink></VaButton>
-      </VaNavbarItem>
+      </VaNavbarItem> -->
       <VaNavbarItem>
         <VaButton class="mr-6 mb-2" ><RouterLink :to="{ name: 'searchPlayground' }" style="color:white; text-decoration:none;">Search Playground</RouterLink></VaButton>
       </VaNavbarItem>
-      <VaNavbarItem>
+      <!-- <VaNavbarItem>
         <VaButton class="mr-6 mb-2" ><RouterLink :to="{ name: 'clientsettings' }" style="color:white; text-decoration:none;">Settings</RouterLink></VaButton>
-      </VaNavbarItem>
+      </VaNavbarItem> -->
+      <!-- <VaNavbarItem>
+        <VaButton class="mr-6 mb-2" ><RouterLink :to="{ name: 'rulesManagement' }" style="color:white; text-decoration:none;">Rules management</RouterLink></VaButton>
+      </VaNavbarItem> -->
     </template>
   </VaNavbar>
 </template>

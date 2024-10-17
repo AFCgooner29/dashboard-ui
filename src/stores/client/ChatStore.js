@@ -2,14 +2,14 @@ import { defineStore } from "pinia";
 import { useFetch } from "../../util/useFetch";
 
 // Global values
-const apiKey = process.env.VUE_APP_API_KEY;
+const apiKey = localStorage.getItem('api-key');
 const apiPrefix = process.env.VUE_APP_API_PREFIX;
 
 export const useChatStore = defineStore("chat", {
   state: () => {
     return {
       input: "",
-      isNewTopic: false,
+      // isNewTopic: false,
       discussionId: null,
       chat: [],
       conversations: [
@@ -26,9 +26,9 @@ export const useChatStore = defineStore("chat", {
   },
 
   actions: {
-    toggleNewTopic() {
-      this.isNewTopic = !this.isNewTopic;
-    },
+    // toggleNewTopic() {
+    //   this.isNewTopic = !this.isNewTopic;
+    // },
     addChat(question, response) {
       this.chat.push({
         id: this.chat.length + 1,
@@ -47,10 +47,10 @@ export const useChatStore = defineStore("chat", {
         return;
       }
       let response = null;
-      if (this.discussionId === null || this.isNewTopic) {
+      if (this.discussionId === null) {
         response = await this.initiateDiscussion(inputvalue);
       } else {
-        response = await this.continueDiscussion(inputvalue, this.isNewTopic);
+        response = await this.continueDiscussion(inputvalue);
       }
       if (response) {
         this.addChat(response.data.question, response.data.response);
@@ -70,7 +70,6 @@ export const useChatStore = defineStore("chat", {
           body: JSON.stringify({
             requdataesterId: "user2",
             question: inputvalue,
-            isNewTopic: true,
           }),
         }
       );
@@ -89,7 +88,7 @@ export const useChatStore = defineStore("chat", {
       }
     },
 
-    async continueDiscussion(inputvalue, isNewTopic) {
+    async continueDiscussion(inputvalue) {
       const requestObj = new Request(
         `${apiPrefix}auth/api/v1/discuss/${this.discussionId}/converse`,
         {
@@ -100,8 +99,7 @@ export const useChatStore = defineStore("chat", {
           },
           body: JSON.stringify({
             requesterId: "user2",
-            question: inputvalue,
-            isNewTopic: isNewTopic,
+            question: inputvalue
           }),
         }
       );

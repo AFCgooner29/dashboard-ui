@@ -1,22 +1,42 @@
 <template>
-  <div class="col-md-8 outlined">
-          <h4>Results</h4>
-          <div id="resultsContainer"></div>
-          <nav aria-label="Page navigation">
-            <ul
-              class="pagination justify-content-center"
-              id="paginationContainer"
-            ></ul>
-          </nav>
-        </div>
+  <div>
+    <h2>Search Results</h2>
+    <div class="va-table-responsive" v-if="results && results.length">
+      <table class="va-table va-table--hoverable">
+        <thead>
+          <tr>
+            <th>Object Id</th>
+            <th>Product Name</th>
+            <th>Product Brand</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="result in results" :key="result.objectId">
+            <td>{{ result.objectId }}</td>
+            <td>{{ result.product.name }}</td>
+            <td>{{ result.product.brand }} </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p v-else>No results found.</p>
+  </div>
 </template>
 
-<script>
-export default {
+<script setup>
+import { defineProps } from 'vue';
 
-}
+const props = defineProps({
+  results: {
+    type: Array,
+    default: () => []
+  }
+});
 </script>
 
-<style>
-
+<style scoped>
+/* Add your styles here */
+.va-table-responsive {
+  overflow: auto;
+}
 </style>

@@ -1,8 +1,8 @@
 <template>
     <div class="hero">
-        <div class="heading">Unlock Your Business Potential with AI-Driven Innovation</div>
-        <div class="sub-heading">Transform Ideas into Actionable Insights with Our Cutting-Edge AI Solutions</div>
-        <a href="#" class="cta"><button>Free Trial</button></a>
+        <div class="heading">Empower Your Business with AI-Driven Solutions</div>
+        <div class="sub-heading">Transform businesses with our AI Powered Search and AI Powered Assistant</div>
+        <!-- <a href="#" class="cta"><button>Free Trial</button></a> -->
     </div>
 </template>
 
@@ -16,7 +16,7 @@
         justify-content: center;
         align-items: center;
         flex-direction: column;
-        height: 85vh;
+        height: 50vh;
         width: 55%;
         text-align: center;
         padding: 10px;

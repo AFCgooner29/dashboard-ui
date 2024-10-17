@@ -28,7 +28,7 @@ const routes: Array<RouteRecordRaw> = [
     component: ()=> import('../views/client/ClientHome.vue'),
     children:[
       {
-        path:'',
+        path:'chat',
         name:'chat',
         component: ()=> import('../views/client/chat/Chat.vue'),
       },
@@ -51,6 +51,11 @@ const routes: Array<RouteRecordRaw> = [
         path:'settings',
         name:'clientsettings',
         component: ()=> import('../views/client/settings/Settings.vue'),
+      },
+      {
+        path:'rulesManagement',
+        name:'rulesManagement',
+        component: ()=> import('../views/client/ruleManagement/rules.vue'),
       },
     ]
   },

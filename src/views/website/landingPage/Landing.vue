@@ -1,7 +1,7 @@
 <template>
     <Hero />
     <Features />
-    <Pricing />
+    <!-- <Pricing /> -->
     <Contact />
     <Footer />
 </template>
