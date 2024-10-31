@@ -57,6 +57,11 @@ const routes: Array<RouteRecordRaw> = [
         name:'rulesManagement',
         component: ()=> import('../views/client/ruleManagement/rules.vue'),
       },
+      {
+        path:'searchConfig',
+        name:'searchConfig',
+        component: ()=> import('../views/client/searchConfig/seacrhConfig.vue'),
+      },
     ]
   },
   {

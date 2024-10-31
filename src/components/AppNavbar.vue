@@ -1,8 +1,8 @@
 <template>
-  <VaNavbar color="light">
+  <VaNavbar color="#36054a">
     <template #left>
       <VaNavbarBrand>
-      <RouterLink to="/" class="navbar-brand">Enable AI</RouterLink>
+      <RouterLink to="/" class="navbar-brand">Igolia</RouterLink>
     </VaNavbarBrand>
     </template>
     <template #right>
@@ -15,7 +15,7 @@
     <VaNavbarItem>
       <RouterLink :to="{ name: 'login' }" class="nav-link">Log in</RouterLink>
     </VaNavbarItem> -->
-    <VaButton color="dark" class="ms-3"><RouterLink :to="{ name: 'client' }" style="color:white; text-decoration:none;">Try Our Products</RouterLink></VaButton>
+    <VaButton color="#36054a" class="ms-3"><RouterLink :to="{ name: 'client' }" style="color:white; text-decoration:none;">Our Products</RouterLink></VaButton>
     </template>
   </VaNavbar>
 </template>
@@ -52,6 +52,6 @@
 }
 
 .btn:hover {
-  background-color: rgba(0, 136, 169, 0.8);
+  background-color: rgb(45, 43, 48);
 }
 </style>

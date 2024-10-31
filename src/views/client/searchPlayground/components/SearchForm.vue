@@ -65,7 +65,7 @@ const removeFilter = (filter) => {
 // Form submit handler
 const onSubmit = async () => {
   // Reset error states
-  var apiKey = localStorage.getItem('api-key');
+  var apiKey = 'd4b719f6-02b9-4ae1-bc0a-1b4d83eedba2';
   if (!apiKey || apiKey == undefined) {
     alert("Please set API key shared with you in mail")
   }

@@ -1,86 +1,117 @@
 <template>
-  <div class="product-card-container">
-    <VaCard v-for="product in products" :key="product.id" class="product-card" @click="goToClientPage(product.link)"
-      outlined hover>
-      <h3>{{ product.name }}</h3>
-      <VaCardContent>
-        <p>{{ product.description }}</p>
-        <li v-for="feature in product.features">
-          {{ feature }}
-        </li>
-      </VaCardContent>
-    </VaCard>
+  <div class="container mt-xxl-5">
+    <!-- Title -->
+    <h2 class="text-center text-gradient-2">
+      <b>Features you love, minus the complexity</b>
+    </h2>
+    <!-- Subtitle -->
+    <div class="text-center">
+      <b>Neatly wrapped in an intuitive RESTful API</b>
+    </div>
+
+    <!-- Features Grid -->
+    <div class="grid mt-5">
+      <VaCard v-for="feature in features" :key="feature.title" class="feature" flat>
+        <!-- <VaIcon class="material-icons">
+          {{ feature.icon }}
+        </VaIcon> -->
+        <h5 class="mb-2"><b>{{ feature.title }}</b></h5>
+        <p class="description">{{ feature.description }}</p>
+      </VaCard>
+    </div>
   </div>
 </template>
 
-<script setup>
-import { ref } from "vue";
-import { useRouter } from "vue-router";
-
-// Sample products data
-const products = ref([
-  {
-    id: 1,
-    name: "AI-Powered Search & Discovery",
-    description:
-      "Enhance product discovery within your app and increase add-to-cart rates and cart values with our AI-powered search engine.",
-    features: [
-      "Smart, intuitive search",
-      "Personalized product suggestions",
-      "Seamless integration with your app"
-    ],
-    link: "/client/searchplayground",
+<script>
+export default {
+  data() {
+    return {
+      features: [
+        {
+          title: 'Typo Tolerance',
+          description: 'Spelling Mistakes? Not a problem. Automatically correct typos.',
+          icon: 'Keyboard Alt',
+        },
+        {
+          title: 'Tunable Ranking',
+          description: 'Tailor your results via flexible and fast query-time ranking.',
+          icon: 'Rank',
+        },
+        {
+          title: 'Merchandising',
+          description: 'Pin specific records to feature or merchandize them.',
+          icon: 'Merchandise',
+        },
+        {
+          title: 'Synonyms',
+          description: 'Show results for pants when users search for trousers.',
+          icon: 'S',
+        },
+        {
+          title: 'Multi-tenant API Keys',
+          description: 'Create API keys for each user restricting access to their data.',
+          icon: 'API',
+        },
+        {
+          title: 'Dynamic Sorting',
+          description: 'Sort records on the fly by any fields like price, popularity, etc.',
+          icon: 'Sort',
+        },
+        {
+          title: 'Grouping & Distinct',
+          description: 'Group results to provide variety, like combining color variations.',
+          icon: 'Group',
+        },
+        {
+          title: 'Filtering & Faceting',
+          description: 'Fetch records matching a filter, aggregate field values, and get counts.',
+          icon: 'Filter',
+        },
+        {
+          title: 'Geo Search',
+          description: 'Search & sort results within a certain distance from a latitude/longitude.',
+          icon: 'Location',
+        },
+        // {
+        //   title: 'Federated Search',
+        //   description: 'Search one or more collections in a single query.',
+        //   icon: '/path/to/federated_search_icon.svg',
+        // },
+        {
+          title: 'Vector & Semantic Search',
+          description: 'Automatically generate embeddings and do semantic search.',
+          icon: 'Arrow',
+        },
+        {
+          title: 'Easy High Availability',
+          description: 'Build a resilient production-grade search service.',
+          icon: 'Globe',
+        },
+      ],
+    };
   },
-  {
-    id: 2,
-    name: "AI Chatbot – Intelligent Customer Support",
-    description:
-      "Our AI Chatbot uses your business domain data to derive meaningful responses for customer queries, improving efficiency and satisfaction.",
-    features: [
-      "Automated Customer Support",
-      "Domain-Specific Intelligence",
-      "24/7 Availability"
-    ],
-    link: "/client/chat",
-  },
-]);
-
-// Vue Router
-const router = useRouter();
-const goToClientPage = (link) => {
-  router.push(link);
 };
 </script>
 
 <style scoped>
-.product-card-container {
-  display: flex;
-  justify-content: space-between;
-  /* Ensure space between the cards */
-  align-items: stretch;
-  /* Make sure all cards have the same height */
+.container {
+  max-width: 1200px;
+  margin: auto;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
   gap: 20px;
-  /* Space between cards */
-  padding: 20px;
 }
 
-.product-card {
-  flex: 1;
-  /* Make sure each card takes equal space */
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+.feature {
+  text-align: center;
 }
 
-.product-card:hover {
-  background-color: #a7a7a7;
-}
-
-.product-card h3 {
-  margin: 10px;
-  color: #333;
-}
-
-.product-card p {
-  color: inherit;
+.text-gradient-2 {
+  background: linear-gradient(90deg, #ae90c7, #7412c4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 </style>
