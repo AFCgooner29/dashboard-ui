@@ -13,6 +13,25 @@ const app = createApp(App);
 const pinia = createPinia();
 app.use(router);
 app.use(pinia);
-app.use(createVuestic());
+app.use(createVuestic({
+    config: {
+      colors: {
+        variables: {
+          // Default colors
+          primary: "#36054a",
+          secondary: "#dcd1e5",
+          success: "#068700",
+          info: "#003f87",
+          danger: "#cf0000",
+          warning: "#fce62c",
+          gray: "#6c6c6b",
+          dark: "#3d3d3d",
+
+          // Custom colors
+          yourCustomColor: "#d0f55d",
+        },
+      },
+    },
+  }));
 
 app.mount('#app');

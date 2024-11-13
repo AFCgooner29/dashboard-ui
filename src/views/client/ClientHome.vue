@@ -1,7 +1,7 @@
 <template>
   <div>
     <ClientNavbar />
-    <router-view />
+    <router-view class="sub-view" />
 
     <!-- API Key Modal -->
     <ApiKeyModal :show="isModalVisible" @api-key-added="handleApiKeyAdded" @close="handleModalClose" />
@@ -54,4 +54,7 @@ const handleModalClose = () => {
 
 <style scoped>
 /* Add your custom styles here */
+.sub-view {
+  padding: 2%;
+}
 </style>

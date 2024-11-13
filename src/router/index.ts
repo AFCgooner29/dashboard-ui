@@ -9,14 +9,9 @@ const routes: Array<RouteRecordRaw> = [
     children:[
       { path: '', name: 'landing', component: ()=> Landing },
       {
-        path: 'login',
-        name: 'login',
-        component: ()=> import('../views/auth/Login.vue'),
-      },
-      {
-        path: 'signup',
-        name: 'signup',
-        component: ()=> import('../views/auth/Signup.vue'),
+        path: 'authPage',
+        name: 'authPage',
+        component: ()=> import('../views/auth/AuthPage.vue'),
       },
     ]
   },
@@ -53,14 +48,59 @@ const routes: Array<RouteRecordRaw> = [
         component: ()=> import('../views/client/settings/Settings.vue'),
       },
       {
-        path:'rulesManagement',
-        name:'rulesManagement',
+        path:'onboard-customer',
+        name:'onboard-customer',
+        component: ()=> import('../views/client/customerManagement/OnboardCustomer.vue'),
+      },
+      {
+        path:'customerManagement',
+        name:'customerManagement',
+        component: ()=> import('../views/client/customerManagement/CustomerManagement.vue'),
+      },
+      {
+        path:'ruleManagement',
+        name:'ruleManagement',
         component: ()=> import('../views/client/ruleManagement/rules.vue'),
       },
       {
-        path:'searchConfig',
-        name:'searchConfig',
-        component: ()=> import('../views/client/searchConfig/seacrhConfig.vue'),
+        path:'create-rule',
+        name:'create-rule',
+        component: ()=> import('../views/client/ruleManagement/createRules.vue'),
+      },
+      {
+        path:'edit-rule/:ruleId',
+        name:'edit-rule',
+        component: ()=> import('../views/client/ruleManagement/EditRule.vue'),
+      },
+      {
+        path:'searchConfigManagement',
+        name:'searchConfigManagement',
+        component: ()=> import('../views/client/searchConfigManagement/ListSearchConfig.vue'),
+      },
+      {
+        path:'search-config/edit/:id',
+        name:'editSearchConfig',
+        component: ()=> import('../views/client/searchConfigManagement/AddEditSearchConfig.vue'),
+      },
+      {
+        path:'search-config/add',
+        name:'addSearchConfig',
+        component: ()=> import('../views/client/searchConfigManagement/AddEditSearchConfig.vue'),
+      },
+      {
+        path:'searchIndexManagement',
+        name:'searchIndexManagement',
+        component: ()=> import('../views/client/searchIndexManagement/SearchIndexList.vue'),
+      },
+      {
+        path:'search-index/edit/:id',
+        name:'editSearchIndex',
+        component: ()=> import('../views/client/searchIndexManagement/EditSearchIndex.vue'),
+      },
+      {
+        path:'search-index/add',
+        name:'addSearchIndex',
+        component: ()=> import('../views/client/searchIndexManagement/EditSearchIndex.vue'),
       },
     ]
   },

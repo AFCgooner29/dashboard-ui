@@ -1,29 +1,48 @@
 <template>
-  <div class="form-container">
-    <form>
-    <div class="mb-3">
-      <label for="exampleInputEmail1" class="form-label">Email address</label>
-      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-      <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-    </div>
-    <div class="mb-3">  
-      <label for="exampleInputPassword1" class="form-label">Password</label>
-      <input type="password" class="form-control" id="exampleInputPassword1">
-    </div>
-    <div class="mb-3 form-check">
-      <input type="checkbox" class="form-check-input" id="exampleCheck1">
-      <label class="form-check-label" for="exampleCheck1">Check me out</label>
-    </div>
-    <button type="submit" class="btn btn-primary">Sign up</button>
-  </form>
-</div>
+  <va-card>
+    <form @submit.prevent="handleSignup">
+      <va-input v-model="userName" label="Username" class="inp" required />
+      <va-input v-model="customerId" label="Customer ID" class="inp" required />
+      <va-input v-model="userIdentifier" label="Email" class="inp" required />
+      <va-input v-model="userCredential" label="Password" type="password" class="inp" required />
+      <VaButton class="ms-3" @click="handleSignup">Sign Up</VaButton>
+    </form>
+  </va-card>
 </template>
 
-<style>
-.form-container{
-  background: white;
-  padding:30px;
-  border: 5px solid black;
-  border-radius: 15px;
+<script>
+import axios from 'axios';
+
+export default {
+  data() {
+    return {
+      userName: '',
+      customerId: '',
+      userIdentifier: '',
+      userCredential: '',
+    };
+  },
+  methods: {
+    async handleSignup() {
+      try {
+        const response = await axios.post('/api/v1/user/session/sign-up', {
+          userName: this.userName,
+          customerId: this.customerId,
+          userIdentifier: this.userIdentifier,
+          userCredential: this.userCredential,
+        });
+        const { sessionToken } = response.data.data;
+        this.$emit('signupSuccess', sessionToken);
+      } catch (error) {
+        console.error('Signup failed:', error);
+      }
+    },
+  },
+};
+</script>
+<style scoped>
+.inp {
+  padding-top: 7px;
+  padding-bottom: 7px;
 }
 </style>

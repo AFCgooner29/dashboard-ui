@@ -1,150 +1,227 @@
 <template>
-    <div class="rule-management-container">
-        <h2>Rule Management</h2>
+    <va-card>
+        <div class="header">
+            <h2>Rule Management</h2>
+            <VaButton v-if="isPlatformAdmin" class="mr-6 mb-2">
+                <RouterLink :to="{ name: 'create-rule' }" style="color:white; text-decoration:none;">Add New Rule
+                </RouterLink>
+            </VaButton>
+        </div>
 
-        <!-- Rule Creation or Update Form -->
-        <VaForm @submit.prevent="handleFormSubmit" class="rule-form">
-            <div class="form-grid">
-                <!-- Rule ID -->
-                <VaInput v-model="rule.ruleId" label="Rule ID" placeholder="Enter Rule ID" required />
-                <!-- Index Name -->
-                <VaInput v-model="rule.indexName" label="Index Name" placeholder="Enter Index Name" required />
-                <!-- Customer ID -->
-                <VaInput v-model="rule.customerId" label="Customer ID" placeholder="Enter Customer ID" required />
-                <!-- Enabled Toggle -->
-                <VaSwitch v-model="rule.enabled" label="Enabled" />
+        <!-- Rules Table -->
+        <VaDataTable :items="rules" :columns="fields" striped>
+            <template #cell(context)="{ rowData }">
+                <div v-for="(context, index) in rowData['context'].slice(0, 2)" :key="index">
+                {{ context["key"] }} <VaIcon name="arrow_forward" /> {{ context["value"] }}
+                </div>
+                <span v-if="rowData['context'].length > 2">...</span>
+            </template>
 
-                <!-- Exact Match (comma-separated values) -->
-                <VaInput v-model="exactMatchInput" label="Exact Match"
-                    placeholder="Enter exact matches, separated by commas" @blur="handleExactMatchInput" />
+            <template #cell(ruleConditions)="{ rowData }">
+                <div v-for="(ruleCondition, index) in rowData['ruleConditions'].slice(0, 2)" :key="index">
+                {{ storedToDisplayMapping[ruleCondition["operator"]] }} <VaIcon name="arrow_forward" /> {{ ruleCondition["value"] }}
+                </div>
+                <span v-if="rowData['ruleConditions'].length > 2">...</span>
+            </template>
 
-                <!-- Submit Button -->
-                <VaButton type="submit" color="primary" class="submit-btn">
-                    Save Rule
-                </VaButton>
+            <template #cell(consequences)="{ rowData }">
+                <div v-for="(consequence, index) in rowData['consequences'].slice(0, 2)" :key="index">
+                {{ consequence["attributeName"] }} <VaIcon name="arrow_forward" /> {{ storedToDisplayMapping[consequence["consequenceType"]] }} <VaIcon name="arrow_forward" /> {{ consequence["attributeValue"] }}
+                </div>
+                <span v-if="rowData['consequences'].length > 2">...</span>
+            </template>
+
+            <template v-if="isPlatformAdmin" #cell(actions)="{ rowData }">
+                <VaButton preset="plain" icon="visibility" class="ml-3" @click="viewRule(rowData)" label="Edit" />
+                <VaButton preset="plain" icon="edit" class="ml-3" label="Edit"
+                    :to="{ name: 'edit-rule', params: { ruleId: rowData.ruleId } }"
+                    style="color:white; text-decoration:none;" />
+                <VaButton preset="plain" icon="cancel" class="ml-3" @click="deleteRule(rowData['ruleId'])"
+                    label="Disable" />
+            </template>
+        </VaDataTable>
+
+        <!-- Expanded View Modal -->
+        <va-modal v-model="isModalOpen" title="Rule Details">
+            <div v-if="selectedRule">
+                <h4>Context</h4>
+                <ul>
+                    <li v-for="(context, index) in selectedRule.context" :key="index">
+                        {{ context.key }} <VaIcon name="arrow_forward" /> {{ context.value }}
+                    </li>
+                </ul>
+
+                <h4>Conditions</h4>
+                <ul>
+                    <li v-for="(condition, index) in selectedRule.ruleConditions" :key="index">
+                        {{ storedToDisplayMapping[condition.operator] }} <VaIcon name="arrow_forward" /> {{ condition.value }}
+                    </li>
+                </ul>
+
+                <h4>Consequences</h4>
+                <ul>
+                    <li v-for="(consequence, index) in selectedRule.consequences" :key="index">
+                        {{ consequence.attributeName }} <VaIcon name="arrow_forward" /> {{ storedToDisplayMapping[consequence.consequenceType] }} 
+                        <VaIcon name="arrow_forward" />{{ consequence.attributeValue }}
+                    </li>
+                </ul>
             </div>
-        </VaForm>
-
-        <h3 class="mt-5">Rules List</h3>
-
-        <!-- Rule List Table with Pagination -->
-        <VaDataTable :items="rules" :columns="columns" :per-page.sync="pageSize" :page.sync="currentPage"
-            :pagination="true" class="rules-table" />
-
-        <!-- Pagination controls -->
-        <VaSelect v-model="pageSize" :options="pageSizeOptions" label="Page Size" />
-    </div>
+            <va-button color="primary" @click="isModalOpen = false">Close</va-button>
+        </va-modal>
+    </va-card>
 </template>
 
-<script setup>
-import { ref, onMounted } from 'vue';
-import { VaForm, VaInput, VaSwitch, VaButton, VaDataTable, VaSelect } from 'vuestic-ui';
-import { useFetch } from "../../../util/useFetch.js"
+<script>
+import { VaDataTable, VaButton, VaModal } from 'vuestic-ui';
 
-
-// Reactive rule object for form
-const rule = ref({
-    ruleId: '',
-    indexName: '',
-    customerId: '',
-    enabled: false,
-    exactMatch: [],
-    consequences: [],
-    ruleConditions: [],
-    context: [],
-});
-
-// Temporary exactMatch input (comma-separated)
-const exactMatchInput = ref('');
-
-// Rules list data
-const rules = ref([]);
-
-// Pagination settings
-const currentPage = ref(0);
-const pageSize = ref(10);
-const pageSizeOptions = [10, 20, 50];
-
-// Table columns configuration
-const columns = [
-    { key: 'serial', label: 'Serial No.' },
-    { key: 'ruleId', label: 'Rule ID' },
-    { key: 'indexName', label: 'Index Name' },
-    { key: 'customerId', label: 'Customer ID' },
-    { key: 'enabled', label: 'Enabled' },
-    { key: 'actions', label: 'Actions' },
-];
-
-// Fetch rules when component is mounted
-onMounted(async () => {
-    await fetchRules();
-});
-
-const apiPrefix = process.env.VUE_APP_API_PREFIX;
-
-
-// Fetch all rules from the API
-const fetchRules = async () => {
-    var apiKey = localStorage.getItem('api-key');
-    if (!apiKey || apiKey == undefined) {
-        alert("Please set API key shared with you in mail")
-    }
-    var requestObj = new Request(
-        apiPrefix + `/auth/admin/manage/rule?page=` + currentPage.value + `&size=` + pageSize.value,
-        {
-            method: "GET",
-            headers: {
-                "API_KEY": apiKey,
-                "Content-Type": "application/json",
-            },
-        }
-    );
-    const response = useFetch(requestObj);
-    rules.value = response.content.map((rule, index) => ({
-        serial: index + 1,
-        ...rule,
-    }));
-};
-
-// Handle form submission
-const handleFormSubmit = async () => {
-    await fetch('/auth/admin/manage/rule', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
+export default {
+    components: { VaDataTable, VaButton, VaModal },
+    data() {
+        return {
+            rules: [],
+            selectedRule: null,
+            isModalOpen: false,
+            fields: [
+                { key: 'ruleId', label: 'Rule ID' },
+                { key: 'indexName', label: 'Index Name' },
+                { key: 'customerId', label: 'Customer ID' },
+                { key: 'enabled', label: 'Enabled' },
+                { key: 'context', label: 'Context' },
+                { key: 'ruleConditions', label: 'Conditions' },
+                { key: 'consequences', label: 'Consequences' },
+                { key: 'actions', label: 'Actions' },
+            ],
+            storedToDisplayMapping: {
+                'STARTS_WITH': 'Starts With',
+                'IS': 'Is',
+                'BOOST_WITH': 'Boost With',
+                'BOOST_THEN': 'Boost Then',
+                'FILTER': 'Filter',
+                'HIDE': 'Hide',
+                'BURY_WITH': 'Bury With',
+                'BURY_THEN': 'Bury Then'
+            }
+        };
+    },
+    computed: {
+        isPlatformAdmin() {
+            return true
+            return localStorage.getItem('roles')?.includes('PLATFORM_ADMIN');
         },
-        body: JSON.stringify(rule.value),
-    });
-    await fetchRules();
-};
-
-// Handle exact match input (convert to array)
-const handleExactMatchInput = () => {
-    rule.value.exactMatch = exactMatchInput.value.split(',').map((match) => match.trim());
+    },
+    methods: {
+        fetchRules() {
+            // fetch('/auth/admin/manage/rule/all')
+            //     .then((response) => response.json())
+            //     .then((data) => {
+            //         this.rules = data.content;
+            //     });
+            this.rules = [
+                {
+                    "ruleId": "123",
+                    "indexName": "search_products",
+                    "customerId": "12345",
+                    "enabled": true,
+                    "context": [
+                        {
+                            key: "cityId",
+                            value: "Bangalore"
+                        },
+                        {
+                            key: "bloo",
+                            value: "haa"
+                        }
+                    ],
+                    "ruleConditions": [
+                        {
+                            "operator": "STARTS_WITH",
+                            "value": "milk"
+                        },
+                        {
+                            "operator": "IS",
+                            "value": "milk"
+                        }
+                    ],
+                    "consequences": [
+                        {
+                            "attributeName": "categoryId",
+                            "consequenceType": "BOOST_WITH",
+                            "attributeValue": "1234"
+                        },
+                        {
+                            "attributeName": "categoryId",
+                            "consequenceType": "BOOST_WITH",
+                            "attributeValue": "1234"
+                        }
+                    ]
+                },
+                {
+                    "ruleId": "123",
+                    "indexName": "search_products",
+                    "customerId": "12345",
+                    "enabled": true,
+                    "context": [
+                        {
+                            key: "cityId",
+                            value: "Bangalore"
+                        },
+                        {
+                            key: "bloo",
+                            value: "haa"
+                        }
+                    ],
+                    "ruleConditions": [
+                        {
+                            "operator": "STARTS_WITH",
+                            "value": "milk"
+                        },
+                        {
+                            "operator": "IS",
+                            "value": "milk"
+                        }
+                    ],
+                    "consequences": [
+                        {
+                            "attributeName": "categoryId",
+                            "consequenceType": "BOOST_WITH",
+                            "attributeValue": "1234"
+                        },
+                        {
+                            "attributeName": "categoryId",
+                            "consequenceType": "BOOST_WITH",
+                            "attributeValue": "1234"
+                        }
+                    ]
+                }
+            ]
+        },
+        goToCreateRule() {
+            this.$router.push('/create-rule');
+        },
+        viewRule(rule) {
+            this.selectedRule = rule;
+            this.isModalOpen = true;
+        },
+        editRule(rule) {
+            this.$router.push(`/edit-rule/${rule.ruleId}`);
+        },
+        deleteRule(ruleId) {
+            fetch(`/auth/admin/manage/rule/${ruleId}`, {
+                method: 'DELETE',
+            }).then(() => this.fetchRules());
+        },
+    },
+    mounted() {
+        this.fetchRules();
+    },
 };
 </script>
 
 <style scoped>
-.rule-management-container {
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.form-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 20px;
-}
-
-.submit-btn {
-    grid-column: span 2;
-    justify-self: center;
-}
-
-.rules-table {
-    margin-top: 20px;
-    width: 100%;
 }
 </style>

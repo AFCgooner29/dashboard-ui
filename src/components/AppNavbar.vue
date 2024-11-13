@@ -2,20 +2,18 @@
   <VaNavbar color="#36054a">
     <template #left>
       <VaNavbarBrand>
-      <RouterLink to="/" class="navbar-brand">Igolia</RouterLink>
+      <RouterLink to="/" class="navbar-brand">Liberta Tech</RouterLink>
     </VaNavbarBrand>
     </template>
     <template #right>
-      <!-- <VaNavbarItem>
+    <!-- <VaNavbarItem>
       <RouterLink to="/" class="nav-link">Pricing</RouterLink>
     </VaNavbarItem>
     <VaNavbarItem>
       <RouterLink to="/" class="nav-link">Contact us</RouterLink>
-    </VaNavbarItem>
-    <VaNavbarItem>
-      <RouterLink :to="{ name: 'login' }" class="nav-link">Log in</RouterLink>
     </VaNavbarItem> -->
-    <VaButton color="#36054a" class="ms-3"><RouterLink :to="{ name: 'client' }" style="color:white; text-decoration:none;">Our Products</RouterLink></VaButton>
+    <VaButton class="ms-3"><RouterLink :to="{ name: 'authPage' }" style="color:white; text-decoration:none;">Log in</RouterLink></VaButton>
+    <VaButton class="ms-3"><RouterLink :to="{ name: 'client' }" style="color:white; text-decoration:none;">Our Products</RouterLink></VaButton>
     </template>
   </VaNavbar>
 </template>
