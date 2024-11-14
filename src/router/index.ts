@@ -33,6 +33,11 @@ const routes: Array<RouteRecordRaw> = [
         component: ()=> import('../views/client/documents/Documents.vue'),
       },
       {
+        path:'form/v1/:id',
+        name:'formV1',
+        component: ()=> import('../views/client/documents/Documents.vue'),
+      },
+      {
         path:'dashboard',
         name:'clientdashboard',
         component: ()=> import('../views/client/dashboard/Dashboard.vue'),
@@ -48,14 +53,14 @@ const routes: Array<RouteRecordRaw> = [
         component: ()=> import('../views/client/settings/Settings.vue'),
       },
       {
-        path:'onboard-customer',
-        name:'onboard-customer',
-        component: ()=> import('../views/client/customerManagement/OnboardCustomer.vue'),
+        path:'customer-form/:customerId',
+        name:'customer-form',
+        component: ()=> import('../views/client/customerManagement/CustomerForm.vue'),
       },
       {
         path:'customerManagement',
         name:'customerManagement',
-        component: ()=> import('../views/client/customerManagement/CustomerManagement.vue'),
+        component: ()=> import('../views/client/customerManagement/CustomerManagementReport.vue'),
       },
       {
         path:'ruleManagement',
@@ -63,44 +68,29 @@ const routes: Array<RouteRecordRaw> = [
         component: ()=> import('../views/client/ruleManagement/rules.vue'),
       },
       {
-        path:'create-rule',
-        name:'create-rule',
-        component: ()=> import('../views/client/ruleManagement/createRules.vue'),
-      },
-      {
-        path:'edit-rule/:ruleId',
-        name:'edit-rule',
-        component: ()=> import('../views/client/ruleManagement/EditRule.vue'),
+        path:'rule-form/:ruleId',
+        name:'rule-form',
+        component: ()=> import('../views/client/ruleManagement/RulesForm.vue'),
       },
       {
         path:'searchConfigManagement',
         name:'searchConfigManagement',
-        component: ()=> import('../views/client/searchConfigManagement/ListSearchConfig.vue'),
+        component: ()=> import('../views/client/searchConfigManagement/SearchConfigReport.vue'),
       },
       {
-        path:'search-config/edit/:id',
-        name:'editSearchConfig',
-        component: ()=> import('../views/client/searchConfigManagement/AddEditSearchConfig.vue'),
-      },
-      {
-        path:'search-config/add',
-        name:'addSearchConfig',
-        component: ()=> import('../views/client/searchConfigManagement/AddEditSearchConfig.vue'),
+        path:'search-config-form/:id',
+        name:'search-config-form',
+        component: ()=> import('../views/client/searchConfigManagement/SearchConfigForm.vue'),
       },
       {
         path:'searchIndexManagement',
         name:'searchIndexManagement',
-        component: ()=> import('../views/client/searchIndexManagement/SearchIndexList.vue'),
+        component: ()=> import('../views/client/searchIndexManagement/SearchIndexReport.vue'),
       },
       {
-        path:'search-index/edit/:id',
-        name:'editSearchIndex',
-        component: ()=> import('../views/client/searchIndexManagement/EditSearchIndex.vue'),
-      },
-      {
-        path:'search-index/add',
-        name:'addSearchIndex',
-        component: ()=> import('../views/client/searchIndexManagement/EditSearchIndex.vue'),
+        path:'search-index-form/:id',
+        name:'search-index-form',
+        component: ()=> import('../views/client/searchIndexManagement/SearchIndexForm.vue'),
       },
     ]
   },
