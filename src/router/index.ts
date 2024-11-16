@@ -92,6 +92,26 @@ const routes: Array<RouteRecordRaw> = [
         name:'search-index-form',
         component: ()=> import('../views/client/searchIndexManagement/SearchIndexForm.vue'),
       },
+      {
+        path:'subscriptionTypeManagement',
+        name:'subscriptionTypeManagement',
+        component: ()=> import('../views/client/subscriptionTypeManagement/SubscriptionTypeReport.vue'),
+      },
+      {
+        path:'subscription-type-form/:id',
+        name:'subscription-type-form',
+        component: ()=> import('../views/client/subscriptionTypeManagement/SubscriptionTypeForm.vue'),
+      },
+      {
+        path:'synonymManagement',
+        name:'synonymManagement',
+        component: ()=> import('../views/client/synonymManagement/SynonymReport.vue'),
+      },
+      {
+        path:'synonym-form/:id',
+        name:'synonym-form',
+        component: ()=> import('../views/client/synonymManagement/SynonymForm.vue'),
+      },
     ]
   },
   {

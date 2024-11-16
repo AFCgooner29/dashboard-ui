@@ -1,6 +1,6 @@
 <template>
     <GenericListView :title="title" :fields="fields" :items="items" :actions="actions"
-        :storedToDisplayMapping="storedToDisplayMapping" @delete-item="deleteRule" />
+        :storedToDisplayMapping="storedToDisplayMapping"/>
     <!-- <VaPagination class="pagination-bar" v-model="value" :pages="5" /> -->
 </template>
 
@@ -13,7 +13,7 @@ export default {
     components: { GenericListView },
     data() {
         return {
-            config: reportConfig.CUSTOMER_REPORT,
+            config: reportConfig.SYNONYM_REPORT,
             items: [], // Initially empty, will be populated by API call
             currentPage: 2, // Current page number
             pageSize: 20, // Number of items per page
@@ -38,7 +38,11 @@ export default {
         async fetchItems() {
             try {
                 const apiPrefix = process.env.VUE_APP_API_PREFIX;
-                const response = await axios.get(apiPrefix+'auth/admin/manage/customer/list', {
+                const response = await axios.get(apiPrefix+'auth/admin/manage/synonyms/all', {
+                    params: {
+                        page: 0, // Example pagination parameter
+                        size: 100 // Example page size
+                    },
                     headers : {
                         Authorization: "Bearer "+localStorage.getItem("userSession")
                     },

@@ -1,61 +1,56 @@
 <template>
-    <GenericListView title="Search Index Management" :fields="fields" :items="items" :actions="actions"
-        :storedToDisplayMapping="storedToDisplayMapping" @delete-item="deleteRule" />
+    <GenericListView :title="title" :fields="fields" :items="items" :actions="actions"
+        :storedToDisplayMapping="storedToDisplayMapping"/>
+    <!-- <VaPagination class="pagination-bar" v-model="value" :pages="5" /> -->
 </template>
 
 <script>
 import GenericListView from '../../../components/GenericReport.vue';
+import reportConfig from '../reportConfigs.json';
+import axios from 'axios'; // Assuming axios is used for API calls.
 
 export default {
     components: { GenericListView },
     data() {
         return {
-            storedToDisplayMapping: {
-                'STARTS_WITH': 'Starts With',
-                'IS': 'Is',
-                'BOOST_WITH': 'Boost With',
-                'BOOST_THEN': 'Boost Then',
-                'FILTER': 'Filter',
-                'HIDE': 'Hide',
-                'BURY_WITH': 'Bury With',
-                'BURY_THEN': 'Bury Then'
-            },
-            items: [
-                {
-                    id : "134",
-                    indexName: "Search Test",
-                    searchIndexType: "SEARCH",
-                    version: 1,
-                    enabled: true,
-                    customerId: "123",
-                    searchClientId: "123",
-                },
-            ],
-            fields: [
-                { key: 'indexName', label: 'Index Name' },
-                { key: 'searchIndexType', label: 'Type' },
-                { key: 'version', label: 'Version' },
-                { key: 'enabled', label: 'Enabled' },
-                { key: 'customerId', label: 'Customer ID' },
-                { key: 'searchClientId', label: 'Search Client ID' },
-                { key: 'actions', label: 'Actions' },
-            ],
-            actions: {
-                headerActions: { label: 'Create New Search Index', link: { name: 'search-index-form', routeParams: { id: 'CREATE' }, routeQueryParams: { mode: 'CREATE' } } },
-                items: [
-                    { name: 'view', label: 'View', icon: 'visibility',  link: { name: 'search-index-form', routeParams: { id: 'id' }, routeQueryParams: { mode: 'VIEW' } } },
-                    { name: 'edit', label: 'Edit', icon: 'edit', link: { name: 'search-index-form', routeParams: { id: 'id' }, routeQueryParams: { mode: 'EDIT' } } },
-                    // { name: 'delete', label: 'Disable', icon: 'cancel', routeName: '' },
-                ],
-                actionsAvailable: true,
-            },
+            config: reportConfig.SEARCH_INDEX_REPORT,
+            items: [], // Initially empty, will be populated by API call
+            currentPage: 2, // Current page number
+            pageSize: 20, // Number of items per page
+            totalItems: 0 // Total number of items, fetched from the API
         };
     },
-    methods: {
-        deleteRule(rule) {
-            // handle delete API call
-            this.rules = this.rules.filter(r => r.ruleId !== rule.ruleId);
+    computed: {
+        title() {
+            return this.config.title;
         },
+        fields() {
+            return this.config.fields;
+        },
+        actions() {
+            return this.config.actions;
+        },
+        storedToDisplayMapping() {
+            return this.config.storedToDisplayMapping;
+        }
     },
+    methods: {
+        async fetchItems() {
+            try {
+                const apiPrefix = process.env.VUE_APP_API_PREFIX;
+                const response = await axios.get(apiPrefix+'auth/admin/manage/searchIndex', {
+                    headers : {
+                        Authorization: "Bearer "+localStorage.getItem("userSession")
+                    },
+                });
+                this.items = response.data; // Adjust based on API response structure
+            } catch (error) {
+                console.error('Failed to fetch items:', error);
+            }
+        }
+    },
+    mounted() {
+        this.fetchItems(); // Fetch items when the component is mounted
+    }
 };
 </script>

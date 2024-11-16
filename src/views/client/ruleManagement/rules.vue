@@ -1,130 +1,61 @@
 <template>
-    <GenericListView title="Rule Management" :fields="fields" :items="rules" :actions="actions" :storedToDisplayMapping = "storedToDisplayMapping"
-        @delete-item="deleteRule" />
+    <GenericListView :title="title" :fields="fields" :items="items" :actions="actions"
+        :storedToDisplayMapping="storedToDisplayMapping" @delete-item="deleteRule" />
+    <!-- <VaPagination class="pagination-bar" v-model="value" :pages="5" /> -->
 </template>
 
 <script>
 import GenericListView from '../../../components/GenericReport.vue';
-// import RuleDetailsModal from '@/components/RuleDetailsModal.vue';
+import reportConfig from '../reportConfigs.json';
+import axios from 'axios'; // Assuming axios is used for API calls.
 
 export default {
     components: { GenericListView },
     data() {
         return {
-            storedToDisplayMapping: {
-                'STARTS_WITH': 'Starts With',
-                'IS': 'Is',
-                'BOOST_WITH': 'Boost With',
-                'BOOST_THEN': 'Boost Then',
-                'FILTER': 'Filter',
-                'HIDE': 'Hide',
-                'BURY_WITH': 'Bury With',
-                'BURY_THEN': 'Bury Then'
-            },
-            rules: [
-                {
-                    "ruleId": "123",
-                    "indexName": "search_products",
-                    "customerId": "12345",
-                    "enabled": true,
-                    "context": [
-                        {
-                            key: "cityId",
-                            value: "Bangalore"
-                        },
-                        {
-                            key: "bloo",
-                            value: "haa"
-                        }
-                    ],
-                    "ruleConditions": [
-                        {
-                            "operator": "STARTS_WITH",
-                            "value": "milk"
-                        },
-                        {
-                            "operator": "IS",
-                            "value": "milk"
-                        }
-                    ],
-                    "consequences": [
-                        {
-                            "attributeName": "categoryId",
-                            "consequenceType": "BOOST_WITH",
-                            "attributeValue": "1234"
-                        },
-                        {
-                            "attributeName": "categoryId",
-                            "consequenceType": "BOOST_WITH",
-                            "attributeValue": "1234"
-                        }
-                    ]
-                },
-                {
-                    "ruleId": "123",
-                    "indexName": "search_products",
-                    "customerId": "12345",
-                    "enabled": true,
-                    "context": [
-                        {
-                            key: "cityId",
-                            value: "Bangalore"
-                        },
-                        {
-                            key: "bloo",
-                            value: "haa"
-                        }
-                    ],
-                    "ruleConditions": [
-                        {
-                            "operator": "STARTS_WITH",
-                            "value": "milk"
-                        },
-                        {
-                            "operator": "IS",
-                            "value": "milk"
-                        }
-                    ],
-                    "consequences": [
-                        {
-                            "attributeName": "categoryId",
-                            "consequenceType": "BOOST_WITH",
-                            "attributeValue": "1234"
-                        },
-                        {
-                            "attributeName": "categoryId",
-                            "consequenceType": "BOOST_WITH",
-                            "attributeValue": "1234"
-                        }
-                    ]
-                }
-            ], // Load rules from API
-            fields: [
-                { key: 'ruleId', label: 'Rule ID' },
-                { key: 'indexName', label: 'Index Name' },
-                { key: 'customerId', label: 'Customer ID' },
-                { key: 'enabled', label: 'Enabled' },
-                { key: 'context', label: 'Context', cellTemplate: 'ContextCell' },
-                { key: 'ruleConditions', label: 'Conditions', cellTemplate: 'RuleConditionsCell' },
-                { key: 'consequences', label: 'Consequences', cellTemplate: 'ConcequencesCell' },
-                { key: 'actions', label: 'Actions' },
-            ],
-            actions: {
-                headerActions: { label: 'Add New Rule', link: { name: 'rule-form', routeParams:{ruleId : 'CREATE'}, routeQueryParams:{mode : 'CREATE'} } },
-                items: [
-                    { name: 'view', label: 'View', icon: 'visibility', routeName: 'rule-form', routeParams:{ruleId : 'ruleId'}, routeQueryParams:{mode : 'VIEW'} },
-                    { name: 'edit', label: 'Edit', icon: 'edit', routeName: 'rule-form', routeParams:{ruleId : 'ruleId'}, routeQueryParams:{mode : 'EDIT'} },
-                    // { name: 'delete', label: 'Disable', icon: 'cancel', routeName: '' },
-                ],
-                actionsAvailable: true,
-            },
+            config: reportConfig.RULE_REPORT,
+            items: [], // Initially empty, will be populated by API call
+            currentPage: 2, // Current page number
+            pageSize: 20, // Number of items per page
+            totalItems: 0 // Total number of items, fetched from the API
         };
     },
-    methods: {
-        deleteRule(rule) {
-            // handle delete API call
-            this.rules = this.rules.filter(r => r.ruleId !== rule.ruleId);
+    computed: {
+        title() {
+            return this.config.title;
         },
+        fields() {
+            return this.config.fields;
+        },
+        actions() {
+            return this.config.actions;
+        },
+        storedToDisplayMapping() {
+            return this.config.storedToDisplayMapping;
+        }
     },
+    methods: {
+        async fetchItems() {
+            try {
+                const apiPrefix = process.env.VUE_APP_API_PREFIX;
+                const response = await axios.get(apiPrefix+'auth/admin/manage/rule/all', {
+                    params: {
+                        page: 0, // Example pagination parameter
+                        size: 100 // Example page size
+                    },
+                    headers : {
+                        Authorization: "Bearer "+localStorage.getItem("userSession")
+                    },
+                    mode: 'no-cors',
+                });
+                this.items = response.data.content; // Adjust based on API response structure
+            } catch (error) {
+                console.error('Failed to fetch items:', error);
+            }
+        }
+    },
+    mounted() {
+        this.fetchItems(); // Fetch items when the component is mounted
+    }
 };
 </script>

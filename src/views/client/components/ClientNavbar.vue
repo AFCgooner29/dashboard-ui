@@ -31,6 +31,12 @@
       <VaNavbarItem>
         <VaButton class="mr-6 mb-2" ><RouterLink :to="{ name: 'searchIndexManagement' }" style="color:white; text-decoration:none;">Search Index management</RouterLink></VaButton>
       </VaNavbarItem>
+      <VaNavbarItem>
+        <VaButton class="mr-6 mb-2" ><RouterLink :to="{ name: 'subscriptionTypeManagement' }" style="color:white; text-decoration:none;">Subscription Type management</RouterLink></VaButton>
+      </VaNavbarItem>
+      <VaNavbarItem>
+        <VaButton class="mr-6 mb-2" ><RouterLink :to="{ name: 'synonymManagement' }" style="color:white; text-decoration:none;">Synonym management</RouterLink></VaButton>
+      </VaNavbarItem>
       <!-- <VaNavbarItem>
         <VaButton class="mr-6 mb-2" color="#36054a" ><RouterLink :to="{ name: 'searchConfig' }" style="color:white; text-decoration:none;">Search Configuration</RouterLink></VaButton>
       </VaNavbarItem> -->

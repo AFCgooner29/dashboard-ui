@@ -1,0 +1,507 @@
+{
+    "RULE_REPORT": {
+        "title": "Rule Management",
+        "storedToDisplayMapping": {
+            "STARTS_WITH": "Starts With",
+            "IS": "Is",
+            "BOOST_WITH": "Boost With",
+            "BOOST_THEN": "Boost Then",
+            "FILTER": "Filter",
+            "HIDE": "Hide",
+            "BURY_WITH": "Bury With",
+            "BURY_THEN": "Bury Then"
+        },
+        "fields": [
+            {
+                "key": "ruleId",
+                "label": "Rule ID"
+            },
+            {
+                "key": "indexName",
+                "label": "Index Name"
+            },
+            {
+                "key": "customerId",
+                "label": "Customer ID"
+            },
+            {
+                "key": "enabled",
+                "label": "Enabled"
+            },
+            {
+                "key": "context",
+                "label": "Context",
+                "cellTemplate": "ContextCell"
+            },
+            {
+                "key": "ruleConditions",
+                "label": "Conditions",
+                "cellTemplate": "RuleConditionsCell"
+            },
+            {
+                "key": "consequences",
+                "label": "Consequences",
+                "cellTemplate": "ConcequencesCell"
+            },
+            {
+                "key": "actions",
+                "label": "Actions"
+            }
+        ],
+        "actions": {
+            "headerActions": {
+                "label": "Add New Rule",
+                "link": {
+                    "name": "rule-form",
+                    "routeParams": {
+                        "ruleId": "CREATE"
+                    },
+                    "routeQueryParams": {
+                        "mode": "CREATE"
+                    }
+                }
+            },
+            "items": [
+                {
+                    "name": "view",
+                    "label": "View",
+                    "icon": "visibility",
+                    "link": {
+                        "name": "rule-form",
+                        "routeParams": {
+                            "ruleId": "ruleId"
+                        },
+                        "routeQueryParams": {
+                            "mode": "VIEW"
+                        }
+                    }
+                },
+                {
+                    "name": "edit",
+                    "label": "Edit",
+                    "icon": "edit",
+                    "link": {
+                        "name": "rule-form",
+                        "routeParams": {
+                            "ruleId": "ruleId"
+                        },
+                        "routeQueryParams": {
+                            "mode": "EDIT"
+                        }
+                    }
+                }
+            ],
+            "actionsAvailable": true
+        }
+    },
+    "CUSTOMER_REPORT": {
+        "title": "Customer Management",
+        "storedToDisplayMapping": {},
+        "fields": [
+            {
+                "key": "customerId",
+                "label": "Customer ID"
+            },
+            {
+                "key": "name",
+                "label": "Name"
+            },
+            {
+                "key": "customerAddress",
+                "label": "Address"
+            },
+            {
+                "key": "subscriptionTypeId",
+                "label": "Subscription Type"
+            },
+            {
+                "key": "enabled",
+                "label": "Status"
+            },
+            {
+                "key": "actions",
+                "label": "Actions"
+            }
+        ],
+        "actions": {
+            "headerActions": {
+                "label": "Onboard New Customer",
+                "link": {
+                    "name": "customer-form",
+                    "routeParams": {
+                        "customerId": "CREATE"
+                    },
+                    "routeQueryParams": {
+                        "mode": "CREATE"
+                    }
+                }
+            },
+            "items": [
+                {
+                    "name": "view",
+                    "label": "View",
+                    "icon": "visibility",
+                    "link": {
+                        "name": "customer-form",
+                        "routeParams": {
+                            "customerId": "customerId"
+                        },
+                        "routeQueryParams": {
+                            "mode": "VIEW"
+                        }
+                    }
+                },
+                {
+                    "name": "edit",
+                    "label": "Edit",
+                    "icon": "edit",
+                    "link": {
+                        "name": "customer-form",
+                        "routeParams": {
+                            "customerId": "customerId"
+                        },
+                        "routeQueryParams": {
+                            "mode": "EDIT"
+                        }
+                    }
+                }
+            ],
+            "actionsAvailable": true
+        }
+    },
+    "DATA_UPLOAD_REPORT": {},
+    "SEARCH_CONFIG_REPORT": {
+        "title": "Search Config Management",
+        "storedToDisplayMapping": {
+            "STARTS_WITH": "Starts With",
+            "IS": "Is",
+            "BOOST_WITH": "Boost With",
+            "BOOST_THEN": "Boost Then",
+            "FILTER": "Filter",
+            "HIDE": "Hide",
+            "BURY_WITH": "Bury With",
+            "BURY_THEN": "Bury Then"
+        },
+        "searchConfigs": [
+            {
+                "indexName": "test",
+                "searchConfigKey": "abc",
+                "customerId": "234"
+            }
+        ],
+        "fields": [
+            {
+                "key": "id",
+                "label": "Search Config Id"
+            },
+            {
+                "key": "indexName",
+                "label": "Index Name"
+            },
+            {
+                "key": "searchConfigKey",
+                "label": "Search Config Key"
+            },
+            {
+                "key": "customerId",
+                "label": "Customer ID"
+            },
+            {
+                "key": "actions",
+                "label": "Actions"
+            }
+        ],
+        "actions": {
+            "headerActions": {
+                "label": "Create New Search Config",
+                "link": {
+                    "name": "search-config-form",
+                    "routeParams": {
+                        "id": "CREATE"
+                    },
+                    "routeQueryParams": {
+                        "mode": "CREATE"
+                    }
+                }
+            },
+            "items": [
+                {
+                    "name": "view",
+                    "label": "View",
+                    "icon": "visibility",
+                    "link": {
+                        "name": "search-config-form",
+                        "routeParams": {
+                            "id": "id"
+                        },
+                        "routeQueryParams": {
+                            "mode": "VIEW"
+                        }
+                    }
+                },
+                {
+                    "name": "edit",
+                    "label": "Edit",
+                    "icon": "edit",
+                    "link": {
+                        "name": "search-config-form",
+                        "routeParams": {
+                            "id": "id"
+                        },
+                        "routeQueryParams": {
+                            "mode": "EDIT"
+                        }
+                    }
+                }
+            ],
+            "actionsAvailable": true
+        }
+    },
+    "SEARCH_INDEX_REPORT": {
+        "title": "Search Index Management",
+        "storedToDisplayMapping": {
+            "STARTS_WITH": "Starts With",
+            "IS": "Is",
+            "BOOST_WITH": "Boost With",
+            "BOOST_THEN": "Boost Then",
+            "FILTER": "Filter",
+            "HIDE": "Hide",
+            "BURY_WITH": "Bury With",
+            "BURY_THEN": "Bury Then"
+        },
+        "fields": [
+            {
+                "key": "id",
+                "label": "Index Internal Id"
+            },
+            {
+                "key": "indexName",
+                "label": "Index Name"
+            },
+            {
+                "key": "searchIndexType",
+                "label": "Type"
+            },
+            {
+                "key": "version",
+                "label": "Version"
+            },
+            {
+                "key": "enabled",
+                "label": "Enabled"
+            },
+            {
+                "key": "customerId",
+                "label": "Customer ID"
+            },
+            {
+                "key": "searchClientId",
+                "label": "Search Client ID"
+            },
+            {
+                "key": "actions",
+                "label": "Actions"
+            }
+        ],
+        "actions": {
+            "headerActions": {
+                "label": "Create New Search Index",
+                "link": {
+                    "name": "search-index-form",
+                    "routeParams": {
+                        "id": "CREATE"
+                    },
+                    "routeQueryParams": {
+                        "mode": "CREATE"
+                    }
+                }
+            },
+            "items": [
+                {
+                    "name": "view",
+                    "label": "View",
+                    "icon": "visibility",
+                    "link": {
+                        "name": "search-index-form",
+                        "routeParams": {
+                            "id": "id"
+                        },
+                        "routeQueryParams": {
+                            "mode": "VIEW"
+                        }
+                    }
+                },
+                {
+                    "name": "edit",
+                    "label": "Edit",
+                    "icon": "edit",
+                    "link": {
+                        "name": "search-index-form",
+                        "routeParams": {
+                            "id": "id"
+                        },
+                        "routeQueryParams": {
+                            "mode": "EDIT"
+                        }
+                    }
+                }
+            ],
+            "actionsAvailable": true
+        }
+    },
+    "SUBSCRIPTION_TYPE_REPORT": {
+        "title": "Subscription Type Management",
+        "storedToDisplayMapping": {},
+        "fields": [
+            {
+                "key": "subscriptionTypeName",
+                "label": "Internal Name"
+            },
+            {
+                "key": "subscriptionTypeDisplayName",
+                "label": "Subscription Type Name"
+            },
+            {
+                "key": "enabled",
+                "label": "Enabled"
+            },
+            {
+                "key": "updatedBy",
+                "label": "Updated By"
+            },
+            {
+                "key": "createdOn",
+                "label": "Created On"
+            },
+            {
+                "key": "updatedOn",
+                "label": "Updated On"
+            }
+        ],
+        "actions": {
+            "headerActions": {
+                "label": "Create New Subscription Type",
+                "link": {
+                    "name": "subscription-type-form",
+                    "routeParams": {
+                        "id": "CREATE"
+                    },
+                    "routeQueryParams": {
+                        "mode": "CREATE"
+                    }
+                }
+            },
+            "items": [
+                {
+                    "name": "view",
+                    "label": "View",
+                    "icon": "visibility",
+                    "link": {
+                        "name": "subscription-type-form",
+                        "routeParams": {
+                            "id": "subscriptionTypeName"
+                        },
+                        "routeQueryParams": {
+                            "mode": "VIEW"
+                        }
+                    }
+                },
+                {
+                    "name": "edit",
+                    "label": "Edit",
+                    "icon": "edit",
+                    "link": {
+                        "name": "search-index-form",
+                        "routeParams": {
+                            "id": "subscriptionTypeName"
+                        },
+                        "routeQueryParams": {
+                            "mode": "EDIT"
+                        }
+                    }
+                }
+            ],
+            "actionsAvailable": true
+        }
+    },
+    "SYNONYM_REPORT": {
+        "title": "Synonym Management",
+        "storedToDisplayMapping": {},
+        "fields": [
+            {
+                "key": "synonymId",
+                "label": "Synonym Id"
+            },
+            {
+                "key": "indexName",
+                "label": "Index Name"
+            },
+            {
+                "key": "customerId",
+                "label": "Customer Id"
+            },
+            {
+                "key": "enabled",
+                "label": "Enabled"
+            },
+            {
+                "key": "isTyposEnabled",
+                "label": "Typo Enabled Synonym"
+            },
+            {
+                "key": "synonymType",
+                "label": "Synonym Type"
+            },
+            {
+                "key": "replacements",
+                "label": "Replacements"
+            }
+        ],
+        "actions": {
+            "headerActions": {
+                "label": "Create New Synonym",
+                "link": {
+                    "name": "synonym-form",
+                    "routeParams": {
+                        "id": "CREATE"
+                    },
+                    "routeQueryParams": {
+                        "mode": "CREATE"
+                    }
+                }
+            },
+            "items": [
+                {
+                    "name": "view",
+                    "label": "View",
+                    "icon": "visibility",
+                    "link": {
+                        "name": "synonym-form",
+                        "routeParams": {
+                            "id": "synonymId"
+                        },
+                        "routeQueryParams": {
+                            "mode": "VIEW"
+                        }
+                    }
+                },
+                {
+                    "name": "edit",
+                    "label": "Edit",
+                    "icon": "edit",
+                    "link": {
+                        "name": "synonym-form",
+                        "routeParams": {
+                            "id": "synonymId"
+                        },
+                        "routeQueryParams": {
+                            "mode": "EDIT"
+                        }
+                    }
+                }
+            ],
+            "actionsAvailable": true
+        }
+    },
+    "USER_MANAGEMENT_REPORT": {}
+}

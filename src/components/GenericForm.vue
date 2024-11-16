@@ -10,11 +10,12 @@
         <form v-if="!loading" @submit.prevent="handleSubmit">
             <div v-for="field in formStructure.fields" :key="field.name" class="form-group">
                 <!-- Standard Fields -->
-                <component v-if="field.type !== 'multi-entry'" :is="getComponentType(field)"
+                <component v-if="field.type !== 'multi-entry' && field.type !== 'group'" :is="getComponentType(field)"
                     v-model="formData[field.name]" :label="field.label" :type="field.inputType || 'text'"
                     :options="field.options || []" :readonly="!isFormEditable(mode) || field.disabled"
                     :placeholder="field.placeholder || ''" :required="field.required || false"
-                    :disabled="field.disabled || !isFormEditable(mode)" />
+                    :disabled="field.disabled || !isFormEditable(mode)"
+                    :hidden="field.hidden" />
 
                 <!-- Multi-entry Composite Fields -->
                 <div v-if="field.type === 'multi-entry'" class="multi-entry-group">
@@ -38,11 +39,27 @@
                         </div>
                         <va-button v-if="entry.nestedEnabled && isFormEditable(mode)" size="small" color="secondary"
                             @click="addNestedField(entryIndex, field.name)">Add Nested Field</va-button>
-                        <va-button v-if="isFormEditable(mode)" size="small" color="danger" @click="removeEntry(field.name, entryIndex)">Remove
+                        <va-button v-if="isFormEditable(mode) && multiEntryActionPossible(field.removeAvailableModes)" size="small" color="danger" @click="removeEntry(field.name, entryIndex)">Remove
                             Entry</va-button>
                     </div>
-                    <va-button v-if="isFormEditable(mode)" size="small" color="primary"
+                    <va-button v-if="isFormEditable(mode) && multiEntryActionPossible(field.addAvailableModes)" size="small" color="primary"
                         @click="addEntry(field.name)">Add {{
+                            field.entryLabel || 'Entry' }}</va-button>
+                </div>
+                <div v-if="field.type === 'group'" class="multi-entry-group">
+                    <h4>{{ field.label }}</h4>
+                    <div v-if="formData[field.name]" :key="formData[field.name] + 'entry'" class="multi-entry-item">
+                        <h5>{{ field.entryLabel || 'Entry' }}</h5>
+                        <!-- Render each subfield within the multi-entry field -->
+                        <div v-for="subField in field.subFields" :key="subField.name">
+                            <component :is="getComponentType(subField)"
+                                v-model="formData[field.name][subField.name]" :label="subField.label"
+                                :type="subField.inputType || 'text'" :options="subField.options || []"
+                                :readonly="!isFormEditable(mode)" :required="subField.required || false" />
+                        </div>
+                    </div>    
+                    <va-button v-if="isFormEditable(mode) && !formData[field.name]" size="small" color="primary"
+                        @click="addGroupEntryEntry(field.name)">Add {{
                             field.entryLabel || 'Entry' }}</va-button>
                 </div>
             </div>
@@ -55,6 +72,8 @@
 
 <script>
 import { ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
+
 
 export default {
     methods: {
@@ -80,10 +99,19 @@ export default {
             type: Function,
             required: true,
         },
+        saveModelData: {
+            type: Function,
+            required: true,
+        },
+        updateModelData: {
+            type: Function,
+            required: true,
+        },
     },
     setup(props, { emit }) {
         const formData = ref({});
         const loading = ref(false);
+        const router = useRouter();
 
         watch(
             () => props.model,
@@ -121,6 +149,30 @@ export default {
             });
         };
 
+        const addGroupEntryEntry = (fieldName) => {
+            if (!formData.value[fieldName]) formData.value[fieldName] = {};
+            console.log("adding group entyr for " +fieldName)
+            props.formStructure.fields.forEach((field) => {
+            if (field.type === 'group' && field.name == fieldName) {
+                formData[field.name] = {}; // Initialize group field
+                field.subFields.forEach((subField) => {
+                    console.log("adding group entyr for " +subField.name)
+                if (!(subField.name in formData[field.name])) {
+                    formData[field.name][subField.name] = ''; // Initialize subfield
+                }
+                });
+                console.log("adding group entyr for " +formData[field.name] != undefined)
+            }
+            });
+        };
+
+        const multiEntryActionPossible = (availableModes) => {
+            if (availableModes) {
+                return availableModes.includes(props.mode)
+            }
+            return true
+        }
+
         const removeEntry = (fieldName, index) => {
             formData.value[fieldName].splice(index, 1);
         };
@@ -132,8 +184,41 @@ export default {
             });
         };
 
+        const transformSelectFields = (data) => {
+        if (Array.isArray(data)) {
+            return data.map((entry) => transformSelectFields(entry));
+        } else if (typeof data === "object" && data !== null) {
+            const transformed = {};
+            for (const key in data) {
+                if (data[key] && typeof data[key] === "object" && 'text' in data[key] && 'value' in data[key]) {
+                    // Replace { text, value } with value
+                    transformed[key] = data[key].value;
+                } else if (Array.isArray(data[key]) || typeof data[key] === "object") {
+                    // Recursively process nested fields or arrays
+                    transformed[key] = transformSelectFields(data[key]);
+                } else {
+                    // Keep other fields as is
+                    transformed[key] = data[key];
+                }
+            }
+            return transformed;
+        }
+        return data;
+    };
+
         const handleSubmit = () => {
-            emit('submit', formData.value);
+            loading.value = true;
+            const transformedData = transformSelectFields(formData.value);
+
+            if (props.mode === 'EDIT') {
+                props.updateModelData(transformedData);
+            } else {
+                props.saveModelData(transformedData)
+            }
+            setTimeout(() => {
+                loading.value = false;
+                router.back(); // Use router instance
+            }, 3000); 
         };
 
         // Fetch data when mode is EDIT or VIEW
@@ -159,6 +244,8 @@ export default {
             removeEntry,
             addNestedField,
             handleSubmit,
+            addGroupEntryEntry,
+            multiEntryActionPossible,
         };
     },
 };

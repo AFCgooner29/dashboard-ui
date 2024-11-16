@@ -4,7 +4,9 @@
         <div class="header">
             <h2>{{ title }}</h2>
             <VaButton v-if="actions.headerActions" class="mr-6 mb-2">
-                <RouterLink :to="{ name: actions.headerActions.link.name, params: actions.headerActions.link.routeParams, query: actions.headerActions.link.routeQueryParams}" style="color:white; text-decoration:none;">
+                <RouterLink
+                    :to="{ name: actions.headerActions.link.name, params: actions.headerActions.link.routeParams, query: actions.headerActions.link.routeQueryParams }"
+                    style="color:white; text-decoration:none;">
                     {{ actions.headerActions.label }}
                 </RouterLink>
             </VaButton>
@@ -73,23 +75,25 @@ export default {
             var queryParams;
             switch (action.name) {
                 case 'add':
-                    this.$router.push({ name: this.actions.add.link});
+                    this.$router.push({ name: this.actions.add.link });
                     break;
                 case 'view':
                     params = {};
                     queryParams = {};
-                    if (action.routeParams) {
-                        for (const [paramKey, itemField] of Object.entries(action.routeParams)) {
-                            params[paramKey] = item[itemField];
+                    if (action.link) {
+                        if (action.link.routeParams) {
+                            for (const [paramKey, itemField] of Object.entries(action.link.routeParams)) {
+                                params[paramKey] = item[itemField];
+                            }
                         }
-                    }
-                    if (action.routeQueryParams) {
-                        for (const [paramKey, data] of Object.entries(action.routeQueryParams)) {
-                            queryParams[paramKey] = data;
+                        if (action.link.routeQueryParams) {
+                            for (const [paramKey, data] of Object.entries(action.link.routeQueryParams)) {
+                                queryParams[paramKey] = data;
+                            }
                         }
+                        // Push the route with name and params
+                        this.$router.push({ name: action.link.name, params, query: queryParams });
                     }
-                    // Push the route with name and params
-                    this.$router.push({ name: action.routeName, params, query: queryParams });
                     break;
                 case 'delete':
                     this.$emit('delete-item', item);
@@ -98,18 +102,20 @@ export default {
                     // Build params dynamically if routeParams is specified in the action
                     params = {};
                     queryParams = {};
-                    if (action.routeParams) {
-                        for (const [paramKey, itemField] of Object.entries(action.routeParams)) {
-                            params[paramKey] = item[itemField];
+                    if (action.link) {
+                        if (action.link.routeParams) {
+                            for (const [paramKey, itemField] of Object.entries(action.link.routeParams)) {
+                                params[paramKey] = item[itemField];
+                            }
                         }
-                    }
-                    if (action.routeQueryParams) {
-                        for (const [paramKey, data] of Object.entries(action.routeQueryParams)) {
-                            queryParams[paramKey] = data;
+                        if (action.link.routeQueryParams) {
+                            for (const [paramKey, data] of Object.entries(action.link.routeQueryParams)) {
+                                queryParams[paramKey] = data;
+                            }
                         }
+                        // Push the route with name and params
+                        this.$router.push({ name: action.link.name, params, query: queryParams });
                     }
-                    // Push the route with name and params
-                    this.$router.push({ name: action.routeName, params, query: queryParams });
                     break;
                 default:
                     this.$emit(`action-${action.name}`, item);

@@ -1,69 +1,64 @@
 <template>
-  <GenericForm :formStructure="formStructure" :mode="mode" :fetchModelData="fetchRuleData" />
+  <GenericForm 
+    :formStructure="formStructure" 
+    :mode="mode" 
+    :fetchModelData="fetchModelData" 
+    :saveModelData="saveModelData" 
+  />
 </template>
 
 <script>
 import GenericForm from '@/components/GenericForm.vue';
+import formConfigs from '../formConfigs.json'; // Import form configurations
 
 export default {
   components: { GenericForm },
   data() {
     return {
       mode: this.$route.query.mode || 'VIEW', // default to VIEW if mode is not provided
-      formStructure: {
-        header: 'Cusomer Form',
-        fields: [
-          {
-            name: 'customerId',
-            label: 'Customer Id',
-            type: 'view',
-            disabled: true,
-          },
-          {
-            name: 'name',
-            label: 'Customer Name',
-            type: 'input'
-          },
-          {
-            name: 'customerAddress',
-            label: 'Customer Address',
-            type: 'textarea'
-          },
-          {
-            name: 'subscriptionTypeId',
-            label: 'Customer Subscription Type',
-            type: 'input'
-          },
-          {
-            name: 'enabled',
-            label: 'Enabled',
-            type: 'boolean'
-          },
-        ],
-      }
+      formStructure: formConfigs.CUSTOMER_FORM, // Load the form configuration
     };
   },
   methods: {
-    deleteRule(rule) {
-      // handle delete API call
-      this.rules = this.rules.filter(r => r.ruleId !== rule.ruleId);
+    async fetchModelData() {
+      try {
+        const apiPrefix = process.env.VUE_APP_API_PREFIX;
+        const response = await fetch(`${apiPrefix}auth/admin/manage/customer/${this.$route.params.customerId}`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('userSession')}`,
+            'Content-Type': 'application/json',
+          },
+        });
+        if (!response.ok) {
+          throw new Error('Failed to fetch customer data');
+        }
+        return await response.json();
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
     },
-    fetchRuleData() {
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          const data = {
-            "customerId": "123",
-            "name": "Dukaan",
-            "customerAddress": "Ludhiana",
-            "subscriptionTypeId": "1234",
-            "enabled": true,
-          };
-
-          // Simulating a 5-second delay before resolving the data
-          resolve(data);
-        }, 5000);
-      });
-    }
+    async saveModelData(data) {
+      try {
+        const apiPrefix = process.env.VUE_APP_API_PREFIX;
+        const response = await fetch(`${apiPrefix}auth/admin/manage/customer/onboard`, {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('userSession')}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+        if (!response.ok) {
+          throw new Error('Failed to save customer data');
+        }
+        return await response.json();
+      } catch (error) {
+        console.error(error);
+        throw error;
+      }
+    },
   },
 };
 </script>

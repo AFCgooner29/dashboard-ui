@@ -1,6 +1,6 @@
 <template>
     <GenericListView :title="title" :fields="fields" :items="items" :actions="actions"
-        :storedToDisplayMapping="storedToDisplayMapping" @delete-item="deleteRule" />
+        :storedToDisplayMapping="storedToDisplayMapping"/>
     <!-- <VaPagination class="pagination-bar" v-model="value" :pages="5" /> -->
 </template>
 
@@ -13,7 +13,7 @@ export default {
     components: { GenericListView },
     data() {
         return {
-            config: reportConfig.CUSTOMER_REPORT,
+            config: reportConfig.SUBSCRIPTION_TYPE_REPORT,
             items: [], // Initially empty, will be populated by API call
             currentPage: 2, // Current page number
             pageSize: 20, // Number of items per page
@@ -38,12 +38,12 @@ export default {
         async fetchItems() {
             try {
                 const apiPrefix = process.env.VUE_APP_API_PREFIX;
-                const response = await axios.get(apiPrefix+'auth/admin/manage/customer/list', {
+                const response = await axios.get(apiPrefix+'auth/admin/manage/subscriptionType/list', {
                     headers : {
                         Authorization: "Bearer "+localStorage.getItem("userSession")
                     },
                 });
-                this.items = response.data.content; // Adjust based on API response structure
+                this.items = response.data; // Adjust based on API response structure
             } catch (error) {
                 console.error('Failed to fetch items:', error);
             }

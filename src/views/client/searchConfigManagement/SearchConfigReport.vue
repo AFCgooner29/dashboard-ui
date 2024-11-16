@@ -1,54 +1,56 @@
 <template>
-    <GenericListView title="Search Config Management" :fields="fields" :items="searchConfigs" :actions="actions"
-        :storedToDisplayMapping="storedToDisplayMapping" @delete-item="deleteRule" />
+    <GenericListView :title="title" :fields="fields" :items="items" :actions="actions"
+        :storedToDisplayMapping="storedToDisplayMapping"/>
+    <!-- <VaPagination class="pagination-bar" v-model="value" :pages="5" /> -->
 </template>
 
 <script>
 import GenericListView from '../../../components/GenericReport.vue';
+import reportConfig from '../reportConfigs.json';
+import axios from 'axios'; // Assuming axios is used for API calls.
 
 export default {
     components: { GenericListView },
     data() {
         return {
-            storedToDisplayMapping: {
-                'STARTS_WITH': 'Starts With',
-                'IS': 'Is',
-                'BOOST_WITH': 'Boost With',
-                'BOOST_THEN': 'Boost Then',
-                'FILTER': 'Filter',
-                'HIDE': 'Hide',
-                'BURY_WITH': 'Bury With',
-                'BURY_THEN': 'Bury Then'
-            },
-            searchConfigs: [
-                {
-                    indexName: "test",
-                    searchConfigKey: "abc",
-                    customerId: "234"
-                },
-            ],
-            fields: [
-                { key: 'indexName', label: 'Index Name' },
-                { key: 'searchConfigKey', label: 'Search Config Key' },
-                { key: 'customerId', label: 'Customer ID' },
-                { key: 'actions', label: 'Actions' },
-            ],
-            actions: {
-                headerActions: { label: 'Create New Search Config', link: { name: 'search-config-form', routeParams: { id: 'CREATE' }, routeQueryParams: { mode: 'CREATE' } } },
-                items: [
-                    { name: 'view', label: 'View', icon: 'visibility', routeName: 'search-config-form', routeParams: { id: 'customerId' }, routeQueryParams: { mode: 'VIEW' } },
-                    { name: 'edit', label: 'Edit', icon: 'edit', routeName: 'search-config-form', routeParams: { id: 'customerId' }, routeQueryParams: { mode: 'EDIT' } },
-                    // { name: 'delete', label: 'Disable', icon: 'cancel', routeName: '' },
-                ],
-                actionsAvailable: true,
-            },
+            config: reportConfig.SEARCH_CONFIG_REPORT,
+            items: [], // Initially empty, will be populated by API call
+            currentPage: 2, // Current page number
+            pageSize: 20, // Number of items per page
+            totalItems: 0 // Total number of items, fetched from the API
         };
     },
-    methods: {
-        deleteRule(rule) {
-            // handle delete API call
-            this.rules = this.rules.filter(r => r.ruleId !== rule.ruleId);
+    computed: {
+        title() {
+            return this.config.title;
         },
+        fields() {
+            return this.config.fields;
+        },
+        actions() {
+            return this.config.actions;
+        },
+        storedToDisplayMapping() {
+            return this.config.storedToDisplayMapping;
+        }
     },
+    methods: {
+        async fetchItems() {
+            try {
+                const apiPrefix = process.env.VUE_APP_API_PREFIX;
+                const response = await axios.get(apiPrefix+'auth/admin/manage/searchConfig', {
+                    headers : {
+                        Authorization: "Bearer "+localStorage.getItem("userSession")
+                    },
+                });
+                this.items = response.data; // Adjust based on API response structure
+            } catch (error) {
+                console.error('Failed to fetch items:', error);
+            }
+        }
+    },
+    mounted() {
+        this.fetchItems(); // Fetch items when the component is mounted
+    }
 };
 </script>
