@@ -46,9 +46,8 @@ export default {
                     headers : {
                         Authorization: "Bearer "+localStorage.getItem("userSession")
                     },
-                    mode: 'no-cors',
                 });
-                this.items = response.data.content; // Adjust based on API response structure
+                this.items = response.data.data.content; // Adjust based on API response structure
             } catch (error) {
                 console.error('Failed to fetch items:', error);
             }

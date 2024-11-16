@@ -1,362 +1,365 @@
 {
-   "RULE_FORM":{
-      "header":"Add Rule",
-      "fields":[
+   "RULE_FORM": {
+      "header": "Add Rule",
+      "lovReverseMap": {
+         "STARTS_WITH": "Starts With",
+         "IS": "Is",
+         "BOOST_WITH": "Boost With",
+         "BOOST_THEN": "Boost Then",
+         "FILTER": "Filter",
+         "HIDE": "Hide",
+         "BURY_WITH": "Bury With",
+         "BURY_THEN": "Bury Then"
+      },
+      "fields": [
          {
-            "name":"ruleId",
-            "label":"Rule Id",
-            "type":"view",
-            "disabled":true
+            "name": "ruleId",
+            "label": "Rule Id",
+            "type": "view",
+            "disabled": true
          },
          {
-            "name":"indexName",
-            "label":"Index Name",
-            "type":"input"
+            "name": "indexName",
+            "label": "Index Name",
+            "type": "text"
          },
          {
-            "name":"customerId",
-            "label":"Customer",
-            "type":"input"
+            "name": "enabled",
+            "label": "Enabled",
+            "type": "boolean"
          },
          {
-            "name":"enabled",
-            "label":"Enabled",
-            "type":"boolean"
-         },
-         {
-            "name":"context",
-            "label":"Rule Context",
-            "type":"multi-entry",
-            "entryLabel":"Rule Context",
-            "nestedEnabled":false,
-            "subFields":[
+            "name": "context",
+            "label": "Rule Context",
+            "type": "multi-entry",
+            "entryLabel": "Rule Context",
+            "nestedEnabled": false,
+            "subFields": [
                {
-                  "name":"key",
-                  "label":"Key",
-                  "type":"input",
-                  "required":true
+                  "name": "key",
+                  "label": "Key",
+                  "type": "input",
+                  "required": true
                },
                {
-                  "name":"value",
-                  "label":"Value",
-                  "type":"input",
-                  "required":true
+                  "name": "value",
+                  "label": "Value",
+                  "type": "input",
+                  "required": true
                }
             ]
          },
          {
-            "name":"ruleConditions",
-            "label":"Rule Conditions",
-            "type":"multi-entry",
-            "entryLabel":"Rule Conditions",
-            "nestedEnabled":false,
-            "subFields":[
+            "name": "ruleConditions",
+            "label": "Rule Conditions",
+            "type": "multi-entry",
+            "entryLabel": "Rule Conditions",
+            "nestedEnabled": false,
+            "subFields": [
                {
-                  "name":"operator",
-                  "label":"Operator",
-                  "type":"select",
-                  "required":true,
-                  "options":[
+                  "name": "operator",
+                  "label": "Operator",
+                  "type": "select",
+                  "required": true,
+                  "options": [
                      {
-                        "text":"Starts With",
-                        "value":"STARTS_WITH"
+                        "text": "Starts With",
+                        "value": "STARTS_WITH"
                      },
                      {
-                        "text":"Is",
-                        "value":"IS"
+                        "text": "Is",
+                        "value": "IS"
                      }
                   ]
                },
                {
-                  "name":"value",
-                  "label":"Value",
-                  "type":"input",
-                  "required":true
+                  "name": "value",
+                  "label": "Value",
+                  "type": "input",
+                  "required": true
                }
             ]
          },
          {
-            "name":"consequences",
-            "label":"Rule Consequences",
-            "type":"multi-entry",
-            "entryLabel":"Rule Consequences",
-            "nestedEnabled":false,
-            "subFields":[
+            "name": "consequences",
+            "label": "Rule Consequences",
+            "type": "multi-entry",
+            "entryLabel": "Rule Consequences",
+            "nestedEnabled": false,
+            "subFields": [
                {
-                  "name":"attributeName",
-                  "label":"Attribute Name",
-                  "type":"input",
-                  "required":true
+                  "name": "attributeName",
+                  "label": "Attribute Name",
+                  "type": "input",
+                  "required": true
                },
                {
-                  "name":"consequenceType",
-                  "label":"Type",
-                  "type":"select",
-                  "required":true,
-                  "options":[
+                  "name": "consequenceType",
+                  "label": "Type",
+                  "type": "select",
+                  "required": true,
+                  "options": [
                      {
-                        "text":"Boost With",
-                        "value":"BOOST_WITH"
+                        "text": "Boost With",
+                        "value": "BOOST_WITH"
                      },
                      {
-                        "text":"Boost Then",
-                        "value":"BOOST_THEN"
+                        "text": "Boost Then",
+                        "value": "BOOST_THEN"
                      },
                      {
-                        "text":"Filter",
-                        "value":"FILTER"
+                        "text": "Filter",
+                        "value": "FILTER"
                      },
                      {
-                        "text":"Hide",
-                        "value":"HIDE"
+                        "text": "Hide",
+                        "value": "HIDE"
                      },
                      {
-                        "text":"Bury With",
-                        "value":"BURY_WITH"
+                        "text": "Bury With",
+                        "value": "BURY_WITH"
                      },
                      {
-                        "text":"Bury Then",
-                        "value":"BURY_THEN"
+                        "text": "Bury Then",
+                        "value": "BURY_THEN"
                      }
                   ]
                },
                {
-                  "name":"attributeValue",
-                  "label":"Attribute Value",
-                  "type":"input",
-                  "required":true
+                  "name": "attributeValue",
+                  "label": "Attribute Value",
+                  "type": "input",
+                  "required": true
                }
             ]
          }
       ]
    },
-   "CUSTOMER_FORM":{
-      "header":"Customer Form",
-      "fields":[
+   "CUSTOMER_FORM": {
+      "header": "Customer Form",
+      "fields": [
          {
-            "name":"customerId",
-            "label":"Customer Id",
-            "type":"view",
-            "disabled":true
+            "name": "customerId",
+            "label": "Customer Id",
+            "type": "view",
+            "disabled": true
          },
          {
-            "name":"name",
-            "label":"Customer Name",
-            "type":"input"
+            "name": "name",
+            "label": "Customer Name",
+            "type": "input"
          },
          {
-            "name":"customerAddress",
-            "label":"Customer Address",
-            "type":"textarea"
+            "name": "customerAddress",
+            "label": "Customer Address",
+            "type": "textarea"
          },
          {
-            "name":"subscriptionTypeId",
-            "label":"Customer Subscription Type",
-            "type":"input"
+            "name": "subscriptionTypeId",
+            "label": "Customer Subscription Type",
+            "type": "input"
          },
          {
-            "name":"enabled",
-            "label":"Enabled",
-            "type":"boolean"
+            "name": "enabled",
+            "label": "Enabled",
+            "type": "boolean"
          }
       ]
    },
-   "DATA_UPLOAD_FORM":{
-      
-   },
-   "SEARCH_CONFIG_FORM":{
-      "header":"Search Configuration",
-      "fields":[
+   "DATA_UPLOAD_FORM": {},
+   "SEARCH_CONFIG_FORM": {
+      "header": "Search Configuration",
+      "fields": [
          {
-            "name":"enabled",
-            "type":"checkbox",
-            "label":"Enabled",
-            "default":false,
-            "required":true
+            "name": "enabled",
+            "type": "checkbox",
+            "label": "Enabled",
+            "default": false,
+            "required": true
          },
          {
-            "name":"indexName",
-            "type":"text",
-            "label":"Index Name",
-            "placeholder":"Enter the index name",
-            "required":true
+            "name": "indexName",
+            "type": "text",
+            "label": "Index Name",
+            "placeholder": "Enter the index name",
+            "required": true
          },
          {
-            "name":"searchConfigKey",
-            "type":"text",
-            "label":"Search Config Key",
-            "placeholder":"Enter the config key",
-            "required":true
+            "name": "searchConfigKey",
+            "type": "text",
+            "label": "Search Config Key",
+            "placeholder": "Enter the config key",
+            "required": true
          },
          {
-            "name":"customerId",
-            "type":"text",
-            "label":"Customer ID",
-            "placeholder":"Enter the customer ID",
-            "required":true
+            "name": "customerId",
+            "type": "text",
+            "label": "Customer ID",
+            "placeholder": "Enter the customer ID",
+            "required": true
          },
          {
-            "name":"searchLogicConfig",
-            "type":"group",
-            "label":"Search Logic Configuration",
-            "subFields":[
+            "name": "searchLogicConfig",
+            "type": "group",
+            "label": "Search Logic Configuration",
+            "subFields": [
                {
-                  "name":"templateName",
-                  "type":"text",
-                  "label":"Template Name",
-                  "placeholder":"Enter the template name"
+                  "name": "templateName",
+                  "type": "text",
+                  "label": "Template Name",
+                  "placeholder": "Enter the template name"
                },
                {
-                  "name":"templateBuilder",
-                  "type":"text",
-                  "label":"Template Builder",
-                  "placeholder":"Enter the template builder"
+                  "name": "templateBuilder",
+                  "type": "text",
+                  "label": "Template Builder",
+                  "placeholder": "Enter the template builder"
                },
                {
-                  "name":"returnFields",
-                  "type":"multi-entry",
-                  "label":"Return Fields",
-                  "placeholder":"Add return fields",
-                  "subFields":[
+                  "name": "returnFields",
+                  "type": "multi-entry",
+                  "label": "Return Fields",
+                  "placeholder": "Add return fields",
+                  "subFields": [
                      {
-                        "name":"fieldName",
-                        "type":"text",
-                        "label":"Field Name"
+                        "name": "fieldName",
+                        "type": "text",
+                        "label": "Field Name"
                      }
                   ]
                },
                {
-                  "name":"sortFieldConfigs",
-                  "type":"multi-entry",
-                  "label":"Sort Field Configurations",
-                  "subFields":[
+                  "name": "sortFieldConfigs",
+                  "type": "multi-entry",
+                  "label": "Sort Field Configurations",
+                  "subFields": [
                      {
-                        "name":"fieldName",
-                        "type":"text",
-                        "label":"Field Name"
+                        "name": "fieldName",
+                        "type": "text",
+                        "label": "Field Name"
                      },
                      {
-                        "name":"sortOrder",
-                        "type":"select",
-                        "label":"Sort Order",
-                        "options":[
+                        "name": "sortOrder",
+                        "type": "select",
+                        "label": "Sort Order",
+                        "options": [
                            {
-                              "value":"asc",
-                              "text":"Ascending"
+                              "value": "asc",
+                              "text": "Ascending"
                            },
                            {
-                              "value":"desc",
-                              "text":"Descending"
+                              "value": "desc",
+                              "text": "Descending"
                            }
                         ]
                      }
                   ]
                },
                {
-                  "name":"fuzzyLowerLimit",
-                  "type":"number",
-                  "label":"Fuzzy Lower Limit",
-                  "default":4
+                  "name": "fuzzyLowerLimit",
+                  "type": "number",
+                  "label": "Fuzzy Lower Limit",
+                  "default": 4
                },
                {
-                  "name":"fuzzyUpperLimit",
-                  "type":"number",
-                  "label":"Fuzzy Upper Limit",
-                  "default":8
+                  "name": "fuzzyUpperLimit",
+                  "type": "number",
+                  "label": "Fuzzy Upper Limit",
+                  "default": 8
                },
                {
-                  "name":"analyzedFieldsConfig",
-                  "type":"multi-entry",
-                  "label":"Analyzed Fields Configuration",
-                  "subFields":[
+                  "name": "analyzedFieldsConfig",
+                  "type": "multi-entry",
+                  "label": "Analyzed Fields Configuration",
+                  "subFields": [
                      {
-                        "name":"name",
-                        "type":"text",
-                        "label":"Field Name",
-                        "required":true
+                        "name": "name",
+                        "type": "text",
+                        "label": "Field Name",
+                        "required": true
                      },
                      {
-                        "name":"boostBaseValue",
-                        "type":"number",
-                        "label":"Boost Base Value",
-                        "default":1000
+                        "name": "boostBaseValue",
+                        "type": "number",
+                        "label": "Boost Base Value",
+                        "default": 1000
                      },
                      {
-                        "name":"disabledStrategyTypes",
-                        "type":"multi-select",
-                        "label":"Disabled Strategy Types",
-                        "options":[
+                        "name": "disabledStrategyTypes",
+                        "type": "multi-select",
+                        "label": "Disabled Strategy Types",
+                        "options": [
                            {
-                              "value":"SPAN",
-                              "text":"Full Match"
+                              "value": "SPAN",
+                              "text": "Full Match"
                            },
                            {
-                              "value":"SPAN_FUZZY",
-                              "text":"Full Match With Typos"
+                              "value": "SPAN_FUZZY",
+                              "text": "Full Match With Typos"
                            },
                            {
-                              "value":"PARTIAL",
-                              "text":"Partaial Matches"
+                              "value": "PARTIAL",
+                              "text": "Partaial Matches"
                            },
                            {
-                              "value":"PARTIAL_FUZZY",
-                              "text":"Partaial Matches With Typos"
+                              "value": "PARTIAL_FUZZY",
+                              "text": "Partaial Matches With Typos"
                            }
                         ]
                      }
                   ]
                },
                {
-                  "name":"queryTokensCountForFuzzyDisableThreshold",
-                  "type":"number",
-                  "label":"Query Tokens Count For Fuzzy Disable Threshold",
-                  "default":3
+                  "name": "queryTokensCountForFuzzyDisableThreshold",
+                  "type": "number",
+                  "label": "Query Tokens Count For Fuzzy Disable Threshold",
+                  "default": 3
                },
                {
-                  "name":"tokensCountForFuzzyDisableThreshold",
-                  "type":"number",
-                  "label":"Tokens Count For Fuzzy Disable Threshold",
-                  "default":6
+                  "name": "tokensCountForFuzzyDisableThreshold",
+                  "type": "number",
+                  "label": "Tokens Count For Fuzzy Disable Threshold",
+                  "default": 6
                }
             ]
          },
          {
-            "name":"postRetrievalConfig",
-            "type":"multi-entry",
-            "label":"Post Retrieval Configuration",
-            "subFields":[
+            "name": "postRetrievalConfig",
+            "type": "multi-entry",
+            "label": "Post Retrieval Configuration",
+            "subFields": [
                {
-                  "name":"recallFiltersBuilder",
-                  "type":"text",
-                  "label":"Recall Filters Builder"
+                  "name": "recallFiltersBuilder",
+                  "type": "text",
+                  "label": "Recall Filters Builder"
                },
                {
-                  "name":"recallFilters",
-                  "type":"multi-entry",
-                  "label":"Recall Filters",
-                  "subFields":[
+                  "name": "recallFilters",
+                  "type": "multi-entry",
+                  "label": "Recall Filters",
+                  "subFields": [
                      {
-                        "name":"internalFieldName",
-                        "type":"text",
-                        "label":"Internal Field Name"
+                        "name": "internalFieldName",
+                        "type": "text",
+                        "label": "Internal Field Name"
                      },
                      {
-                        "name":"displayFieldName",
-                        "type":"text",
-                        "label":"Display Field Name"
+                        "name": "displayFieldName",
+                        "type": "text",
+                        "label": "Display Field Name"
                      },
                      {
-                        "name":"filterType",
-                        "type":"select",
-                        "label":"Filter Type",
-                        "options":[
+                        "name": "filterType",
+                        "type": "select",
+                        "label": "Filter Type",
+                        "options": [
                            {
-                              "value":"TERM",
-                              "text":"Term Filter"
+                              "value": "TERM",
+                              "text": "Term Filter"
                            },
                            {
-                              "value":"RANGE",
-                              "text":"Range Filter"
+                              "value": "RANGE",
+                              "text": "Range Filter"
                            }
                         ]
                      }
@@ -367,181 +370,226 @@
       ]
    },
    "SEARCH_INDEX_FORM": {
-    "header": "Add/Search Index",
-    "postSubmitRoute" : "searchIndexManagement",
-    "lovReverseMap" : {
-      "AUTO_SUGGEST" : "Autosuggest",
-      "SEARCH" : "Search",
-      "SEARCHABLE" : "Searchable",
-      "FILTERABLE" : "Filterable",
-      "NON_INDEXED" : "Non Indexed",
-      "TEXT" : "Text",
-      "LONG" : "Long",
-      "INT" : "Int",
-      "BOOLEAN" : "Boolean",
-      "DOUBLE" : "Double",
-      "STRING_ARRAY" : "String Array",
-      "INT_ARRAY" : "Int Array",
-      "DOUBLE_ARRAY" : "Double Array",
-      "LONG_ARRAY" : "Long Array"
-    },
-    "fields": [
-      {
-        "name": "id",
-        "label": "ID",
-        "type": "view",
-        "disabled": true
+      "header": "Add/Search Index",
+      "postSubmitRoute": "searchIndexManagement",
+      "lovReverseMap": {
+         "AUTO_SUGGEST": "Autosuggest",
+         "SEARCH": "Search",
+         "SEARCHABLE": "Searchable",
+         "FILTERABLE": "Filterable",
+         "NON_INDEXED": "Non Indexed",
+         "TEXT": "Text",
+         "LONG": "Long",
+         "INT": "Int",
+         "BOOLEAN": "Boolean",
+         "DOUBLE": "Double",
+         "STRING_ARRAY": "String Array",
+         "INT_ARRAY": "Int Array",
+         "DOUBLE_ARRAY": "Double Array",
+         "LONG_ARRAY": "Long Array"
       },
-      {
-        "name": "indexName",
-        "label": "Index Name",
-        "type": "input",
-        "required": true
-      },
-      {
-        "name": "searchIndexType",
-        "label": "Search Index Type",
-        "type": "select",
-        "required": true,
-        "options": [
-          {
-            "text": "Search",
-            "value": "SEARCH"
-          },
-          {
-            "text": "Autosuggest",
-            "value": "AUTO_SUGGEST"
-          }
-        ]
-      },
-      {
-        "name": "version",
-        "label": "Version",
-        "type": "number",
-        "hidden": true
-      },
-      {
-        "name": "customerId",
-        "label": "Customer ID",
-        "type": "input",
-        "hidden": true
-      },
-      {
-        "name": "searchClientId",
-        "label": "Search Client ID",
-        "type": "input",
-        "hidden": true
-      },
-      {
-        "name": "enabled",
-        "label": "Enabled",
-        "type": "boolean"
-      },
-      {
-        "name": "configuredFields",
-        "label": "Configured Fields",
-        "type": "multi-entry",
-        "addAvailableModes" : ["EDIT", "CREATE"],
-        "removeAvailableModes" : ["CREATE"],
-        "entryLabel": "Configured Field",
-        "nestedEnabled": false,
-        "subFields": [
-          {
-            "name": "fieldName",
-            "label": "Field Name",
+      "fields": [
+         {
+            "name": "id",
+            "label": "ID",
+            "type": "view",
+            "disabled": true
+         },
+         {
+            "name": "indexName",
+            "label": "Index Name",
             "type": "input",
             "required": true
-          },
-          {
-            "name": "fieldType",
-            "label": "Field Type",
+         },
+         {
+            "name": "searchIndexType",
+            "label": "Search Index Type",
             "type": "select",
             "required": true,
             "options": [
-              {
-                "text": "Searchable",
-                "value": "SEARCHABLE"
-              },
-              {
-                "text": "Filterable",
-                "value": "FILTERABLE"
-              },
-              {
-                "text": "Non Indexed",
-                "value": "NON_INDEXED"
-              }
+               {
+                  "text": "Search",
+                  "value": "SEARCH"
+               },
+               {
+                  "text": "Autosuggest",
+                  "value": "AUTO_SUGGEST"
+               }
             ]
-          },
-          {
-            "name": "fieldDataType",
-            "label": "Field Data Type",
-            "type": "select",
-            "required": true,
-            "options": [
-              {
-                "text": "Text",
-                "value": "TEXT"
-              },
-              {
-                "text": "Long",
-                "value": "LONG"
-              },
-              {
-                "text": "Int",
-                "value": "INT"
-              },
-              {
-                "text": "Boolean",
-                "value": "BOOLEAN"
-              },
-              {
-                "text": "Double",
-                "value": "DOUBLE"
-              },
-              {
-                "text": "String Array",
-                "value": "STRING_ARRAY"
-              },
-              {
-                "text": "Int Array",
-                "value": "INT_ARRAY"
-              },
-              {
-                "text": "Double Array",
-                "value": "DOUBLE_ARRAY"
-              },
-              {
-                "text": "Long Array",
-                "value": "LONG_ARRAY"
-              }
-            ]
-          },
-          {
+         },
+         {
+            "name": "version",
+            "label": "Version",
+            "type": "number",
+            "hidden": true
+         },
+         {
+            "name": "customerId",
+            "label": "Customer ID",
+            "type": "input",
+            "hidden": true
+         },
+         {
+            "name": "searchClientId",
+            "label": "Search Client ID",
+            "type": "input",
+            "hidden": true
+         },
+         {
             "name": "enabled",
             "label": "Enabled",
             "type": "boolean"
-          },
-          {
-            "name": "importance",
-            "label": "Importance",
-            "type": "number"
-          },
-          {
-            "name": "isFuzzySearchEnabled",
-            "label": "Fuzzy Search Enabled",
-            "type": "boolean"
-          }
-        ]
-      }
-    ]
-  },
-   "SUBSCRIPTION_TYPE_FORM":{
-      
+         },
+         {
+            "name": "configuredFields",
+            "label": "Configured Fields",
+            "type": "multi-entry",
+            "addAvailableModes": [
+               "EDIT",
+               "CREATE"
+            ],
+            "removeAvailableModes": [
+               "CREATE"
+            ],
+            "entryLabel": "Configured Field",
+            "nestedEnabled": false,
+            "subFields": [
+               {
+                  "name": "fieldName",
+                  "label": "Field Name",
+                  "type": "input",
+                  "required": true
+               },
+               {
+                  "name": "fieldType",
+                  "label": "Field Type",
+                  "type": "select",
+                  "required": true,
+                  "options": [
+                     {
+                        "text": "Searchable",
+                        "value": "SEARCHABLE"
+                     },
+                     {
+                        "text": "Filterable",
+                        "value": "FILTERABLE"
+                     },
+                     {
+                        "text": "Non Indexed",
+                        "value": "NON_INDEXED"
+                     }
+                  ]
+               },
+               {
+                  "name": "fieldDataType",
+                  "label": "Field Data Type",
+                  "type": "select",
+                  "required": true,
+                  "options": [
+                     {
+                        "text": "Text",
+                        "value": "TEXT"
+                     },
+                     {
+                        "text": "Long",
+                        "value": "LONG"
+                     },
+                     {
+                        "text": "Int",
+                        "value": "INT"
+                     },
+                     {
+                        "text": "Boolean",
+                        "value": "BOOLEAN"
+                     },
+                     {
+                        "text": "Double",
+                        "value": "DOUBLE"
+                     },
+                     {
+                        "text": "String Array",
+                        "value": "STRING_ARRAY"
+                     },
+                     {
+                        "text": "Int Array",
+                        "value": "INT_ARRAY"
+                     },
+                     {
+                        "text": "Double Array",
+                        "value": "DOUBLE_ARRAY"
+                     },
+                     {
+                        "text": "Long Array",
+                        "value": "LONG_ARRAY"
+                     }
+                  ]
+               },
+               {
+                  "name": "enabled",
+                  "label": "Enabled",
+                  "type": "boolean"
+               },
+               {
+                  "name": "importance",
+                  "label": "Importance",
+                  "type": "number"
+               },
+               {
+                  "name": "isFuzzySearchEnabled",
+                  "label": "Fuzzy Search Enabled",
+                  "type": "boolean"
+               }
+            ]
+         }
+      ]
    },
-   "SYNONYM_FORM":{
-      
+   "SUBSCRIPTION_TYPE_FORM": {},
+   "SYNONYM_FORM": {
+      "header": "Synonym Management",
+      "fields": [
+         {
+            "name": "synonymId",
+            "type": "text",
+            "label": "Synonym ID",
+            "disabled": true,
+            "placeholder": "Unique identifier for the synonym"
+         },
+         {
+            "name": "indexName",
+            "type": "text",
+            "label": "Index Name",
+            "required": true,
+            "placeholder": "Name of the index associated with this synonym"
+         },
+         {
+            "name": "enabled",
+            "type": "boolean",
+            "label": "Enabled",
+            "default": false,
+            "placeholder": "Toggle to enable or disable this synonym"
+         },
+         {
+            "name": "query",
+            "type": "text",
+            "label": "Query",
+            "required": true,
+            "placeholder": "Search query for the synonym"
+         },
+         {
+            "name": "isTyposEnabled",
+            "type": "boolean",
+            "label": "Enable Typos",
+            "default": false,
+            "placeholder": "Toggle to allow typos in the synonym"
+         },
+         {
+            "name": "replacements",
+            "type": "text",
+            "label": "Replacements (Comma separated)",
+            "placeholder": "List of replacement words or phrases",
+            "required" : true
+         }
+      ]
    },
-   "USER_MANAGEMENT_FORM":{
-      
-   }
+   "USER_MANAGEMENT_FORM": {}
 }

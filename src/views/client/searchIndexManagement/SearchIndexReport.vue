@@ -1,6 +1,6 @@
 <template>
     <GenericListView :title="title" :fields="fields" :items="items" :actions="actions"
-        :storedToDisplayMapping="storedToDisplayMapping"/>
+        :storedToDisplayMapping="storedToDisplayMapping" />
     <!-- <VaPagination class="pagination-bar" v-model="value" :pages="5" /> -->
 </template>
 
@@ -38,16 +38,49 @@ export default {
         async fetchItems() {
             try {
                 const apiPrefix = process.env.VUE_APP_API_PREFIX;
-                const response = await axios.get(apiPrefix+'auth/admin/manage/searchIndex', {
-                    headers : {
-                        Authorization: "Bearer "+localStorage.getItem("userSession")
+                const response = await axios.get(apiPrefix + 'auth/admin/manage/searchIndex', {
+                    headers: {
+                        Authorization: "Bearer " + localStorage.getItem("userSession")
                     },
                 });
-                this.items = response.data; // Adjust based on API response structure
+                this.items = response.data;
+                if (response.data) {
+                    var indexNames = [];
+                    for (const indexMapping of response.data) { // Adjust the iteration based on actual API response structure
+                        if (indexMapping.indexName) {
+                            indexNames.push(indexMapping.indexName);
+                        }
+                    }
+                    localStorage.setItem('userIndexes', indexNames.join());
+                    this.processAndStoreSearchableFields(response.data)
+                } // Adjust based on API response structure
             } catch (error) {
                 console.error('Failed to fetch items:', error);
             }
-        }
+        },
+        processAndStoreSearchableFields(response) {
+            // Extract searchable and filterable fields for each index
+            const indexFieldData = response.map(index => {
+                const searchableFields = index.configuredFields
+                    .filter(field => field.isFuzzySearchEnabled || field.searchable) // Assuming `searchable` is a property
+                    .map(field => field.fieldName);
+
+                const filterableFields = index.configuredFields
+                    .filter(field => field.filterable) // Assuming `filterable` is a property
+                    .map(field => field.fieldName);
+                console.log(index);
+                return {
+                    indexName: index.indexName,
+                    searchableFields,
+                    filterableFields,
+                };
+            });
+
+            // Store the processed data in localStorage
+            localStorage.setItem("searchableFieldData", JSON.stringify(indexFieldData));
+
+            console.log("Searchable and filterable field data stored in localStorage:", indexFieldData);
+        },
     },
     mounted() {
         this.fetchItems(); // Fetch items when the component is mounted

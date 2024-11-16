@@ -74,10 +74,12 @@ export default {
                         'Content-Type': 'application/json',
                     },
                 });
-                if (!response.ok) {
-                    throw new Error('Failed to fetch customer data');
-                }
+                
                 var jsonData = await response.json();
+                if (!jsonData || !jsonData.ok) {
+                  this.showMessage(responseData.message || 'Failed to fetch customer data', 'error');
+                  console.error('Failed to fetch customer data');
+                }
                 var finalConfiguredFiedls = [];
                 for (let i = 0; i < jsonData.configuredFields.length; i++) {
                     if (!jsonData.configuredFields[i].internal) {
@@ -104,10 +106,13 @@ export default {
                     },
                     body: JSON.stringify(data),
                 });
-                if (!response.ok) {
-                    throw new Error('Failed to save customer data');
+                var responseData = await response.json();
+                if (!responseData || !response.ok) {
+                    this.showMessage(responseData && responseData.data.message ? responseData.data.message : 'Failed to update customer data', 'error');
+                    console.error(responseData && responseData.data.message ? responseData.data.message : 'Failed to update customer data');
                 }
-                return await response.json();
+                this.showMessage(responseData && responseData.data.message ? responseData.data.message : 'Operation success', 'success');
+                return responseData;
             } catch (error) {
                 console.error(error);
                 throw error;
@@ -124,14 +129,21 @@ export default {
                     },
                     body: JSON.stringify(data),
                 });
-                if (!response.ok) {
-                    throw new Error('Failed to save customer data');
+                var responseData = await response.json();
+                if (!responseData || !response.ok) {
+                    this.showMessage(responseData && responseData.data.message ? responseData.data.message : 'Failed to update customer data', 'error');
+                    console.error(responseData && responseData.data.message ? responseData.data.message : 'Failed to update customer data');
                 }
-                return await response.json();
+                this.showMessage(responseData && responseData.data.message ? responseData.data.message : 'Operation success', 'success');
+                return responseData;
             } catch (error) {
                 console.error(error);
                 throw error;
             }
+        },
+
+        showMessage(message, type) {
+            alert(message);
         },
     },
 };

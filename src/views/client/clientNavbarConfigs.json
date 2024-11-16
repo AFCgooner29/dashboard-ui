@@ -1,0 +1,82 @@
+{
+  "navbarButtons":[
+     {
+        "label":"AI Assistant",
+        "routeName":"chat",
+        "roles":[
+           "PLATFORM_SUPPORT",
+           "PLATFORM_ADMIN",
+           "CUSTOMER_ADMIN",
+           "CUSTOMER_OPERATIONS",
+           "CUSTOMER_VIEWER",
+           "PLATFORM_CUSTOMER_SUPPORT"
+        ]
+     },
+     {
+        "label":"Search Playground",
+        "routeName":"searchPlayground",
+        "roles":[
+           "PLATFORM_SUPPORT",
+           "PLATFORM_ADMIN",
+           "CUSTOMER_ADMIN",
+           "CUSTOMER_OPERATIONS",
+           "CUSTOMER_VIEWER",
+           "PLATFORM_CUSTOMER_SUPPORT"
+        ]
+     },
+     {
+        "label":"Customer Management",
+        "routeName":"customerManagement",
+        "roles":[
+           "PLATFORM_SUPPORT",
+           "PLATFORM_ADMIN"
+        ]
+     },
+     {
+        "label":"Rules Management",
+        "routeName":"ruleManagement",
+        "roles":[
+           "PLATFORM_SUPPORT",
+           "PLATFORM_ADMIN",
+           "CUSTOMER_ADMIN",
+           "PLATFORM_CUSTOMER_SUPPORT"
+        ]
+     },
+     {
+        "label":"Search Config Management",
+        "routeName":"searchConfigManagement",
+        "roles":[
+           "PLATFORM_SUPPORT",
+           "PLATFORM_ADMIN"
+        ]
+     },
+     {
+        "label":"Search Index Management",
+        "routeName":"searchIndexManagement",
+        "roles":[
+           "PLATFORM_SUPPORT",
+           "PLATFORM_ADMIN",
+           "CUSTOMER_ADMIN",
+           "PLATFORM_CUSTOMER_SUPPORT"
+        ]
+     },
+     {
+        "label":"Subscription Type Management",
+        "routeName":"subscriptionTypeManagement",
+        "roles":[
+           "PLATFORM_SUPPORT",
+           "PLATFORM_ADMIN"
+        ]
+     },
+     {
+        "label":"Synonym Management",
+        "routeName":"synonymManagement",
+        "roles":[
+           "PLATFORM_SUPPORT",
+           "PLATFORM_ADMIN",
+           "CUSTOMER_ADMIN",
+           "PLATFORM_CUSTOMER_SUPPORT"
+        ]
+     }
+  ]
+}

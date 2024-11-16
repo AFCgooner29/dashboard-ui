@@ -31,8 +31,8 @@ export default {
           userIdentifier: this.userIdentifier,
           userCredential: this.userCredential,
         });
-        const { sessionToken } = response.data.data;
-        this.$emit('signupSuccess', sessionToken);
+        const authResponse = response.data.data;
+        this.$emit('signupSuccess', authResponse);
       } catch (error) {
         console.error('Signup failed:', error);
       }

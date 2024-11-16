@@ -49,12 +49,15 @@
     methods: {
       async handleLogin() {
         try {
-          const response = await axios.post('/api/v1/user/session/login', {
+          const apiPrefix = process.env.VUE_APP_API_PREFIX;
+
+          const response = await axios.post(apiPrefix+'api/v1/user/session/login', {
             userIdentifier: this.userIdentifier,
             userCredential: this.userCredential,
           });
-          const { sessionToken } = response.data.data;
-          this.$emit('loginSuccess', sessionToken);
+          const authResponse = response.data.data;
+          console.log(authResponse);
+          this.$emit('loginSuccess', authResponse);
         } catch (error) {
           console.error('Login failed:', error);
         }
@@ -64,7 +67,9 @@
     //   },
       async handleCredentialChange() {
         try {
-          await axios.post('/api/v1/user/session/credential-change', {
+          const apiPrefix = process.env.VUE_APP_API_PREFIX;
+
+          await axios.post(apiPrefix+'api/v1/user/session/credential-change', {
             userIdentifier: this.userIdentifier,
             userCredential: this.userCredential,
             newCredential: this.newCredential,

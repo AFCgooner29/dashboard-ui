@@ -2,24 +2,52 @@
   <VaNavbar color="#36054a">
     <template #left>
       <VaNavbarBrand>
-      <RouterLink to="/" class="navbar-brand">Liberta Tech</RouterLink>
-    </VaNavbarBrand>
+        <RouterLink to="/" class="navbar-brand">Liberta Tech</RouterLink>
+      </VaNavbarBrand>
     </template>
     <template #right>
-    <!-- <VaNavbarItem>
-      <RouterLink to="/" class="nav-link">Pricing</RouterLink>
-    </VaNavbarItem>
-    <VaNavbarItem>
-      <RouterLink to="/" class="nav-link">Contact us</RouterLink>
-    </VaNavbarItem> -->
-    <VaButton class="ms-3"><RouterLink :to="{ name: 'authPage' }" style="color:white; text-decoration:none;">Log in</RouterLink></VaButton>
-    <VaButton class="ms-3"><RouterLink :to="{ name: 'client' }" style="color:white; text-decoration:none;">Our Products</RouterLink></VaButton>
+      <template v-if="!sessionToken">
+        <VaButton class="ms-3">
+          <RouterLink :to="{ name: 'authPage' }" style="color:white; text-decoration:none;">
+            Log in
+          </RouterLink>
+        </VaButton>
+      </template>
+      <template v-else>
+        <VaButton class="ms-3">
+          <RouterLink :to="{ name: 'client' }" style="color:white; text-decoration:none;">
+            Our Products
+          </RouterLink>
+        </VaButton>
+        <VaButton class="ms-3" @click="logout">
+            Log Out
+        </VaButton>
+      </template>
     </template>
   </VaNavbar>
 </template>
 
 <script setup>
+import { ref, onMounted } from "vue";
 
+// Reactive property to hold the session token
+const sessionToken = ref(null);
+// Logout method
+const logout = () => {
+  // Clear all user-related data from localStorage
+  localStorage.clear();
+  // Optionally clear additional session-related data
+  // localStorage.clear(); // Use if you want to remove all localStorage data
+
+  // Redirect user to the login or landing page
+  setTimeout(() => {
+        window.location.reload(); // Force a page reload
+      }, 100);
+};
+// Check localStorage for sessionToken on component mount
+onMounted(() => {
+  sessionToken.value = localStorage.getItem("userSession");
+});
 </script>
 
 <style scoped>
