@@ -1,38 +1,21 @@
 <template>
   <VaForm ref="formRef" class="flex flex-col items-baseline gap-6" @submit.prevent="onSubmit">
     <div class="form-group">
-      <VaSelect 
-        v-model="selectedIndex" 
-        :options="indexes" 
-        label="Index" 
-        placeholder="Select an option"
-        style="width: 100%; margin-top: 5px" 
-        :error="selectedIndexError" 
-        error-messages="Index selection is required" 
-        @update:modelValue="onIndexChange"
-      />
+      <VaSelect v-model="selectedIndex" :options="indexes" label="Index" placeholder="Select an option"
+        style="width: 100%; margin-top: 5px" :error="selectedIndexError" error-messages="Index selection is required"
+        @update:modelValue="onIndexChange" />
     </div>
     <div class="form-group">
-      <VaInput 
-        v-model="queryTerm" 
-        placeholder="Enter Query" 
-        label="Search Query" 
-        style="width: 100%; margin-top: 5px"
-        :error="queryTermError" 
-        error-messages="Search query is required" 
-      />
+      <VaInput v-model="queryTerm" placeholder="Enter Query" label="Search Query" style="width: 100%; margin-top: 5px"
+        :error="queryTermError" error-messages="Search query is required" />
     </div>
     <div class="form-group">
-      <VaSelect 
-        v-model="searchableSelected" 
-        :options="searchableFields" 
-        style="width: 600px; margin-top: 5px"
-        label="Searchable Fields" 
-        multiple 
-      />
+      <VaSelect v-model="searchableSelected" :options="searchableFields" style="width: 600px; margin-top: 5px"
+        label="Searchable Fields" multiple />
     </div>
     <div class="row">
-      <Filter :filters="filters" :filterable-fields="filtersKeyOptions" :add-filter="addFilter" :remove-filter="removeFilter" />
+      <Filter :filters="filters" :filterable-fields="filtersKeyOptions" :add-filter="addFilter"
+        :remove-filter="removeFilter" />
     </div>
     <VaButton icon-right="arrow_forward" icon-color="#ffffff50" type="submit" style="margin: 5px;">
       Search
@@ -129,8 +112,8 @@ const onSubmit = async () => {
         {
           method: "POST",
           headers: {
-            "API_KEY": apiKey,
-            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem('userSession')}`,
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({
             indexName: selectedIndex.value,

@@ -5,16 +5,12 @@
       <table class="va-table va-table--hoverable">
         <thead>
           <tr>
-            <th>Object Id</th>
-            <th>Product Name</th>
-            <th>Product Brand</th>
+            <th v-for="header in headers" :key="header">{{ header }}</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="result in results" :key="result.objectId">
-            <td>{{ result.objectId }}</td>
-            <td>{{ result.product.name }}</td>
-            <td>{{ result.product.brand }} </td>
+          <tr v-for="(result, index) in results" :key="index">
+            <td v-for="header in headers" :key="header">{{ getNestedValue(result, header) }}</td>
           </tr>
         </tbody>
       </table>
@@ -24,18 +20,50 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue';
+import { computed } from "vue";
+import { defineProps } from "vue";
 
 const props = defineProps({
   results: {
     type: Array,
-    default: () => []
-  }
+    default: () => [],
+  },
 });
+
+// Dynamically generate headers based on keys in the results
+const headers = computed(() => {
+  if (!props.results.length) return [];
+  const keys = new Set();
+
+  props.results.forEach((result) => {
+    const flattened = flattenObject(result);
+    Object.keys(flattened).forEach((key) => keys.add(key));
+  });
+
+  return Array.from(keys);
+});
+
+// Helper function to get nested values
+function getNestedValue(obj, path) {
+  return path.split(".").reduce((acc, key) => acc && acc[key], obj) || "-";
+}
+
+// Helper function to flatten nested objects
+function flattenObject(obj, prefix = "") {
+  return Object.keys(obj).reduce((acc, key) => {
+    const value = obj[key];
+    const newKey = prefix ? `${prefix}.${key}` : key;
+    if (value && typeof value === "object" && !Array.isArray(value)) {
+      Object.assign(acc, flattenObject(value, newKey));
+    } else {
+      acc[newKey] = value;
+    }
+    return acc;
+  }, {});
+}
 </script>
 
 <style scoped>
-/* Add your styles here */
 .va-table-responsive {
   overflow: auto;
 }

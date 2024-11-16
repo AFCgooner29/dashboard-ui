@@ -5,11 +5,7 @@
         "routeName":"chat",
         "roles":[
            "PLATFORM_SUPPORT",
-           "PLATFORM_ADMIN",
-           "CUSTOMER_ADMIN",
-           "CUSTOMER_OPERATIONS",
-           "CUSTOMER_VIEWER",
-           "PLATFORM_CUSTOMER_SUPPORT"
+           "PLATFORM_ADMIN"
         ]
      },
      {
