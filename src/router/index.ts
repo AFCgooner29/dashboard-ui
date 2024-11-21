@@ -1,6 +1,4 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import Landing from '../views/website/landingPage/Landing.vue';
-import Website from '../views/website/Website.vue';
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
