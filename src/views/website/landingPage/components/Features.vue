@@ -57,21 +57,21 @@ export default {
           description: 'Sort records on the fly by any fields like price, popularity, etc.',
           icon: 'Sort',
         },
-        {
-          title: 'Grouping & Distinct',
-          description: 'Group results to provide variety, like combining color variations.',
-          icon: 'Group',
-        },
+        // {
+        //   title: 'Grouping & Distinct',
+        //   description: 'Group results to provide variety, like combining color variations.',
+        //   icon: 'Group',
+        // },
         {
           title: 'Filtering & Faceting',
-          description: 'Fetch records matching a filter, aggregate field values, and get counts.',
+          description: 'Fetch records matching a filter',//, aggregate field values, and get counts.',
           icon: 'Filter',
         },
-        {
-          title: 'Geo Search',
-          description: 'Search & sort results within a certain distance from a latitude/longitude.',
-          icon: 'Location',
-        },
+        // {
+        //   title: 'Geo Search',
+        //   description: 'Search & sort results within a certain distance from a latitude/longitude.',
+        //   icon: 'Location',
+        // },
         // {
         //   title: 'Federated Search',
         //   description: 'Search one or more collections in a single query.',

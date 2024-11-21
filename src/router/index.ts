@@ -112,6 +112,11 @@ const routes: Array<RouteRecordRaw> = [
         name:'synonym-form',
         component: ()=> import('../views/client/synonymManagement/SynonymForm.vue'),
       },
+      {
+        path:'data-upload',
+        name:'data-upload',
+        component: ()=> import('../views/client/dataUpload/SearchIndexDataUpload.vue'),
+      },
     ]
   },
   {

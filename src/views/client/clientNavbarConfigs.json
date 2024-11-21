@@ -73,6 +73,16 @@
            "CUSTOMER_ADMIN",
            "PLATFORM_CUSTOMER_SUPPORT"
         ]
-     }
+     },
+     {
+      "label":"Data Upload",
+      "routeName":"data-upload",
+      "roles":[
+         "PLATFORM_SUPPORT",
+         "PLATFORM_ADMIN",
+         "CUSTOMER_ADMIN",
+         "PLATFORM_CUSTOMER_SUPPORT"
+      ]
+   }
   ]
 }

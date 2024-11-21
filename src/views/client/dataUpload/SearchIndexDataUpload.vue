@@ -4,58 +4,79 @@
 
         <!-- Template Download Section -->
         <section>
-            <va-select v-model="selectedType" :options="fileTypes" label="Select Template Type"
-                placeholder="Select file type for template" />
-            <va-input v-model="indexName" label="Index Name" placeholder="Enter index name" />
-            <va-button @click="downloadTemplate" color="primary" :loading="isDownloading">
-                Download Template
-            </va-button>
+            <div class="form-group">
+                <va-select v-model="selectedType" :options="fileTypes" label="Select Template Type"
+                    placeholder="Select file type for template" />
+            </div>
+            <div class="form-group">
+                <VaSelect v-model="indexName" :options="indexNames" label="Index"
+                    placeholder="Select an option" />
+            </div>
+            <div class="form-group">
+                <va-button @click="downloadTemplate" color="primary" :loading="isDownloading">
+                    Download Template
+                </va-button>
+            </div>
         </section>
 
         <va-divider />
 
         <!-- File Upload Section -->
         <section>
-            <va-file-upload v-model="file" label="Upload File" accept=".csv, .xlsx"
-                placeholder="Choose a CSV or Excel file" />
-            <va-input v-model="uploadIndexName" label="Index Name" placeholder="Enter index name" />
-            <va-button @click="uploadFile" color="primary" :loading="isUploading">
-                Upload File
-            </va-button>
+            <div class="form-group">
+                <va-file-upload v-model="file" label="Select File" accept=".csv, .xlsx"
+                    placeholder="Choose a CSV or Excel file" style="z-index: 0;" />
+            </div>
+            <div class="form-group">
+                <VaSelect v-model="uploadIndexName" :options="indexNames" label="Index"
+                    placeholder="Select an option" />
+
+            </div>
+            <div class="form-group">
+                <va-button @click="uploadFile" color="primary" :loading="isUploading">
+                    Process
+                </va-button>
+            </div>
         </section>
     </va-card>
 </template>
 
 <script>
 import { ref } from 'vue';
-import { useAxios } from '@vueuse/integrations/useAxios';
+import { VaSelect } from 'vuestic-ui/web-components';
+import { useFetch } from "../../../util/useFetch.js";
+
+
+const apiPrefix = process.env.VUE_APP_API_PREFIX;
+
 
 export default {
     setup() {
         const indexName = ref('');
         const uploadIndexName = ref('');
         const selectedType = ref('csv');
-        const file = ref(null);
+        const file = ref([]);
         const isDownloading = ref(false);
         const isUploading = ref(false);
+        const indexNames = ref([]);
 
         const fileTypes = [
-            { label: 'CSV', value: 'csv' },
-            { label: 'Excel', value: 'excel' },
+            { value: 'CSV', text: 'csv' },
+            { value: 'Excel', text: 'excel' },
         ];
-
+        indexNames.value = localStorage.getItem('userIndexes').split(",");
         const downloadTemplate = async () => {
             if (!indexName.value) {
                 alert('Please enter an index name.');
                 return;
             }
             isDownloading.value = true;
-            const url = `/auth/admin/manage/searchIndex/upload/${indexName.value}/download-template?type=${selectedType.value}`;
+            const url = apiPrefix + `auth/admin/manage/searchIndex/upload/${indexName.value}/download-template?type=${selectedType.value}`;
 
             try {
                 const response = await fetch(url, {
                     method: 'GET',
-                    headers: { 'Authorization': 'Bearer your-token-here' }, // Add auth token if required
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('userSession')}` }, // Add auth token if required
                 });
                 const blob = await response.blob();
                 const downloadUrl = window.URL.createObjectURL(blob);
@@ -79,17 +100,27 @@ export default {
             }
             isUploading.value = true;
             const formData = new FormData();
-            formData.append('file', file.value);
+            formData.append('file', file.value[0]);
 
             try {
-                const { data } = await useAxios().post(
-                    `/auth/admin/manage/searchIndex/upload/${uploadIndexName.value}/upload`,
-                    formData,
-                    { headers: { 'Content-Type': 'multipart/form-data', 'Authorization': 'Bearer your-token-here' } }
-                );
-                alert(data);
+                const data = await fetch(new Request(
+                    apiPrefix + `auth/admin/manage/searchIndex/upload/${uploadIndexName.value}/upload`,
+                    {
+                        method: "POST",
+                        headers: {
+                            Authorization: `Bearer ${localStorage.getItem('userSession')}`
+                        },
+                        body: formData,
+                    }
+                ));
+                if (data.ok) {
+                    alert('Upload complete');
+                } else {
+                    alert('Upload Failed Index and file not matching');
+                }
             } catch (error) {
                 alert('File upload failed. Please check the file type and try again.');
+                console.error(error);
             } finally {
                 isUploading.value = false;
             }
@@ -105,7 +136,32 @@ export default {
             isUploading,
             downloadTemplate,
             uploadFile,
+            indexNames,
         };
     },
 };
 </script>
+<style lang="css" scoped>
+.form-group {
+    margin-bottom: 1em;
+}
+
+.multi-entry-group {
+    margin-top: 1em;
+    padding: 1em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.multi-entry-item {
+    padding: 1em;
+    border: 1px solid #ddd;
+    margin-bottom: 1em;
+    border-radius: 4px;
+}
+
+.nested-field {
+    padding-left: 1em;
+    margin-bottom: 0.5em;
+}
+</style>

@@ -41,7 +41,6 @@ const selectedIndexError = ref(false);
 const queryTermError = ref(false);
 
 const apiPrefix = process.env.VUE_APP_API_PREFIX;
-const apiKey = 'd4b719f6-02b9-4ae1-bc0a-1b4d83eedba2'; // Replace this with actual retrieval
 
 const emit = defineEmits(['search']);
 
