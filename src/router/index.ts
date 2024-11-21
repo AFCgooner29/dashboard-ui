@@ -1,13 +1,13 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Landing from '../views/website/landingPage/Landing.vue';
-import Website from '@/views/website/Website.vue';
+import Website from '../views/website/Website.vue';
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'website',
-    component: Website,
+    component: ()=> import('../views/website/Website.vue'),
     children:[
-      { path: '', name: 'landing', component: ()=> Landing },
+      { path: '', name: 'landing', component: ()=> import('../views/website/landingPage/Landing.vue') },
       {
         path: 'authPage',
         name: 'authPage',
