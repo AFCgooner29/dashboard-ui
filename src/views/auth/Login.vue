@@ -80,10 +80,12 @@ export default {
           userCredential: encryptedPassword,
         });
 
-        const authResponse = response.data.data;
-        console.log(authResponse);
-        this.$emit('loginSuccess', authResponse);
+          const authResponse = response.data.data;
+          console.log(authResponse);
+          this.$emit('loginSuccess', authResponse);
+
       } catch (error) {
+        alert('Login failed with message : ' + error.response.data.message)
         console.error('Login failed:', error);
       }
     },

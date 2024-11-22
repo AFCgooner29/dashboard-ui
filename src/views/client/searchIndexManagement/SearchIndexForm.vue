@@ -1,6 +1,6 @@
 <template>
     <GenericForm :formStructure="formStructure" :mode="mode" :fetchModelData="fetchModelData"
-        :saveModelData="saveModelData" :updateModelData="updateModelData" :postSubmitRoute="formStructure.postSubmitRoute" />
+        :saveModelData="saveModelData" :updateModelData="updateModelData"/>
 </template>
 
 <script>
@@ -12,7 +12,6 @@ const reverseSelectFields = (data, formStructure, valueToTextMap) => {
     for (const field of formStructure.fields) {
         // Check if the field type is 'select'
         if (field.type === 'select') {
-            console.log(field);
             // Check if the field name exists in data and is in the valueToTextMap
             if (data[field.name] && valueToTextMap[data[field.name]]) {
                 data[field.name] = {
@@ -32,7 +31,6 @@ const reverseSelectFields = (data, formStructure, valueToTextMap) => {
                 // Iterate over each entry in the array of objects for multi-entry fields
                 for (const subField of field.subFields) {
                     if (subField.type === "select" && entry[subField.name]) {
-                        console.log(subField);
                         const value = entry[subField.name];
                         if (valueToTextMap[value]) {
                             entry[subField.name] = {
@@ -74,12 +72,14 @@ export default {
                         'Content-Type': 'application/json',
                     },
                 });
-                
+
                 var jsonData = await response.json();
-                if (!jsonData || !jsonData.ok) {
-                  this.showMessage(responseData.message || 'Failed to fetch customer data', 'error');
-                  console.error('Failed to fetch customer data');
+
+                if (!jsonData || jsonData.statusCode != 200) {
+                    this.showMessage(jsonData.message || 'Failed to fetch customer data', 'error');
+                    console.error('Failed to fetch customer data');
                 }
+                jsonData = jsonData.data;
                 var finalConfiguredFiedls = [];
                 for (let i = 0; i < jsonData.configuredFields.length; i++) {
                     if (!jsonData.configuredFields[i].internal) {

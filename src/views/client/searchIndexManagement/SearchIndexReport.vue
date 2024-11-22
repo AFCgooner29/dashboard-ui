@@ -43,16 +43,16 @@ export default {
                         Authorization: "Bearer " + localStorage.getItem("userSession")
                     },
                 });
-                this.items = response.data;
-                if (response.data) {
+                this.items = response.data.data;
+                if (response.data && response.data.data) {
                     var indexNames = [];
-                    for (const indexMapping of response.data) { // Adjust the iteration based on actual API response structure
+                    for (const indexMapping of response.data.data) { // Adjust the iteration based on actual API response structure
                         if (indexMapping.indexName) {
                             indexNames.push(indexMapping.indexName);
                         }
                     }
                     localStorage.setItem('userIndexes', indexNames.join());
-                    this.processAndStoreSearchableFields(response.data)
+                    this.processAndStoreSearchableFields(response.data.data)
                 } // Adjust based on API response structure
             } catch (error) {
                 console.error('Failed to fetch items:', error);
@@ -68,7 +68,6 @@ export default {
                 const filterableFields = index.configuredFields
                     .filter(field => field.filterable) // Assuming `filterable` is a property
                     .map(field => field.fieldName);
-                console.log(index);
                 return {
                     indexName: index.indexName,
                     searchableFields,
@@ -78,8 +77,6 @@ export default {
 
             // Store the processed data in localStorage
             localStorage.setItem("searchableFieldData", JSON.stringify(indexFieldData));
-
-            console.log("Searchable and filterable field data stored in localStorage:", indexFieldData);
         },
     },
     mounted() {

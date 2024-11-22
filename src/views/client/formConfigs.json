@@ -377,7 +377,6 @@
    },
    "SEARCH_INDEX_FORM": {
       "header": "Add/Search Index",
-      "postSubmitRoute": "searchIndexManagement",
       "lovReverseMap": {
          "AUTO_SUGGEST": "Autosuggest",
          "SEARCH": "Search",
@@ -552,6 +551,7 @@
    "SUBSCRIPTION_TYPE_FORM": {},
    "SYNONYM_FORM": {
       "header": "Synonym Management",
+      "lovReverseMap" : {},
       "fields": [
          {
             "name": "synonymId",

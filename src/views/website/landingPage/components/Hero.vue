@@ -61,13 +61,13 @@ export default {
                 const response = await fetch(apiPrefix + 'auth/api/v1/search', {
                     method: 'POST',
                     headers: {
-                        'API_KEY': 'd4b719f6-02b9-4ae1-bc0a-1b4d83eedba2', // Replace with your actual API key
+                        'API_KEY': 'ap-d44d12ef-43b4-4a5b-b6c8-bf9ff101d43d', // Replace with your actual API key
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        indexName: 'search_products',
+                        indexName: 'products',
                         queryTerm: this.searchQuery,
-                        searchableFields: ['product.name'],
+                        searchableFields: ['productName'],
                         size: 5,
                         filters: []
                     })

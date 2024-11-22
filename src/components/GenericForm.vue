@@ -10,21 +10,12 @@
         <form v-if="!loading" @submit.prevent="handleSubmit">
             <div v-for="field in formStructure.fields" :key="field.name" class="form-group">
                 <!-- Standard Fields -->
-                <component 
-                    v-if="field.type !== 'multi-entry' && field.type !== 'group'"
-                    :is="getComponentType(field)"
-                    v-model="formData[field.name]"
-                    :label="field.label"
-                    :type="field.inputType || 'text'"
-                    :options="field.options || []"
-                    :readonly="!isFormEditable(mode) || field.disabled"
-                    :placeholder="field.placeholder || ''"
-                    :required="field.required || false"
-                    :disabled="field.disabled || !isFormEditable(mode)"
-                    :hidden="field.hidden"
-                    :error="!!errors[field.name]"
-                    :error-messages="errors[field.name]"
-                />
+                <component v-if="field.type !== 'multi-entry' && field.type !== 'group'" :is="getComponentType(field)"
+                    v-model="formData[field.name]" :label="field.label" :type="field.inputType || 'text'"
+                    :options="field.options || []" :readonly="!isFormEditable(mode) || field.disabled"
+                    :placeholder="field.placeholder || ''" :required="field.required || false"
+                    :disabled="field.disabled || !isFormEditable(mode)" :hidden="field.hidden"
+                    :error="!!errors[field.name]" :error-messages="errors[field.name]" />
 
                 <!-- Multi-entry Composite Fields -->
                 <div v-if="field.type === 'multi-entry'" class="multi-entry-group">
@@ -32,31 +23,19 @@
                     <div v-for="(entry, entryIndex) in formData[field.name]" :key="entryIndex" class="multi-entry-item">
                         <h5>{{ field.entryLabel || 'Entry' }} {{ entryIndex + 1 }}</h5>
                         <div v-for="subField in field.subFields" :key="subField.name">
-                            <component 
-                                :is="getComponentType(subField)"
-                                v-model="formData[field.name][entryIndex][subField.name]"
-                                :label="subField.label"
-                                :type="subField.inputType || 'text'"
-                                :options="subField.options || []"
-                                :readonly="!isFormEditable(mode)"
-                                :required="subField.required || false"
+                            <component :is="getComponentType(subField)"
+                                v-model="formData[field.name][entryIndex][subField.name]" :label="subField.label"
+                                :type="subField.inputType || 'text'" :options="subField.options || []"
+                                :readonly="!isFormEditable(mode)" :required="subField.required || false"
                                 :error="!!errors[`${field.name}.${entryIndex}.${subField.name}`]"
-                                :error-messages="errors[`${field.name}.${entryIndex}.${subField.name}`]"
-                            />
+                                :error-messages="errors[`${field.name}.${entryIndex}.${subField.name}`]" />
                         </div>
-                        <va-button 
-                            v-if="isFormEditable(mode)" 
-                            size="small" color="danger"
-                            @click="removeEntry(field.name, entryIndex)"
-                        >
+                        <va-button v-if="isFormEditable(mode)" size="small" color="danger"
+                            @click="removeEntry(field.name, entryIndex)">
                             Remove Entry
                         </va-button>
                     </div>
-                    <va-button 
-                        v-if="isFormEditable(mode)" 
-                        size="small" color="primary"
-                        @click="addEntry(field.name)"
-                    >
+                    <va-button v-if="isFormEditable(mode)" size="small" color="primary" @click="addEntry(field.name)">
                         Add Entry
                     </va-button>
                 </div>
@@ -102,7 +81,7 @@ export default {
                                 const errorKey = `${field.name}.${entryIndex}.${subField.name}`;
                                 this.errors[errorKey] = `${subField.label || subField.name} is required to be filled`;
                                 isValid = false;
-                                missingRequiredFields += field.label + ":" +subField.label + " #"+ entryIndex +"\n";
+                                missingRequiredFields += field.label + ":" + subField.label + " #" + entryIndex + "\n";
                             }
                         });
                     });
@@ -119,9 +98,7 @@ export default {
             }
 
             this.loading = true;
-
             const transformedData = this.transformSelectFields(this.formData);
-
             if (this.mode === 'EDIT') {
                 this.updateModelData(transformedData);
             } else {
@@ -202,20 +179,43 @@ export default {
 
         const transformSelectFields = (data) => {
             if (Array.isArray(data)) {
-                return data.map((entry) => this.transformSelectFields(entry));
+                // Recursively process each item in the array
+                return data.map((entry) => transformSelectFields(entry));
             } else if (typeof data === 'object' && data !== null) {
                 const transformed = {};
                 for (const key in data) {
-                    if (data[key] && typeof data[key] === 'object' && 'value' in data[key]) {
-                        transformed[key] = data[key].value;
+                    if (data[key] && typeof data[key] === 'object') {
+                        if ('value' in data[key]) {
+                            // If object has a "value" field, use its value
+                            transformed[key] = data[key].value;
+                        } else {
+                            // Otherwise, recursively process the object
+                            transformed[key] = transformSelectFields(data[key]);
+                        }
                     } else {
+                        // Copy primitive fields as-is
                         transformed[key] = data[key];
                     }
                 }
                 return transformed;
             }
-            return data;
+            return data; // Return primitive values as-is
         };
+
+        // Fetch data when mode is EDIT or VIEW
+        if (props.mode === 'EDIT' || props.mode === 'VIEW') {
+            loading.value = true;
+            props.fetchModelData()
+                .then((data) => {
+                    formData.value = data;
+                })
+                .catch((error) => {
+                    console.error('Error fetching rule data:', error);
+                })
+                .finally(() => {
+                    loading.value = false;
+                });
+        }
 
         return {
             formData,
