@@ -7,14 +7,10 @@
             <VaList>
                 <VaListItem v-for="(feature, index) in features" :key="index" class="list__item">
                     <VaListItemSection avatar>
-                        <VaIcon class="material-icons">
-                            check
-                        </VaIcon>
+                        <VaIcon class="material-icons">check</VaIcon>
                     </VaListItemSection>
                     <VaListItemSection>
-                        <VaListItemLabel>
-                            <b>{{ feature.name }}</b>
-                        </VaListItemLabel>
+                        <VaListItemLabel><b>{{ feature.name }}</b></VaListItemLabel>
                     </VaListItemSection>
                 </VaListItem>
             </VaList>
@@ -23,20 +19,25 @@
         <!-- Right Column: Auto-Suggest Search -->
         <div class="column search-container">
             <h3>Try it out</h3>
-            <input type="text" v-model="searchQuery" placeholder="Search..." @input="handleSearch" class="search-box" />
-            <ul class="suggestions-list">
-                <li v-for="i in 5" :key="i" ref="suggestionItems">{{ suggestions[i - 1] || '' }}</li>
-            </ul>
+            <SuggestionsList :options="suggestions" placeholder="Start typing..." @input="handleSearch"
+                />
+
         </div>
     </div>
 </template>
 
 <script>
+import SuggestionsList from '../../../../components/SuggestionsList.vue';
+
+
+const demoApiKey = process.env.VUE_APP_DEMO_API_KEY;
+
 export default {
+    components: { SuggestionsList },
     data() {
         return {
-            searchQuery: '',
-            suggestions: [],
+            searchQuery: '', // Binds to the VaSelect input value
+            suggestions: [], // Array to store autocomplete options
             features: [
                 { name: "Search-as-you-type" },
                 { name: "Autocomplete" },
@@ -46,27 +47,25 @@ export default {
         };
     },
     methods: {
-        async handleSearch() {
-            const apiPrefix = process.env.VUE_APP_API_PREFIX;
-
-            // Clear previous suggestions from DOM
-            this.clearSuggestions();
-
-            if (this.searchQuery.trim() === '') {
-                this.clearSuggestions();
+        async handleSearch(event) {
+            const query = typeof event === 'string' ? event : event?.target?.value || '';
+            if (!query) {
+                this.suggestions = [];
                 return;
             }
+
+            const apiPrefix = process.env.VUE_APP_API_PREFIX;
 
             try {
                 const response = await fetch(apiPrefix + 'auth/api/v1/search', {
                     method: 'POST',
                     headers: {
-                        'API_KEY': 'ap-d44d12ef-43b4-4a5b-b6c8-bf9ff101d43d', // Replace with your actual API key
+                        'API_KEY': demoApiKey, // Replace with your actual API key
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
                         indexName: 'products',
-                        queryTerm: this.searchQuery,
+                        queryTerm: query,
                         searchableFields: ['productName'],
                         size: 5,
                         filters: []
@@ -74,18 +73,13 @@ export default {
                 });
 
                 const data = await response.json();
-                // Assuming the API returns results in data.hits
-                this.suggestions = data.data.hits.map(hit => hit.product.name).slice(0, 5);
-
+                this.suggestions = data.data.hits.map(hit => (hit.productName));
             } catch (error) {
                 console.error('Error fetching suggestions:', error);
-                this.clearSuggestions();
+                this.suggestions = [];
             }
         },
-        clearSuggestions() {
-            this.suggestions = [];
-        }
-    }
+    },
 };
 </script>
 
@@ -119,33 +113,7 @@ export default {
     width: 100%;
 }
 
-.search-box {
-    padding: 10px;
-    font-size: 1.2em;
-    width: 100%;
+.va-select {
     max-width: 400px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.suggestions-list {
-    margin-top: 10px;
-    list-style: none;
-    padding: 0;
-}
-
-.suggestions-list li {
-    padding: 5px;
-    background: transparent;
-    margin-bottom: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    border: 1px solid transparent;
-    /* Placeholder for alignment */
-    height: 30px
-}
-
-.suggestions-list li:hover {
-    background-color: rgba(0, 0, 0, 0.05);
 }
 </style>
