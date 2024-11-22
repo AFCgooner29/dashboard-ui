@@ -52,8 +52,8 @@ async function fetchIndexes() {
       },
     });
 
-    indexes.value = response.data.map(index => index.indexName);
-    processAndStoreSearchableFields(response.data);
+    indexes.value = response.data.data.map(index => index.indexName);
+    processAndStoreSearchableFields(response.data.data);
   } catch (error) {
     console.error('Failed to fetch indexes:', error);
   }
