@@ -10,57 +10,55 @@
         <form v-if="!loading" @submit.prevent="handleSubmit">
             <div v-for="field in formStructure.fields" :key="field.name" class="form-group">
                 <!-- Standard Fields -->
-                <component v-if="field.type !== 'multi-entry' && field.type !== 'group'" :is="getComponentType(field)"
-                    v-model="formData[field.name]" :label="field.label" :type="field.inputType || 'text'"
-                    :options="field.options || []" :readonly="!isFormEditable(mode) || field.disabled"
-                    :placeholder="field.placeholder || ''" :required="field.required || false"
+                <component 
+                    v-if="field.type !== 'multi-entry' && field.type !== 'group'"
+                    :is="getComponentType(field)"
+                    v-model="formData[field.name]"
+                    :label="field.label"
+                    :type="field.inputType || 'text'"
+                    :options="field.options || []"
+                    :readonly="!isFormEditable(mode) || field.disabled"
+                    :placeholder="field.placeholder || ''"
+                    :required="field.required || false"
                     :disabled="field.disabled || !isFormEditable(mode)"
-                    :hidden="field.hidden" />
+                    :hidden="field.hidden"
+                    :error="!!errors[field.name]"
+                    :error-messages="errors[field.name]"
+                />
 
                 <!-- Multi-entry Composite Fields -->
                 <div v-if="field.type === 'multi-entry'" class="multi-entry-group">
                     <h4>{{ field.label }}</h4>
                     <div v-for="(entry, entryIndex) in formData[field.name]" :key="entryIndex" class="multi-entry-item">
                         <h5>{{ field.entryLabel || 'Entry' }} {{ entryIndex + 1 }}</h5>
-                        <!-- Render each subfield within the multi-entry field -->
                         <div v-for="subField in field.subFields" :key="subField.name">
-                            <component :is="getComponentType(subField)"
-                                v-model="formData[field.name][entryIndex][subField.name]" :label="subField.label"
-                                :type="subField.inputType || 'text'" :options="subField.options || []"
-                                :readonly="!isFormEditable(mode)" :required="subField.required || false" />
+                            <component 
+                                :is="getComponentType(subField)"
+                                v-model="formData[field.name][entryIndex][subField.name]"
+                                :label="subField.label"
+                                :type="subField.inputType || 'text'"
+                                :options="subField.options || []"
+                                :readonly="!isFormEditable(mode)"
+                                :required="subField.required || false"
+                                :error="!!errors[`${field.name}.${entryIndex}.${subField.name}`]"
+                                :error-messages="errors[`${field.name}.${entryIndex}.${subField.name}`]"
+                            />
                         </div>
-                        <!-- Nested Fields within each multi-entry item -->
-                        <div v-if="entry.nestedEnabled" v-for="(nestedField, nestedIndex) in entry.nestedFields"
-                            :key="nestedIndex" class="nested-field">
-                            <va-input v-model="formData[field.name][entryIndex].nestedFields[nestedIndex].fieldName"
-                                label="Nested Field Name" />
-                            <va-select v-model="formData[field.name][entryIndex].nestedFields[nestedIndex].fieldType"
-                                :options="fieldTypes" label="Nested Field Type" />
-                        </div>
-                        <va-button v-if="entry.nestedEnabled && isFormEditable(mode)" size="small" color="secondary"
-                            @click="addNestedField(entryIndex, field.name)">Add Nested Field</va-button>
-                        <va-button v-if="isFormEditable(mode) && multiEntryActionPossible(field.removeAvailableModes)" size="small" color="danger" @click="removeEntry(field.name, entryIndex)">Remove
-                            Entry</va-button>
+                        <va-button 
+                            v-if="isFormEditable(mode)" 
+                            size="small" color="danger"
+                            @click="removeEntry(field.name, entryIndex)"
+                        >
+                            Remove Entry
+                        </va-button>
                     </div>
-                    <va-button v-if="isFormEditable(mode) && multiEntryActionPossible(field.addAvailableModes)" size="small" color="primary"
-                        @click="addEntry(field.name)">Add {{
-                            field.entryLabel || 'Entry' }}</va-button>
-                </div>
-                <div v-if="field.type === 'group'" class="multi-entry-group">
-                    <h4>{{ field.label }}</h4>
-                    <div v-if="formData[field.name]" :key="formData[field.name] + 'entry'" class="multi-entry-item">
-                        <h5>{{ field.entryLabel || 'Entry' }}</h5>
-                        <!-- Render each subfield within the multi-entry field -->
-                        <div v-for="subField in field.subFields" :key="subField.name">
-                            <component :is="getComponentType(subField)"
-                                v-model="formData[field.name][subField.name]" :label="subField.label"
-                                :type="subField.inputType || 'text'" :options="subField.options || []"
-                                :readonly="!isFormEditable(mode)" :required="subField.required || false" />
-                        </div>
-                    </div>    
-                    <va-button v-if="isFormEditable(mode) && !formData[field.name]" size="small" color="primary"
-                        @click="addGroupEntryEntry(field.name)">Add {{
-                            field.entryLabel || 'Entry' }}</va-button>
+                    <va-button 
+                        v-if="isFormEditable(mode)" 
+                        size="small" color="primary"
+                        @click="addEntry(field.name)"
+                    >
+                        Add Entry
+                    </va-button>
                 </div>
             </div>
 
@@ -70,15 +68,70 @@
     </va-card>
 </template>
 
+
 <script>
 import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
-
 export default {
     methods: {
         isFormEditable(mode) {
-            return mode === "CREATE" || mode === "EDIT"
+            return mode === 'CREATE' || mode === 'EDIT';
+        },
+
+        validateForm() {
+            this.errors = {}; // Clear previous errors
+            let isValid = true;
+            var missingRequiredFields = "";
+
+            // Iterate over all fields in the form structure
+            for (const field of this.formStructure.fields) {
+                if (field.required && !this.formData[field.name]) {
+                    // Generate error message
+                    this.errors[field.name] = `${field.label || field.name} is required to be filled`;
+                    isValid = false;
+                    missingRequiredFields += field.label + "\n";
+                }
+
+                // Handle multi-entry fields
+                if (field.type === 'multi-entry' && Array.isArray(this.formData[field.name])) {
+                    this.formData[field.name].forEach((entry, entryIndex) => {
+                        field.subFields.forEach((subField) => {
+                            const value = entry[subField.name];
+                            if (subField.required && !value) {
+                                const errorKey = `${field.name}.${entryIndex}.${subField.name}`;
+                                this.errors[errorKey] = `${subField.label || subField.name} is required to be filled`;
+                                isValid = false;
+                                missingRequiredFields += field.label + ":" +subField.label + " #"+ entryIndex +"\n";
+                            }
+                        });
+                    });
+                }
+            }
+            return missingRequiredFields;
+        },
+
+        handleSubmit() {
+            var errorMessage = this.validateForm();
+            if (errorMessage !== "") {
+                alert("Please fill required Fields \n" + errorMessage);
+                return; // Stop submission if validation fails
+            }
+
+            this.loading = true;
+
+            const transformedData = this.transformSelectFields(this.formData);
+
+            if (this.mode === 'EDIT') {
+                this.updateModelData(transformedData);
+            } else {
+                this.saveModelData(transformedData);
+            }
+
+            setTimeout(() => {
+                this.loading = false;
+                this.$router.back();
+            }, 3000);
         },
     },
     props: {
@@ -110,6 +163,7 @@ export default {
     },
     setup(props, { emit }) {
         const formData = ref({});
+        const errors = ref({});
         const loading = ref(false);
         const router = useRouter();
 
@@ -139,113 +193,38 @@ export default {
 
         const addEntry = (fieldName) => {
             if (!formData.value[fieldName]) formData.value[fieldName] = [];
-            formData.value[fieldName].push({
-                fieldName: '',
-                fieldType: '',
-                fieldDataType: '',
-                importance: 0,
-                isFuzzySearchEnabled: false,
-                nestedFields: [],
-            });
+            formData.value[fieldName].push({});
         };
-
-        const addGroupEntryEntry = (fieldName) => {
-            if (!formData.value[fieldName]) formData.value[fieldName] = {};
-            console.log("adding group entyr for " +fieldName)
-            props.formStructure.fields.forEach((field) => {
-            if (field.type === 'group' && field.name == fieldName) {
-                formData[field.name] = {}; // Initialize group field
-                field.subFields.forEach((subField) => {
-                    console.log("adding group entyr for " +subField.name)
-                if (!(subField.name in formData[field.name])) {
-                    formData[field.name][subField.name] = ''; // Initialize subfield
-                }
-                });
-                console.log("adding group entyr for " +formData[field.name] != undefined)
-            }
-            });
-        };
-
-        const multiEntryActionPossible = (availableModes) => {
-            if (availableModes) {
-                return availableModes.includes(props.mode)
-            }
-            return true
-        }
 
         const removeEntry = (fieldName, index) => {
             formData.value[fieldName].splice(index, 1);
         };
 
-        const addNestedField = (entryIndex, fieldName) => {
-            formData.value[fieldName][entryIndex].nestedFields.push({
-                fieldName: '',
-                fieldType: '',
-            });
-        };
-
         const transformSelectFields = (data) => {
-        if (Array.isArray(data)) {
-            return data.map((entry) => transformSelectFields(entry));
-        } else if (typeof data === "object" && data !== null) {
-            const transformed = {};
-            for (const key in data) {
-                if (data[key] && typeof data[key] === "object" && 'text' in data[key] && 'value' in data[key]) {
-                    // Replace { text, value } with value
-                    transformed[key] = data[key].value;
-                } else if (Array.isArray(data[key]) || typeof data[key] === "object") {
-                    // Recursively process nested fields or arrays
-                    transformed[key] = transformSelectFields(data[key]);
-                } else {
-                    // Keep other fields as is
-                    transformed[key] = data[key];
+            if (Array.isArray(data)) {
+                return data.map((entry) => this.transformSelectFields(entry));
+            } else if (typeof data === 'object' && data !== null) {
+                const transformed = {};
+                for (const key in data) {
+                    if (data[key] && typeof data[key] === 'object' && 'value' in data[key]) {
+                        transformed[key] = data[key].value;
+                    } else {
+                        transformed[key] = data[key];
+                    }
                 }
+                return transformed;
             }
-            return transformed;
-        }
-        return data;
-    };
-
-        const handleSubmit = () => {
-            loading.value = true;
-            const transformedData = transformSelectFields(formData.value);
-
-            if (props.mode === 'EDIT') {
-                props.updateModelData(transformedData);
-            } else {
-                props.saveModelData(transformedData)
-            }
-            setTimeout(() => {
-                loading.value = false;
-                router.back(); // Use router instance
-            }, 3000); 
+            return data;
         };
-
-        // Fetch data when mode is EDIT or VIEW
-        if (props.mode === 'EDIT' || props.mode === 'VIEW') {
-            loading.value = true;
-            props.fetchModelData()
-                .then((data) => {
-                    formData.value = data;
-                })
-                .catch((error) => {
-                    console.error('Error fetching rule data:', error);
-                })
-                .finally(() => {
-                    loading.value = false;
-                });
-        }
 
         return {
             formData,
+            errors,
             loading,
             getComponentType,
             addEntry,
             removeEntry,
-            addNestedField,
-            handleSubmit,
-            addGroupEntryEntry,
-            multiEntryActionPossible,
+            transformSelectFields,
         };
     },
 };

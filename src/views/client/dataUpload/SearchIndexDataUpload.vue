@@ -5,12 +5,21 @@
         <!-- Template Download Section -->
         <section>
             <div class="form-group">
-                <va-select v-model="selectedType" :options="fileTypes" label="Select Template Type"
-                    placeholder="Select file type for template" />
+                <va-select 
+                    v-model="selectedType" 
+                    :options="fileTypes" 
+                    label="Select Template Type"
+                    placeholder="Select file type for template" 
+                />
             </div>
             <div class="form-group">
-                <VaSelect v-model="indexName" :options="indexNames" label="Index"
-                    placeholder="Select an option" />
+                <va-select 
+                    v-model="indexName" 
+                    :options="indexNames" 
+                    label="Index"
+                    placeholder="Select an option" 
+                />
+                <p v-if="errors.indexName" class="error-message">{{ errors.indexName }}</p>
             </div>
             <div class="form-group">
                 <va-button @click="downloadTemplate" color="primary" :loading="isDownloading">
@@ -24,13 +33,23 @@
         <!-- File Upload Section -->
         <section>
             <div class="form-group">
-                <va-file-upload v-model="file" label="Select File" accept=".csv, .xlsx"
-                    placeholder="Choose a CSV or Excel file" style="z-index: 0;" />
+                <va-file-upload 
+                    v-model="file" 
+                    label="Select File" 
+                    accept=".csv, .xlsx"
+                    placeholder="Choose a CSV or Excel file" 
+                    style="z-index: 0;" 
+                />
+                <p v-if="errors.file" class="error-message">{{ errors.file }}</p>
             </div>
             <div class="form-group">
-                <VaSelect v-model="uploadIndexName" :options="indexNames" label="Index"
-                    placeholder="Select an option" />
-
+                <va-select 
+                    v-model="uploadIndexName" 
+                    :options="indexNames" 
+                    label="Index"
+                    placeholder="Select an option" 
+                />
+                <p v-if="errors.uploadIndexName" class="error-message">{{ errors.uploadIndexName }}</p>
             </div>
             <div class="form-group">
                 <va-button @click="uploadFile" color="primary" :loading="isUploading">
@@ -43,9 +62,6 @@
 
 <script>
 import { ref } from 'vue';
-import { VaSelect } from 'vuestic-ui/web-components';
-import { useFetch } from "../../../util/useFetch.js";
-
 
 const apiPrefix = process.env.VUE_APP_API_PREFIX;
 
@@ -59,24 +75,40 @@ export default {
         const isDownloading = ref(false);
         const isUploading = ref(false);
         const indexNames = ref([]);
+        const errors = ref({});
 
         const fileTypes = [
             { value: 'CSV', text: 'csv' },
             { value: 'Excel', text: 'excel' },
         ];
-        indexNames.value = localStorage.getItem('userIndexes').split(",");
-        const downloadTemplate = async () => {
-            if (!indexName.value) {
-                alert('Please enter an index name.');
-                return;
+
+        // Load user indexes from local storage
+        indexNames.value = localStorage.getItem('userIndexes')?.split(",") || [];
+
+        const validateFields = (fields) => {
+            errors.value = {};
+            if (fields.includes('indexName') && !indexName.value) {
+                errors.value.indexName = 'Index selection is required for downloading the template.';
             }
+            if (fields.includes('uploadIndexName') && !uploadIndexName.value) {
+                errors.value.uploadIndexName = 'Index selection is required for processing the file.';
+            }
+            if (fields.includes('file') && (!file.value || file.value.length === 0)) {
+                errors.value.file = 'File upload is required before processing.';
+            }
+            return Object.keys(errors.value).length === 0;
+        };
+
+        const downloadTemplate = async () => {
+            if (!validateFields(['indexName'])) return;
+
             isDownloading.value = true;
-            const url = apiPrefix + `auth/admin/manage/searchIndex/upload/${indexName.value}/download-template?type=${selectedType.value}`;
+            const url = `${apiPrefix}auth/admin/manage/searchIndex/upload/${indexName.value}/download-template?type=${selectedType.value}`;
 
             try {
                 const response = await fetch(url, {
                     method: 'GET',
-                    headers: { 'Authorization': `Bearer ${localStorage.getItem('userSession')}` }, // Add auth token if required
+                    headers: { 'Authorization': `Bearer ${localStorage.getItem('userSession')}` },
                 });
                 const blob = await response.blob();
                 const downloadUrl = window.URL.createObjectURL(blob);
@@ -94,32 +126,28 @@ export default {
         };
 
         const uploadFile = async () => {
-            if (!uploadIndexName.value || !file.value) {
-                alert('Please enter an index name and select a file.');
-                return;
-            }
+            if (!validateFields(['uploadIndexName', 'file'])) return;
+
             isUploading.value = true;
             const formData = new FormData();
             formData.append('file', file.value[0]);
 
             try {
-                const data = await fetch(new Request(
-                    apiPrefix + `auth/admin/manage/searchIndex/upload/${uploadIndexName.value}/upload`,
+                const response = await fetch(
+                    `${apiPrefix}auth/admin/manage/searchIndex/upload/${uploadIndexName.value}/upload`,
                     {
-                        method: "POST",
-                        headers: {
-                            Authorization: `Bearer ${localStorage.getItem('userSession')}`
-                        },
+                        method: 'POST',
+                        headers: { 'Authorization': `Bearer ${localStorage.getItem('userSession')}` },
                         body: formData,
                     }
-                ));
-                if (data.ok) {
-                    alert('Upload complete');
+                );
+                if (response.ok) {
+                    alert('File uploaded successfully!');
                 } else {
-                    alert('Upload Failed Index and file not matching');
+                    alert('Upload failed. Please check the index and file compatibility.');
                 }
             } catch (error) {
-                alert('File upload failed. Please check the file type and try again.');
+                alert('File upload failed. Please try again.');
                 console.error(error);
             } finally {
                 isUploading.value = false;
@@ -137,11 +165,19 @@ export default {
             downloadTemplate,
             uploadFile,
             indexNames,
+            errors,
         };
     },
 };
 </script>
-<style lang="css" scoped>
+
+<style scoped>
+.error-message {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 0.5em;
+}
+
 .form-group {
     margin-bottom: 1em;
 }

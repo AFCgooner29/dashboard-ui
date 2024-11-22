@@ -21,7 +21,8 @@
          {
             "name": "indexName",
             "label": "Index Name",
-            "type": "text"
+            "type": "text",
+            "required" : true
          },
          {
             "name": "enabled",
@@ -147,17 +148,20 @@
          {
             "name": "name",
             "label": "Customer Name",
-            "type": "input"
+            "type": "input",
+            "required" : true
          },
          {
             "name": "customerAddress",
             "label": "Customer Address",
-            "type": "textarea"
+            "type": "textarea",
+            "required" : true
          },
          {
             "name": "subscriptionTypeId",
             "label": "Customer Subscription Type",
-            "type": "input"
+            "type": "input",
+            "required" : true
          },
          {
             "name": "enabled",
@@ -207,13 +211,15 @@
                   "name": "templateName",
                   "type": "text",
                   "label": "Template Name",
-                  "placeholder": "Enter the template name"
+                  "placeholder": "Enter the template name",
+                  "required" : true
                },
                {
                   "name": "templateBuilder",
                   "type": "text",
                   "label": "Template Builder",
-                  "placeholder": "Enter the template builder"
+                  "placeholder": "Enter the template builder",
+                  "required" : true
                },
                {
                   "name": "returnFields",

@@ -108,10 +108,11 @@ export default {
                 });
                 var responseData = await response.json();
                 if (!responseData || !response.ok) {
-                    this.showMessage(responseData && responseData.data.message ? responseData.data.message : 'Failed to update customer data', 'error');
-                    console.error(responseData && responseData.data.message ? responseData.data.message : 'Failed to update customer data');
+                    this.showMessage(responseData && responseData.message ? responseData.message : 'Failed to update customer data', 'error');
+                    console.error(responseData && responseData.message ? responseData.message : 'Failed to update customer data');
+                } else {
+                    this.showMessage(responseData && responseData.message ? responseData.message : 'Operation success', 'success');
                 }
-                this.showMessage(responseData && responseData.data.message ? responseData.data.message : 'Operation success', 'success');
                 return responseData;
             } catch (error) {
                 console.error(error);
@@ -131,10 +132,11 @@ export default {
                 });
                 var responseData = await response.json();
                 if (!responseData || !response.ok) {
-                    this.showMessage(responseData && responseData.data.message ? responseData.data.message : 'Failed to update customer data', 'error');
-                    console.error(responseData && responseData.data.message ? responseData.data.message : 'Failed to update customer data');
+                    this.showMessage(responseData && responseData.message ? responseData.message : 'Failed to update customer data', 'error');
+                    console.error(responseData && responseData.message ? responseData.message : 'Failed to update customer data');
+                } else {
+                    this.showMessage(responseData && responseData.message ? responseData.message : 'Operation success', 'success');
                 }
-                this.showMessage(responseData && responseData.data.message ? responseData.data.message : 'Operation success', 'success');
                 return responseData;
             } catch (error) {
                 console.error(error);
