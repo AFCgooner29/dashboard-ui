@@ -1,7 +1,7 @@
 <template>
     <div class="hero">
         <!-- Left Column: Text Section -->
-        <div class="column">
+        <div class="column col-6 col-sm-12">
             <div class="va-h1">Lightning-fast Search</div>
             <div class="va-h6">No PhD required.</div>
             <VaList>
@@ -17,18 +17,22 @@
         </div>
 
         <!-- Right Column: Auto-Suggest Search -->
-        <div class="column search-container">
+        <div class="column search-container col-6 col-sm-12">
             <h3>Try it out</h3>
-            <SuggestionsList :options="suggestions" placeholder="Start typing..." @input="handleSearch"
-                />
-
+            <p v-if="!responseTime" class="response-time">
+                Results fetched time will be shown here
+            </p>
+            <p v-if="responseTime" class="response-time">
+                Results fetched in {{ responseTime }} ms
+            </p>
+            <SuggestionsList :options="suggestions" placeholder="Start typing..." @input="handleSearch" />
         </div>
     </div>
 </template>
 
+
 <script>
 import SuggestionsList from '../../../../components/SuggestionsList.vue';
-
 
 const demoApiKey = process.env.VUE_APP_DEMO_API_KEY;
 
@@ -38,6 +42,8 @@ export default {
         return {
             searchQuery: '', // Binds to the VaSelect input value
             suggestions: [], // Array to store autocomplete options
+            responseTime: null, // To store the query time from the API
+            debounceTimeout: null, // Timeout ID for debouncing
             features: [
                 { name: "Search-as-you-type" },
                 { name: "Autocomplete" },
@@ -47,43 +53,63 @@ export default {
         };
     },
     methods: {
-        async handleSearch(event) {
+        handleSearch(event) {
             const query = typeof event === 'string' ? event : event?.target?.value || '';
-            if (!query) {
-                this.suggestions = [];
-                return;
+            
+            // Clear previous timeout if exists
+            if (this.debounceTimeout) {
+                clearTimeout(this.debounceTimeout);
             }
 
-            const apiPrefix = process.env.VUE_APP_API_PREFIX;
+            // Set a new timeout
+            this.debounceTimeout = setTimeout(async () => {
+                // Ensure query is still valid after debounce
+                if (!query) {
+                    this.suggestions = [];
+                    this.responseTime = null;
+                    return;
+                }
 
-            try {
-                const response = await fetch(apiPrefix + 'auth/api/v1/search', {
-                    method: 'POST',
-                    headers: {
-                        'API_KEY': demoApiKey, // Replace with your actual API key
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        indexName: 'products',
-                        queryTerm: query,
-                        searchableFields: ['productName'],
-                        size: 5,
-                        filters: []
-                    })
-                });
+                const apiPrefix = process.env.VUE_APP_API_PREFIX;
 
-                const data = await response.json();
-                this.suggestions = data.data.hits.map(hit => (hit.productName));
-            } catch (error) {
-                console.error('Error fetching suggestions:', error);
-                this.suggestions = [];
-            }
+                try {
+                    const response = await fetch(apiPrefix + 'auth/api/v1/search', {
+                        method: 'POST',
+                        headers: {
+                            'API_KEY': demoApiKey, // Replace with your actual API key
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            indexName: 'products',
+                            queryTerm: query,
+                            searchableFields: ['productName'],
+                            size: 5,
+                            filters: []
+                        })
+                    });
+
+                    const data = await response.json();
+                    this.suggestions = data.data.hits.map(hit => hit.productName);
+                    this.responseTime = data.data.queryTime; // Extract queryTime from API response
+                } catch (error) {
+                    console.error('Error fetching suggestions:', error);
+                    this.suggestions = [];
+                    this.responseTime = null;
+                }
+            }, 400); // Set debounce duration (e.g., 300ms)
         },
     },
 };
 </script>
 
+
 <style scoped>
+.response-time {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 10px;
+}
+
 .list__item+.list__item {
     margin-top: 20px;
 }
@@ -115,5 +141,45 @@ export default {
 
 .va-select {
     max-width: 400px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .hero {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding-left: 5%;
+        padding-right: 5%;
+        gap: 30px;
+    }
+
+    .column {
+        padding: 0;
+        width: 100%;
+    }
+
+    .text-column {
+        align-items: center;
+    }
+
+    .va-h1,
+    .va-h6 {
+        text-align: center;
+    }
+
+    .search-container {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .va-h1 {
+        font-size: 1.5rem;
+    }
+
+    .va-h6 {
+        font-size: 1rem;
+    }
 }
 </style>
