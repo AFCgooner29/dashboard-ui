@@ -8,12 +8,12 @@
                 </va-list-item>
             </va-list>
         </div>
-        <div class="documentation-page__content">
+        <div v-if="selectedComponentIndex >= 0" class="documentation-page__content">
             <h1>{{ currentComponent.name }}</h1>
             <div v-html="currentComponent.description"></div>
             <section>
                 <h2>API Details</h2>
-                <va-table :items="currentComponent.apiDetails" />
+                <VaDataTable :items="currentComponent.apiDetails" />
             </section>
             <section>
                 <h2>Example CURL</h2>
@@ -21,11 +21,11 @@
             </section>
             <section>
                 <h2>Request Body</h2>
-                <va-table :items="currentComponent.requestBodyDetails" />
+                <VaDataTable :items="currentComponent.requestBodyDetails" />
             </section>
             <section>
                 <h2>Response Details</h2>
-                <va-table :items="currentComponent.responseDetails" />
+                <VaDataTable :items="currentComponent.responseDetails" />
             </section>
             <section>
                 <h2>Possible Response Codes</h2>
@@ -38,15 +38,14 @@
         </div>
     </div>
 </template>
-<script>
-import { VaList, VaListItem, VaTable } from 'vuestic-ui';
 
+<script>
 export default {
-    components: { VaList, VaListItem, VaTable },
     data() {
         return {
             selectedComponentIndex: 0,
-            components: [
+            components: [],
+            hardcodedComponents: [
                 {
                     name: 'Search API',
                     description: '<p>The Search API provides functionalities to execute search queries.</p>',
@@ -94,23 +93,38 @@ export default {
     },
     computed: {
         currentComponent() {
-            return this.components[this.selectedComponentIndex];
+            return this.components[this.selectedComponentIndex] || {};
         },
     },
     methods: {
+        async fetchComponents() {
+            try {
+                const response = await fetch('/api/documentation/components');
+                if (!response.ok) throw new Error('Failed to fetch components');
+                this.components = await response.json();
+            } catch (error) {
+                console.error('Error fetching components:', error);
+                this.components = this.hardcodedComponents; // Use fallback data
+            }
+        },
         selectComponent(index) {
             this.selectedComponentIndex = index;
         },
     },
+    created() {
+        this.fetchComponents();
+    },
 };
 </script>
+
 <style scoped>
 .documentation-page {
     display: flex;
+    width: 100%;
 }
 
 .documentation-page__sidebar {
-    width: 250px;
+    width: 20%;
     background: #f7f8fc;
     border-right: 1px solid #eaecef;
     padding: 1rem;
