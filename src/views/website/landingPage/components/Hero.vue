@@ -1,7 +1,7 @@
 <template>
     <div class="hero">
         <!-- Left Column: Text Section -->
-        <div class="column col-6 col-sm-12">
+        <div class="column col-6 col-sm-12 white-text">
             <div class="va-h1">Lightning-fast Search</div>
             <div class="va-h6">No PhD required.</div>
             <VaList>
@@ -10,36 +10,43 @@
                         <VaIcon class="material-icons">check</VaIcon>
                     </VaListItemSection>
                     <VaListItemSection>
-                        <VaListItemLabel><b>{{ feature.name }}</b></VaListItemLabel>
+                        <VaListItemLabel><b class="white-text">{{ feature.name }}</b></VaListItemLabel>
                     </VaListItemSection>
                 </VaListItem>
             </VaList>
+            <VaButton class="contact-btn" @click="showContactModal = !showContactModal">Connect with Us</VaButton>
         </div>
 
         <!-- Right Column: Auto-Suggest Search -->
         <div class="column search-container col-6 col-sm-12">
-            <h3>Try it out</h3>
-            <p v-if="!responseTime" class="response-time">
-                Results fetched time will be shown here
+            <!-- <h3 class="white-text">Try it out</h3> -->
+            <img src="../../../../assets/try_it_out.svg">
+            <p v-if="!responseTime" class="response-time white-text">
+                Results fetched duration
             </p>
-            <p v-if="responseTime" class="response-time">
+            <p v-if="responseTime" class="response-time white-text">
                 Results fetched in {{ responseTime }} ms
             </p>
             <SuggestionsList :options="suggestions" placeholder="Start typing..." @input="handleSearch" />
         </div>
     </div>
+    <!-- Contact Modal -->
+    <ContactModal v-model="showContactModal"/>
 </template>
 
 
 <script>
+import { VaButton } from 'vuestic-ui/web-components';
 import SuggestionsList from '../../../../components/SuggestionsList.vue';
+import ContactModal from '../components/ContactModal.vue';
 
 const demoApiKey = process.env.VUE_APP_DEMO_API_KEY;
 
 export default {
-    components: { SuggestionsList },
+    components: { SuggestionsList, ContactModal },
     data() {
         return {
+            showContactModal: false,
             searchQuery: '', // Binds to the VaSelect input value
             suggestions: [], // Array to store autocomplete options
             responseTime: null, // To store the query time from the API
@@ -47,7 +54,7 @@ export default {
             features: [
                 { name: "Search-as-you-type" },
                 { name: "Autocomplete" },
-                { name: "Fuzzy Search" },
+                { name: "Typo Tolerance" },
                 { name: "Recommendations" },
             ],
         };
@@ -55,7 +62,7 @@ export default {
     methods: {
         handleSearch(event) {
             const query = typeof event === 'string' ? event : event?.target?.value || '';
-            
+
             // Clear previous timeout if exists
             if (this.debounceTimeout) {
                 clearTimeout(this.debounceTimeout);
@@ -76,7 +83,7 @@ export default {
                     const response = await fetch(apiPrefix + 'auth/api/v1/search', {
                         method: 'POST',
                         headers: {
-                            'API_KEY': demoApiKey, // Replace with your actual API key
+                            'API-KEY': demoApiKey, // Replace with your actual API key
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
@@ -93,7 +100,7 @@ export default {
                     this.responseTime = data.data.queryTime; // Extract queryTime from API response
                 } catch (error) {
                     console.error('Error fetching suggestions:', error);
-                    this.suggestions = [];
+                    this.suggestions = ["milk", "mug", "chocolate"];
                     this.responseTime = null;
                 }
             }, 400); // Set debounce duration (e.g., 300ms)
@@ -105,7 +112,7 @@ export default {
 
 <style scoped>
 .response-time {
-    font-size: 0.9rem;
+    font-size: 0.7rem;
     color: #555;
     margin-bottom: 10px;
 }
@@ -123,7 +130,7 @@ export default {
     padding-top: 5%;
     padding-bottom: 10%;
     box-sizing: border-box;
-    background: #dcd1e5;
+    background: linear-gradient(173deg, #350019, #350019 28%, #350019 43%, #17080f 56%, #000 78%, #fff calc(78% + 4px));
 }
 
 .column {
@@ -139,8 +146,20 @@ export default {
     width: 100%;
 }
 
+.white-text {
+    color: #ffffff;
+}
+
 .va-select {
     max-width: 400px;
+}
+
+.black-text {
+    color: black;
+}
+
+.contact-btn {
+    margin-top: 10%;
 }
 
 /* Responsive Styles */

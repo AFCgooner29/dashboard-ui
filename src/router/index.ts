@@ -5,12 +5,17 @@ const routes: Array<RouteRecordRaw> = [
     name: 'website',
     component: ()=> import('../views/website/Website.vue'),
     children:[
-      { path: '', name: 'landing', component: ()=> import('../views/website/landingPage/Landing.vue') },
+      { path: '', name: 'landing', component: ()=> import('../views/website/landingPage/LandingV2.vue') },
       {
         path: 'authPage',
         name: 'authPage',
         component: ()=> import('../views/auth/AuthPage.vue'),
       },
+      {
+        path: 'documentation',
+        name: 'documentation',
+        component: ()=> import('../views/website/landingPage/components/Documentation.vue'),
+      }
     ]
   },
   

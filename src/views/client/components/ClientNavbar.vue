@@ -3,7 +3,7 @@
     <template #left>
       <VaButton class="mr-6 mb-2">
         <RouterLink :to="{ name: 'landing' }" style="color:white; text-decoration:none;">
-          Liberta Tech
+          Liberta
         </RouterLink>
       </VaButton>
     </template>

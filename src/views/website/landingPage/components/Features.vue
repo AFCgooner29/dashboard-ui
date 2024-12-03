@@ -38,8 +38,8 @@ export default {
           icon: 'Rank',
         },
         {
-          title: 'Merchandising',
-          description: 'Pin specific records to feature or merchandize them.',
+          title: 'Context based Rules',
+          description: 'Boost/Hide/Bury/Filter/Pin products based on queries and user context.',
           icon: 'Merchandise',
         },
         {
@@ -49,7 +49,7 @@ export default {
         },
         {
           title: 'Multi-tenant API Keys',
-          description: 'Create API keys for each user restricting access to their data.',
+          description: 'API keys for each customer restricting access to their data.',
           icon: 'API',
         },
         {
@@ -77,6 +77,11 @@ export default {
         //   description: 'Search one or more collections in a single query.',
         //   icon: '/path/to/federated_search_icon.svg',
         // },
+        {
+          title: 'Browse API',
+          description: 'Build engaging and Immersive browse experience in your Application',//, aggregate field values, and get counts.',
+          icon: 'Filter', 
+        },
         {
           title: 'Vector & Semantic Search',
           description: 'Automatically generate embeddings and do semantic search.',
@@ -110,7 +115,7 @@ export default {
 }
 
 .text-gradient-2 {
-  background: linear-gradient(90deg, #ae90c7, #7412c4);
+  background: linear-gradient(90deg, #d90368 40%, #420120);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

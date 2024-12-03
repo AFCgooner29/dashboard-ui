@@ -72,8 +72,8 @@ export default {
   top: 100%;
   left: 0;
   right: 0;
-  background: white;
-  border: 1px solid #ccc;
+  background: transparent; /* Make background transparent */
+  border: transparent; /* Adjust border to match transparency */
   border-radius: 4px;
   max-height: 200px;
   overflow-y: auto;
@@ -81,14 +81,21 @@ export default {
   margin: 0;
   padding: 0;
   list-style: none;
+  backdrop-filter: blur(8px); /* Optional: Add blur effect for better readability */
+  color: #9f9f9f;
 }
 
 .select-autocomplete__option {
-  padding: 10px;
+  padding-right: 2px;
+  padding-left: 2px;
+  padding-top: ;
   cursor: pointer;
+  background: transparent; /* Make background transparent */
+  border-bottom: transparent; /* Optional: Add separator lines */
 }
 
 .select-autocomplete__option:hover {
-  background-color: #f0f0f0;
+  color: white /* Adjust hover effect for transparency */
 }
+
 </style>

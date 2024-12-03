@@ -1,11 +1,16 @@
 <template>
-  <VaNavbar color="#36054a">
+  <VaNavbar color="primary">
     <template #left>
       <VaNavbarBrand>
-        <RouterLink to="/" class="navbar-brand">Liberta Tech</RouterLink>
+        <RouterLink to="/" class="navbar-brand">Liberta</RouterLink>
       </VaNavbarBrand>
     </template>
     <template #right>
+      <VaButton class="ms-3">
+          <RouterLink :to="{ name: 'documentation' }" style="color:white; text-decoration:none;">
+            Documentation
+          </RouterLink>
+        </VaButton>
       <template v-if="!sessionToken">
         <VaButton class="ms-3">
           <RouterLink :to="{ name: 'authPage' }" style="color:white; text-decoration:none;">
@@ -51,6 +56,7 @@ onMounted(() => {
 </script>
 
 <style scoped>
+
 .navbar-brand {
   font-size: large;
   font-weight: 1000;
