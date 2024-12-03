@@ -100,7 +100,7 @@ export default {
                     this.responseTime = data.data.queryTime; // Extract queryTime from API response
                 } catch (error) {
                     console.error('Error fetching suggestions:', error);
-                    this.suggestions = ["milk", "mug", "chocolate"];
+                    this.suggestions = [];
                     this.responseTime = null;
                 }
             }, 400); // Set debounce duration (e.g., 300ms)
