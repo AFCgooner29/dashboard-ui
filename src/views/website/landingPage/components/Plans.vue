@@ -22,11 +22,12 @@
                         <span>{{ feature }}</span>
                     </li>
                 </ul>
-                <va-button color="primary" class="plan-card__button" @click="showModal(plan.name)">Choose Plan</va-button>
+                <va-button color="primary" class="plan-card__button" @click="showModal(plan.name)">Choose
+                    Plan</va-button>
             </va-card>
         </div>
     </div>
-    <ContactModal v-model="showContactModal" :message-text="messageText"/>
+    <ContactModal v-model="showContactModal" :message-text="messageText" />
 </template>
 <script>
 import ContactModal from '../components/ContactModal.vue';
@@ -62,7 +63,7 @@ export default {
                     name: "Establish",
                     price: "$999/month",
                     subHeader: "All the Features for your Establishment",
-                    pinnedFeatures: ["Data Upto 100K Documents", "Max 3 Index allowed", "Upto 20 Rules allowed", "Upto 20 Synonyms Allowed"],
+                    pinnedFeatures: ["Data Upto 100K Documents", "Max 3 Indexes allowed", "Upto 20 Rules allowed", "Upto 20 Synonyms Allowed"],
                     features: [
                         "Filtering & Faceting",
                         "Tunable Ranking",
@@ -71,6 +72,9 @@ export default {
                         "Dynamic Sorting",
                         "Typo Tolerance",
                         "Easy High Availability",
+                        "AI Generated Synonyms",
+                        "AI Generated Rules",
+                        "Relevance Pruning",
                     ],
                     isValueForMoney: true,
                 },
@@ -78,7 +82,7 @@ export default {
                     name: "Enterprise",
                     subHeader: "Sophisticated Service for your business",
                     price: "Contact for Pricing",
-                    pinnedFeatures: ["Data Upto 1M Documents", "Max 5 Index allowed", "Upto 100 Rules allowed", "Upto 100 Synonyms Allowed"],
+                    pinnedFeatures: ["Data Upto 1M Documents", "Max 5 Indexes allowed", "Upto 100 Rules allowed", "Upto 100 Synonyms Allowed"],
                     features: [
                         "Filtering & Faceting",
                         "Tunable Ranking",
@@ -87,14 +91,18 @@ export default {
                         "Dynamic Sorting",
                         "Typo Tolerance",
                         "Easy High Availability",
-                        "Browse API"
+                        "Browse API",
+                        "Smart Filters",
+                        "AI Generated Synonyms",
+                        "AI Generated Rules",
+                        "Relevance Pruning",
                     ],
                 },
                 {
                     name: "Professional",
                     subHeader: "All the tools to be global",
                     price: "Contact for Pricing",
-                    pinnedFeatures: ["Data Upto 100M Documents", "Max 20 Index allowed", "Upto 1000 Rules allowed", "Upto 1000 Synonyms Allowed"],
+                    pinnedFeatures: ["Data Upto 100M Documents", "Max 20 Indexes allowed", "Upto 1000 Rules allowed", "Upto 1000 Synonyms Allowed"],
                     features: [
                         "Typo Tolerance",
                         "Tunable Ranking",
@@ -105,7 +113,14 @@ export default {
                         "Filtering & Faceting",
                         "Vector & Semantic Search",
                         "Easy High Availability",
-                        "Browse API"
+                        "AI Generated Synonyms",
+                        "AI Generated Rules",
+                        "Browse API",
+                        "Smart Filters",
+                        "Smart Reranking",
+                        "AI Generated Synonyms",
+                        "AI Generated Rules",
+                        "Relevance Pruning",
                     ],
                 },
             ],
@@ -114,11 +129,16 @@ export default {
                 "Easy High Availability",
                 "Context based Rules",
                 "Synonyms",
+                "Relevance Pruning",
                 "Typo Tolerance",
                 "Dynamic Sorting",
                 "Tunable Ranking",
+                "AI Generated Synonyms",
+                "AI Generated Rules",
+                "Smart Filters",
                 "Browse API",
                 "Vector & Semantic Search",
+                "Smart Reranking",
             ],
             showContactModal: false,
         };

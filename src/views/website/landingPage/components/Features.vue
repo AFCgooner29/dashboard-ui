@@ -29,70 +29,81 @@ export default {
       features: [
         {
           title: 'Typo Tolerance',
-          description: 'Spelling Mistakes? Not a problem. Automatically correct typos.',
+          description: 'Automatically corrects typos to ensure accurate results.',
           icon: 'Keyboard Alt',
         },
         {
           title: 'Tunable Ranking',
-          description: 'Tailor your results via flexible and fast query-time ranking.',
+          description: 'Customize search rankings for precise, query-time control.',
           icon: 'Rank',
         },
         {
-          title: 'Context based Rules',
-          description: 'Boost/Hide/Bury/Filter/Pin products based on queries and user context.',
+          title: 'Context-based Rules',
+          description: 'Boost, hide, filter, or pin products based on user context.',
           icon: 'Merchandise',
         },
         {
           title: 'Synonyms',
-          description: 'Show results for pants when users search for trousers.',
+          description: 'Match user queries with synonymous terms for better results.',
           icon: 'S',
         },
         {
           title: 'Multi-tenant API Keys',
-          description: 'API keys for each customer restricting access to their data.',
+          description: 'Secure access with customer-specific API keys.',
           icon: 'API',
         },
         {
           title: 'Dynamic Sorting',
-          description: 'Sort records on the fly by any fields like price, popularity, etc.',
+          description: 'Instantly sort results by fields like price or popularity.',
           icon: 'Sort',
         },
-        // {
-        //   title: 'Grouping & Distinct',
-        //   description: 'Group results to provide variety, like combining color variations.',
-        //   icon: 'Group',
-        // },
         {
-          title: 'Filtering & Faceting',
-          description: 'Fetch records matching a filter',//, aggregate field values, and get counts.',
+          title: 'Smart Filters',
+          description: 'Empower users to easily refine their searches.',
+          icon: 'Sort',
+        },
+        {
+          title: 'Smart Reranking',
+          description: 'Leverage analytics to prioritize results and boost revenue.',
           icon: 'Filter',
         },
-        // {
-        //   title: 'Geo Search',
-        //   description: 'Search & sort results within a certain distance from a latitude/longitude.',
-        //   icon: 'Location',
-        // },
-        // {
-        //   title: 'Federated Search',
-        //   description: 'Search one or more collections in a single query.',
-        //   icon: '/path/to/federated_search_icon.svg',
-        // },
+        {
+          title: 'Filtering & Faceting',
+          description: 'Fetch and filter records effortlessly for refined results.',
+          icon: 'Filter',
+        },
+        {
+          title: 'Relevance Pruning',
+          description: 'Eliminate low-value results to deliver high-quality matches.',
+          icon: 'Filter',
+        },
+        {
+          title: 'AI-Generated Synonyms',
+          description: 'Enhance relevance with AI-driven synonym suggestions.',
+          icon: 'Filter',
+        },
+        {
+          title: 'AI-Generated Rules',
+          description: 'Boost relevance with smart, AI-generated rules.',
+          icon: 'Filter',
+        },
         {
           title: 'Browse API',
-          description: 'Build engaging and Immersive browse experience in your Application',//, aggregate field values, and get counts.',
-          icon: 'Filter', 
+          description: 'Create immersive and engaging browsing experiences.',
+          icon: 'Filter',
         },
         {
           title: 'Vector & Semantic Search',
-          description: 'Automatically generate embeddings and do semantic search.',
+          description: 'Use embeddings for advanced semantic search capabilities.',
           icon: 'Arrow',
         },
         {
           title: 'Easy High Availability',
-          description: 'Build a resilient production-grade search service.',
+          description: 'Ensure resilience with a production-grade search service.',
           icon: 'Globe',
         },
       ],
+
     };
   },
 };

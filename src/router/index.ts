@@ -31,16 +31,6 @@ const routes: Array<RouteRecordRaw> = [
         component: ()=> import('../views/client/chat/Chat.vue'),
       },
       {
-        path:'document',
-        name:'document',
-        component: ()=> import('../views/client/documents/Documents.vue'),
-      },
-      {
-        path:'form/v1/:id',
-        name:'formV1',
-        component: ()=> import('../views/client/documents/Documents.vue'),
-      },
-      {
         path:'dashboard',
         name:'clientdashboard',
         component: ()=> import('../views/client/dashboard/Dashboard.vue'),
@@ -49,11 +39,6 @@ const routes: Array<RouteRecordRaw> = [
         path:'searchplayground',
         name:'searchPlayground',
         component: ()=> import('../views/client/searchPlayground/Search.vue'),
-      },
-      {
-        path:'settings',
-        name:'clientsettings',
-        component: ()=> import('../views/client/settings/Settings.vue'),
       },
       {
         path:'customer-form/:customerId',

@@ -171,6 +171,8 @@ export default {
         padding-left: 5%;
         padding-right: 5%;
         gap: 30px;
+        margin-bottom: 10%;
+        background: linear-gradient(173deg, #350019, #350019 28%, #350019 43%, #17080f 56%, #000 78%);
     }
 
     .column {
