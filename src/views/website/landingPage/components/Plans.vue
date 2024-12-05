@@ -180,6 +180,7 @@ export default {
     border: 2px solid transparent;
     border-radius: 10px;
     transition: transform 0.3s, border-color 0.3s;
+    width: 18%;
 }
 
 .plan-card--highlight {
