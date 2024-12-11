@@ -62,11 +62,11 @@ export default {
           description: 'Empower users to easily refine their searches.',
           icon: 'Sort',
         },
-        {
-          title: 'Smart Reranking',
-          description: 'Leverage analytics to prioritize results and boost revenue.',
-          icon: 'Filter',
-        },
+        // {
+        //   title: 'Smart Reranking',
+        //   description: 'Leverage analytics to prioritize results and boost revenue.',
+        //   icon: 'Filter',
+        // },
         {
           title: 'Filtering & Faceting',
           description: 'Fetch and filter records effortlessly for refined results.',
@@ -77,16 +77,16 @@ export default {
           description: 'Eliminate low-value results to deliver high-quality matches.',
           icon: 'Filter',
         },
-        {
-          title: 'AI-Generated Synonyms',
-          description: 'Enhance relevance with AI-driven synonym suggestions.',
-          icon: 'Filter',
-        },
-        {
-          title: 'AI-Generated Rules',
-          description: 'Boost relevance with smart, AI-generated rules.',
-          icon: 'Filter',
-        },
+        // {
+        //   title: 'AI-Generated Synonyms',
+        //   description: 'Enhance relevance with AI-driven synonym suggestions.',
+        //   icon: 'Filter',
+        // },
+        // {
+        //   title: 'AI-Generated Rules',
+        //   description: 'Boost relevance with smart, AI-generated rules.',
+        //   icon: 'Filter',
+        // },
         {
           title: 'Browse API',
           description: 'Create immersive and engaging browsing experiences.',

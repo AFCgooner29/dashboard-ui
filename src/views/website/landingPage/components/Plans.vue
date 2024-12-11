@@ -7,6 +7,7 @@
                 <div class="plan-card__header">
                     <span class="plan-card__title">{{ plan.name }}</span>
                     <va-badge v-if="plan.isValueForMoney" color="orange" text="Great Value" />
+                    <va-badge v-if="plan.isGreatStarter" color="orange" text="Good to Start" />
                 </div>
                 <div class="plan-card__header" v-if="plan.subHeader">
                     <span class="plans-section__sub_title">{{ plan.subHeader }}</span>
@@ -42,47 +43,51 @@ export default {
                     name: "Build",
                     price: "Free",
                     subHeader: "Start of something special",
-                    pinnedFeatures: ["Data Upto 100 Documents", "Max 1 Index allowed"],
+                    pinnedFeatures: [
+                        "Index Size Upto 1 GB",
+                        "Max 1 Index allowed",
+                        "No Support Plan included",
+                        "Inactivity Limit 30 Days",
+                        "Limited to 3 Requests Per Second",
+                        "Hosting Locations - APAC South"],
                     features: [
                         "Filtering & Faceting",
                     ],
                 },
                 {
                     name: "Grow",
-                    price: "$199/month",
+                    price: "$699/month (excl Taxes)",
                     subHeader: "Leveling Up the Experience",
-                    pinnedFeatures: ["Data Upto 5000 Documents", "Max 1 Index allowed", "Upto 5 Rules allowed", "Upto 5 Synonyms Allowed"],
+                    pinnedFeatures: [
+                        "Index Size Upto 15 GB",
+                        "Max 1 Index allowed",
+                        "Upto 30 Rules allowed",
+                        "Upto 100 Synonyms Allowed",
+                        "Standard Support Plan included",
+                        "Limited to 10 Requests Per Second",
+                        "Hosting Locations - APAC South"],
                     features: [
                         "Context based Rules",
                         "Synonyms",
                         "Filtering & Faceting",
                         "Easy High Availability",
-                    ],
-                },
-                {
-                    name: "Establish",
-                    price: "$999/month",
-                    subHeader: "All the Features for your Establishment",
-                    pinnedFeatures: ["Data Upto 100K Documents", "Max 3 Indexes allowed", "Upto 20 Rules allowed", "Upto 20 Synonyms Allowed"],
-                    features: [
-                        "Filtering & Faceting",
-                        "Tunable Ranking",
-                        "Context based Rules",
-                        "Synonyms",
-                        "Dynamic Sorting",
-                        "Typo Tolerance",
-                        "Easy High Availability",
-                        "AI Generated Synonyms",
-                        "AI Generated Rules",
                         "Relevance Pruning",
                     ],
-                    isValueForMoney: true,
+                    isGreatStarter: true,
                 },
                 {
                     name: "Enterprise",
                     subHeader: "Sophisticated Service for your business",
                     price: "Contact for Pricing",
-                    pinnedFeatures: ["Data Upto 1M Documents", "Max 5 Indexes allowed", "Upto 100 Rules allowed", "Upto 100 Synonyms Allowed"],
+                    pinnedFeatures: [
+                        "Index Size Upto 60 GB",
+                        "Max 5 Indexes allowed",
+                        "Upto 500 Rules allowed",
+                        "Upto 2000 Synonyms Allowed",
+                        "Record max size 50KB",
+                        "Extended Support Plan included",
+                        "Limited to 300 Requests Per Second",
+                        "Hosting Locations - Global"],
                     features: [
                         "Filtering & Faceting",
                         "Tunable Ranking",
@@ -97,12 +102,21 @@ export default {
                         "AI Generated Rules",
                         "Relevance Pruning",
                     ],
+                    isValueForMoney: true,
                 },
                 {
                     name: "Professional",
                     subHeader: "All the tools to be global",
                     price: "Contact for Pricing",
-                    pinnedFeatures: ["Data Upto 100M Documents", "Max 20 Indexes allowed", "Upto 1000 Rules allowed", "Upto 1000 Synonyms Allowed"],
+                    pinnedFeatures: [
+                        "Index Size Upto 100 GB",
+                        "Max 20 Indexes allowed",
+                        "Upto 3000 Rules allowed",
+                        "Upto 10000 Synonyms Allowed",
+                        "Record max size 50KB",
+                        "Extended Support Plan included",
+                        "Limited to 500 Requests Per Second",
+                        "Hosting Locations - Global"],
                     features: [
                         "Typo Tolerance",
                         "Tunable Ranking",
@@ -133,12 +147,12 @@ export default {
                 "Typo Tolerance",
                 "Dynamic Sorting",
                 "Tunable Ranking",
-                "AI Generated Synonyms",
-                "AI Generated Rules",
+                // "AI Generated Synonyms",
+                // "AI Generated Rules",
                 "Smart Filters",
                 "Browse API",
                 "Vector & Semantic Search",
-                "Smart Reranking",
+                // "Smart Reranking",
             ],
             showContactModal: false,
         };
@@ -181,6 +195,7 @@ export default {
     border-radius: 10px;
     transition: transform 0.3s, border-color 0.3s;
     width: 18%;
+    height: 100%;
 }
 
 .plan-card--highlight {
@@ -230,5 +245,12 @@ export default {
 
 .plan-card__button {
     width: 100%;
+}
+@media (max-width: 768px) {
+
+.plan-card {
+    width: 80%;
+}
+
 }
 </style>
