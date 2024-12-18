@@ -1,3 +1,3 @@
 module.exports = {
-    productionSourceMap: false, // Disable source maps in production
+    productionSourceMap: true, // Disable source maps in production
 };

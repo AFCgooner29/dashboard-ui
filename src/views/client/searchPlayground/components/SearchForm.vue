@@ -113,6 +113,7 @@ const onSubmit = async () => {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('userSession')}`,
             'Content-Type': 'application/json',
+            'X-DEBUG': true,
           },
           body: JSON.stringify({
             indexName: selectedIndex.value,

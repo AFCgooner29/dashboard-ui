@@ -1,5 +1,6 @@
 <template>
   <VaNavbar color="primary" class="mb-0">
+    <!-- Left Section -->
     <template #left>
       <VaButton class="mr-6 mb-2">
         <RouterLink :to="{ name: 'landing' }" style="color:white; text-decoration:none;">
@@ -7,65 +8,82 @@
         </RouterLink>
       </VaButton>
     </template>
+
+    <!-- Right Section (Responsive) -->
     <template #right>
-      <VaNavbarItem v-for="button in filteredButtons" :key="button.label">
-        <VaButton class="mr-6 mb-2">
-          <RouterLink :to="{ name: button.routeName }" style="color:white; text-decoration:none;">
-            {{ button.label }}
-          </RouterLink>
-        </VaButton>
-      </VaNavbarItem>
-      <VaNavbarItem key="logout">
-        <VaButton class="mr-6 mb-2" @click="logout">
-          Log Out
-        </VaButton>
-      </VaNavbarItem>
+      <!-- Desktop Buttons -->
+      <div class="navbar-desktop">
+        <VaNavbarItem v-for="button in filteredButtons" :key="button.label">
+          <VaButton class="mr-6 mb-2">
+            <RouterLink :to="{ name: button.routeName }" style="color:white; text-decoration:none;">
+              {{ button.label }}
+            </RouterLink>
+          </VaButton>
+        </VaNavbarItem>
+        <VaNavbarItem key="logout">
+          <VaButton class="mr-6 mb-2" @click="logout">
+            Log Out
+          </VaButton>
+        </VaNavbarItem>
+      </div>
+
+      <!-- Mobile Dropdown Menu -->
+      <div class="navbar-mobile">
+        <VaDropdown>
+        <template #anchor>
+          <VaIcon name="menu" /> 
+        </template>
+
+        <VaDropdownContent>
+            <VaList>
+              <VaListItem
+                v-for="button in filteredButtons"
+                :key="button.label"
+                @click="$router.push({ name: button.routeName })"
+              >
+                {{ button.label }}
+              </VaListItem>
+              <VaListItem @click="logout">
+                Log Out
+              </VaListItem>
+            </VaList>
+          </VaDropdownContent>
+      </VaDropdown>
+      </div>
     </template>
   </VaNavbar>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import navbarConfig from '../clientNavbarConfigs.json';
+import navbarConfig from "../clientNavbarConfigs.json";
 import { useRouter } from "vue-router";
 
-// Initialize router at the top level of the script setup
 const router = useRouter();
-
-const userRoles = ref<string[]>([]); // Roles from localStorage
-const navbarButtons = ref<any[]>([]); // Buttons from config.json
+const userRoles = ref<string[]>([]);
+const navbarButtons = ref<any[]>([]);
 const filteredButtons = ref<any[]>([]);
 
-// Load roles from localStorage
 const loadUserRoles = () => {
-  const roles = localStorage.getItem("userRoles") || ""; // Example: "admin,user"
-  userRoles.value = roles.split(",").map(role => role.trim());
+  const roles = localStorage.getItem("userRoles") || "";
+  userRoles.value = roles.split(",").map((role) => role.trim());
 };
 
-// Load config.json dynamically
 const loadConfig = async () => {
   navbarButtons.value = navbarConfig.navbarButtons || [];
 };
 
-// Filter buttons based on roles
 const filterButtons = () => {
-  filteredButtons.value = navbarButtons.value.filter(button =>
-    button.roles.some(role => userRoles.value.includes(role))
+  filteredButtons.value = navbarButtons.value.filter((button) =>
+    button.roles.some((role) => userRoles.value.includes(role))
   );
 };
 
-// Logout method
 const logout = () => {
-  // Clear all user-related data from localStorage
-  localStorage.clear()
-  // Optionally clear additional session-related data
-  // localStorage.clear(); // Use if you want to remove all localStorage data
-
-  // Redirect user to the login or landing page
-  router.push({ name: "landing" }); // Replace 'authPage' with the actual login route name
+  localStorage.clear();
+  router.push({ name: "landing" });
 };
 
-// Load and filter buttons on mount
 onMounted(async () => {
   loadUserRoles();
   await loadConfig();
@@ -74,5 +92,23 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-/* Add your styles if necessary */
+/* Show desktop navbar by default */
+.navbar-desktop {
+  display: flex;
+}
+
+/* Hide mobile menu by default */
+.navbar-mobile {
+  display: none;
+}
+
+/* Media query for small screens */
+@media (max-width: 768px) {
+  .navbar-desktop {
+    display: none;
+  }
+  .navbar-mobile {
+    display: flex;
+  }
+}
 </style>

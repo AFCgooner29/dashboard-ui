@@ -23,7 +23,7 @@
       return {
         testimonials: [
           {
-            name: 'John Doe',
+            name: 'Olivier Groud',
             feedback: 'This platform changed the way we work!',
             icon: 'https://via.placeholder.com/50', // Replace with actual icon URLs
             initials: "JD"
@@ -35,7 +35,7 @@
             initials: "JS"
           },
           {
-            name: 'Alice Johnson',
+            name: 'Marcus Rashferd',
             feedback: 'Easy to use and fantastic support!',
             icon: 'https://via.placeholder.com/50', // Replace with actual icon URLs
             initials: "AJ"

@@ -43,7 +43,7 @@ export default {
           icon: 'Merchandise',
         },
         {
-          title: 'Synonyms',
+          title: 'Smart Synonyms',
           description: 'Match user queries with synonymous terms for better results.',
           icon: 'S',
         },
@@ -126,7 +126,7 @@ export default {
 }
 
 .text-gradient-2 {
-  background: linear-gradient(90deg, #d90368 40%, #420120);
+  background: linear-gradient(90deg, #6f95fd 40%, #000e35);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }

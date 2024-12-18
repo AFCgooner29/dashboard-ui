@@ -4,12 +4,14 @@
       "lovReverseMap": {
          "STARTS_WITH": "Starts With",
          "IS": "Is",
+         "CONTAINS_WORD": "Contains Word",
          "BOOST_WITH": "Boost With",
          "BOOST_THEN": "Boost Then",
          "FILTER": "Filter",
          "HIDE": "Hide",
          "BURY_WITH": "Bury With",
-         "BURY_THEN": "Bury Then"
+         "BURY_THEN": "Bury Then",
+         "PIN_THEN": "Pin Then"
       },
       "fields": [
          {
@@ -22,12 +24,13 @@
             "name": "indexName",
             "label": "Index Name",
             "type": "text",
-            "required" : true
+            "required": true
          },
          {
             "name": "enabled",
             "label": "Enabled",
-            "type": "boolean"
+            "type": "boolean",
+            "default" : true
          },
          {
             "name": "context",
@@ -70,6 +73,10 @@
                      {
                         "text": "Is",
                         "value": "IS"
+                     },
+                     {
+                        "text": "Contains Word",
+                        "value": "CONTAINS_WORD"
                      }
                   ]
                },
@@ -78,6 +85,12 @@
                   "label": "Value",
                   "type": "input",
                   "required": true
+               },
+               {
+                  "name": "allowTypos",
+                  "label": "Allow Typos",
+                  "type": "boolean",
+                  "default" : false
                }
             ]
          },
@@ -123,6 +136,10 @@
                      {
                         "text": "Bury Then",
                         "value": "BURY_THEN"
+                     },
+                     {
+                        "text": "Pin Then",
+                        "value": "PIN_THEN"
                      }
                   ]
                },
@@ -149,19 +166,19 @@
             "name": "name",
             "label": "Customer Name",
             "type": "input",
-            "required" : true
+            "required": true
          },
          {
             "name": "customerAddress",
             "label": "Customer Address",
             "type": "textarea",
-            "required" : true
+            "required": true
          },
          {
             "name": "subscriptionTypeId",
             "label": "Customer Subscription Type",
             "type": "input",
-            "required" : true
+            "required": true
          },
          {
             "name": "enabled",
@@ -212,14 +229,14 @@
                   "type": "text",
                   "label": "Template Name",
                   "placeholder": "Enter the template name",
-                  "required" : true
+                  "required": true
                },
                {
                   "name": "templateBuilder",
                   "type": "text",
                   "label": "Template Builder",
                   "placeholder": "Enter the template builder",
-                  "required" : true
+                  "required": true
                },
                {
                   "name": "returnFields",
@@ -378,7 +395,7 @@
    "SEARCH_INDEX_FORM": {
       "header": "Add/Search Index",
       "lovReverseMap": {
-         "AUTO_SUGGEST": "Autosuggest",
+         "AUTOCOMPLETE": "Autocomplete",
          "SEARCH": "Search",
          "SEARCHABLE": "Searchable",
          "FILTERABLE": "Filterable",
@@ -407,20 +424,18 @@
             "required": true
          },
          {
-            "name": "searchIndexType",
-            "label": "Search Index Type",
-            "type": "select",
-            "required": true,
-            "options": [
-               {
-                  "text": "Search",
-                  "value": "SEARCH"
-               },
-               {
-                  "text": "Autosuggest",
-                  "value": "AUTO_SUGGEST"
-               }
-            ]
+            "name": "enabledForSearch",
+            "label": "Enabled For Catalogue Search",
+            "type": "boolean",
+            "default": true,
+            "required": true
+         },
+         {
+            "name": "enabledForAutoComplete",
+            "label": "Enabled For AutoComplete",
+            "type": "boolean",
+            "default": true,
+            "required": true
          },
          {
             "name": "version",
@@ -443,6 +458,7 @@
          {
             "name": "enabled",
             "label": "Enabled",
+            "default": true,
             "type": "boolean"
          },
          {
@@ -537,7 +553,8 @@
                {
                   "name": "importance",
                   "label": "Importance",
-                  "type": "number"
+                  "type": "number",
+                  "default": 0
                },
                {
                   "name": "isFuzzySearchEnabled",
@@ -551,7 +568,7 @@
    "SUBSCRIPTION_TYPE_FORM": {},
    "SYNONYM_FORM": {
       "header": "Synonym Management",
-      "lovReverseMap" : {},
+      "lovReverseMap": {},
       "fields": [
          {
             "name": "synonymId",
@@ -571,7 +588,7 @@
             "name": "enabled",
             "type": "boolean",
             "label": "Enabled",
-            "default": false,
+            "default": true,
             "placeholder": "Toggle to enable or disable this synonym"
          },
          {
@@ -593,7 +610,7 @@
             "type": "text",
             "label": "Replacements (Comma separated)",
             "placeholder": "List of replacement words or phrases",
-            "required" : true
+            "required": true
          }
       ]
    },

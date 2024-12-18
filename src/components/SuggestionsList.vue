@@ -88,8 +88,8 @@ export default {
 .select-autocomplete__option {
   padding-right: 2px;
   padding-left: 2px;
-  padding-top: ;
   cursor: pointer;
+  color: rgb(209, 209, 209);
   background: transparent; /* Make background transparent */
   border-bottom: transparent; /* Optional: Add separator lines */
 }

@@ -11,11 +11,12 @@
             <div v-for="field in formStructure.fields" :key="field.name" class="form-group">
                 <!-- Standard Fields -->
                 <component v-if="field.type !== 'multi-entry' && field.type !== 'group'" :is="getComponentType(field)"
-                    v-model="formData[field.name]" :label="field.label" :type="field.inputType || 'text'"
+                    v-model="formData[field.name]" :label="field.label" :type="field.type || 'text'"
                     :options="field.options || []" :readonly="!isFormEditable(mode) || field.disabled"
                     :placeholder="field.placeholder || ''" :required="field.required || false"
                     :disabled="field.disabled || !isFormEditable(mode)" :hidden="field.hidden"
-                    :error="!!errors[field.name]" :error-messages="errors[field.name]" />
+                    :error="!!errors[field.name]" :error-messages="errors[field.name]"
+                    :multiple="field.multiSelect || false" />
 
                 <!-- Multi-entry Composite Fields -->
                 <div v-if="field.type === 'multi-entry'" class="multi-entry-group">
@@ -25,10 +26,11 @@
                         <div v-for="subField in field.subFields" :key="subField.name">
                             <component :is="getComponentType(subField)"
                                 v-model="formData[field.name][entryIndex][subField.name]" :label="subField.label"
-                                :type="subField.inputType || 'text'" :options="subField.options || []"
+                                :type="subField.type || 'text'" :options="subField.options || []"
                                 :readonly="!isFormEditable(mode)" :required="subField.required || false"
                                 :error="!!errors[`${field.name}.${entryIndex}.${subField.name}`]"
-                                :error-messages="errors[`${field.name}.${entryIndex}.${subField.name}`]" />
+                                :error-messages="errors[`${field.name}.${entryIndex}.${subField.name}`]"
+                                :multiple="subField.multiSelect || false" />
                         </div>
                         <va-button v-if="isFormEditable(mode)" size="small" color="danger"
                             @click="removeEntry(field.name, entryIndex)">
@@ -152,6 +154,29 @@ export default {
             { immediate: true }
         );
 
+        // Initialize formData based on formStructure and mode
+        const initializeFormData = () => {
+            if (props.mode === 'CREATE') {
+                // Use defaults from formStructure for CREATE mode
+                const initializeFields = (fields) => {
+                    const data = {};
+                    fields.forEach((field) => {
+                        if (field.type === 'multi-entry') {
+                            data[field.name] = field.default || []; // Multi-entry defaults to empty array
+                        } else if (field.type === 'group') {
+                            data[field.name] = initializeFields(field.subFields); // Recursively initialize sub-fields
+                        } else {
+                            data[field.name] = field.default || null; // Apply default value or null
+                        }
+                    });
+                    return data;
+                };
+                formData.value = initializeFields(props.formStructure.fields);
+            } else {
+                formData.value = { ...props.model }; // Clone the model for EDIT/VIEW
+            }
+        };
+
         const getComponentType = (field) => {
             switch (field.type) {
                 case 'select':
@@ -201,6 +226,10 @@ export default {
             }
             return data; // Return primitive values as-is
         };
+
+
+        // Call initializeFormData for CREATE or on component mount
+        initializeFormData();
 
         // Fetch data when mode is EDIT or VIEW
         if (props.mode === 'EDIT' || props.mode === 'VIEW') {

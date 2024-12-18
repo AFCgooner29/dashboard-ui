@@ -4,12 +4,14 @@
         "storedToDisplayMapping": {
             "STARTS_WITH": "Starts With",
             "IS": "Is",
+            "CONTAINS_WORD" : "Contains Word",
             "BOOST_WITH": "Boost With",
             "BOOST_THEN": "Boost Then",
             "FILTER": "Filter",
             "HIDE": "Hide",
             "BURY_WITH": "Bury With",
-            "BURY_THEN": "Bury Then"
+            "BURY_THEN": "Bury Then",
+            "PIN_THEN" : "Pin Then"
         },
         "fields": [
             {
@@ -279,7 +281,7 @@
                 "label": "Index Name"
             },
             {
-                "key": "searchIndexType",
+                "key": "searchIndexTypes",
                 "label": "Type"
             },
             {

@@ -1,6 +1,6 @@
 <template>
     <GenericForm :formStructure="formStructure" :mode="mode" :fetchModelData="fetchModelData"
-        :saveModelData="saveModelData" :updateModelData="updateModelData"/>
+        :saveModelData="saveModelData" :updateModelData="updateModelData" />
 </template>
 
 <script>
@@ -8,40 +8,42 @@ import GenericForm from '@/components/GenericForm.vue';
 import formConfigs from '../formConfigs.json'; // Import form configurations
 
 const reverseSelectFields = (data, formStructure, valueToTextMap) => {
-    // Iterate over formStructure.fields correctly
     for (const field of formStructure.fields) {
-        // Check if the field type is 'select'
         if (field.type === 'select') {
-            // Check if the field name exists in data and is in the valueToTextMap
-            if (data[field.name] && valueToTextMap[data[field.name]]) {
-                data[field.name] = {
-                    text: valueToTextMap[data[field.name]],
-                    value: data[field.name]
-                };
-            } else {
-                // If not in map, just keep the value as is
-                data[field.name] = {
-                    text: data[field.name],
-                    value: data[field.name]
-                };
+            // Check if the field is a multi-select
+            if (field.multiSelect && Array.isArray(data[field.name])) {
+                // Map each value to its corresponding { text, value } object
+                data[field.name] = data[field.name].map((value) =>
+                    valueToTextMap[value]
+                        ? { text: valueToTextMap[value], value: value }
+                        : { text: value, value: value }
+                );
+                console.log(data[field.name]);
+            } else if (data[field.name]) {
+                // Handle single-select fields
+                const value = data[field.name];
+                data[field.name] = valueToTextMap[value]
+                    ? { text: valueToTextMap[value], value: value }
+                    : { text: value, value: value };
             }
-        } else if (field.type === "multi-entry" && data[field.name]) {
-            // Handle multi-entry fields (where data[field.name] is an array of objects)
+        } else if (field.type === 'multi-entry' && Array.isArray(data[field.name])) {
+            // Handle multi-entry fields
             for (const entry of data[field.name]) {
-                // Iterate over each entry in the array of objects for multi-entry fields
                 for (const subField of field.subFields) {
-                    if (subField.type === "select" && entry[subField.name]) {
-                        const value = entry[subField.name];
-                        if (valueToTextMap[value]) {
-                            entry[subField.name] = {
-                                text: valueToTextMap[value],
-                                value: value
-                            };
-                        } else {
-                            entry[subField.name] = {
-                                text: value,
-                                value: value
-                            };
+                    if (subField.type === 'select') {
+                        if (subField.multiSelect && Array.isArray(entry[subField.name])) {
+                            // Map each value to its corresponding { text, value } object for multi-select
+                            entry[subField.name] = entry[subField.name].map((value) =>
+                                valueToTextMap[value]
+                                    ? { text: valueToTextMap[value], value: value }
+                                    : { text: value, value: value }
+                            );
+                        } else if (entry[subField.name]) {
+                            // Handle single-select fields in multi-entry
+                            const value = entry[subField.name];
+                            entry[subField.name] = valueToTextMap[value]
+                                ? { text: valueToTextMap[value], value: value }
+                                : { text: value, value: value };
                         }
                     }
                 }
@@ -51,6 +53,7 @@ const reverseSelectFields = (data, formStructure, valueToTextMap) => {
 
     return data;
 };
+
 
 
 export default {
@@ -87,6 +90,14 @@ export default {
                     }
                 }
 
+                for (let i = 0; i < jsonData.searchIndexTypes.length; i++) {
+                    if (jsonData.searchIndexTypes[i] === "SEARCH") {
+                        jsonData.enabledForSearch = true
+                    } else if (jsonData.searchIndexTypes[i] === "AUTOCOMPLETE") {
+                        jsonData.enabledForAutoComplete = true
+                    }
+                }
+
                 jsonData.configuredFields = finalConfiguredFiedls
                 jsonData = reverseSelectFields(jsonData, formConfigs.SEARCH_INDEX_FORM, formConfigs.SEARCH_INDEX_FORM.lovReverseMap);
                 return jsonData
@@ -98,6 +109,17 @@ export default {
         async saveModelData(data) {
             try {
                 const apiPrefix = process.env.VUE_APP_API_PREFIX;
+                let searchIndexTypes = [];
+
+                if (data.enabledForSearch) {
+                    searchIndexTypes.push("SEARCH");
+                }
+
+                if (data.enabledForAutoComplete) {
+                    searchIndexTypes.push("AUTOCOMPLETE");
+                }
+                data.searchIndexTypes = searchIndexTypes;
+
                 const response = await fetch(`${apiPrefix}auth/admin/manage/searchIndex`, {
                     method: 'POST',
                     headers: {
