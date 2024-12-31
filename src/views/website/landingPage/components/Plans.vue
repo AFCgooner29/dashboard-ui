@@ -2,7 +2,7 @@
     <div class="plans-section">
         <h2 class="plans-section__title">Choose Your Plan</h2>
         <div class="plans-cards">
-            <va-card v-for="(plan, index) in plans" :key="index"
+            <va-card v-for="(plan, index) in planData.plans" :key="index"
                 :class="['plan-card', { 'plan-card--highlight': plan.isValueForMoney }]" outlined>
                 <div class="plan-card__header">
                     <span class="plan-card__title">{{ plan.name }}</span>
@@ -18,7 +18,7 @@
                         <va-icon name='star' />
                         <span>{{ feature }}</span>
                     </li>
-                    <li v-for="(feature, idx) in features" :key="idx">
+                    <li v-for="(feature, idx) in planData.features" :key="idx">
                         <va-icon :name="plan.features.includes(feature) ? 'check' : 'close'" />
                         <span>{{ feature }}</span>
                     </li>
@@ -33,12 +33,17 @@
 <script>
 import ContactModal from '../components/ContactModal.vue';
 
+const apiPrefix = process.env.VUE_APP_API_PREFIX;
+
 export default {
     components: { ContactModal },
     data() {
         return {
             messageText: "",
-            plans: [
+            planData: {},
+            showContactModal: false,
+            hardcodedPlanData: {
+                plans: [
                 {
                     name: "Build",
                     price: "Free",
@@ -175,15 +180,29 @@ export default {
                 "AI Generated Rules",
                 "Vector & Semantic Search",
                 // "Smart Reranking",
-            ],
-            showContactModal: false,
+            ]
+            }
+
         };
     },
     methods: {
+        async fetchComponents() {
+            try {
+                const response = await fetch(apiPrefix+'fe/frontend/data?dataKey=PLANS_PAGE');
+                if (!response.ok) throw new Error('Failed to fetch plans');
+                this.planData = await response.json();
+            } catch (error) {
+                console.error('Error fetching features:', error);
+                this.planData = this.hardcodedPlanData; // Use fallback data
+            }
+        },
         showModal(planName) {
             this.messageText = `I want to transform my search experience on my application, and I am interested in ${planName} Plan, Can we schedule a Quick Meeting to discuss it further.`;
             this.showContactModal = true;
         },
+    },
+    created() {
+        this.fetchComponents();
     },
 };
 </script>

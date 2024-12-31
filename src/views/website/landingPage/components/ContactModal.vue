@@ -102,12 +102,12 @@ export default {
 
                 if (response.ok) {
                     alert("Submitted Successfully")
-                    this.resetForm();
-                    this.closeModal();
                 }
             } catch (error) {
                 console.log(error);
             }
+            this.resetForm();
+            this.closeModal();
         },
         closeModal() {
             this.localIsVisible = false;

@@ -23,10 +23,13 @@
 </template>
 
 <script>
+const apiPrefix = process.env.VUE_APP_API_PREFIX;
+
 export default {
-  data() {
-    return {
-      features: [
+    data() {
+        return {
+            features: [],
+            hardcodedfeatures: [
         {
           title: 'Typo Tolerance',
           description: 'Automatically corrects typos to ensure accurate results.',
@@ -104,8 +107,23 @@ export default {
         },
       ],
 
-    };
-  },
+        };
+    },
+    methods: {
+        async fetchComponents() {
+            try {
+                const response = await fetch(apiPrefix+'fe/frontend/data?dataKey=FEATURES_PAGE');
+                if (!response.ok) throw new Error('Failed to fetch features');
+                this.features = await response.json();
+            } catch (error) {
+                console.error('Error fetching features:', error);
+                this.features = this.hardcodedfeatures; // Use fallback data
+            }
+        },
+    },
+    created() {
+        this.fetchComponents();
+    },
 };
 </script>
 

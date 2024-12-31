@@ -40,6 +40,8 @@
 </template>
 
 <script>
+const apiPrefix = process.env.VUE_APP_API_PREFIX;
+
 export default {
     data() {
         return {
@@ -99,7 +101,7 @@ export default {
     methods: {
         async fetchComponents() {
             try {
-                const response = await fetch('/api/documentation/components');
+                const response = await fetch(apiPrefix+'fe/frontend/data?dataKey=DOCUMENTATION_PAGE');
                 if (!response.ok) throw new Error('Failed to fetch components');
                 this.components = await response.json();
             } catch (error) {
