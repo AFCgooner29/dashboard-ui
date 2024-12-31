@@ -21,7 +21,7 @@
       <template v-else>
         <VaButton class="ms-3">
           <RouterLink :to="{ name: 'client' }" style="color:white; text-decoration:none;">
-            Our Products
+            Dashboard
           </RouterLink>
         </VaButton>
         <VaButton class="ms-3" @click="logout">
