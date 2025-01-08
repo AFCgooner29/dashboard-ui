@@ -5,12 +5,12 @@
       <table class="va-table va-table--hoverable">
         <thead>
           <tr>
-            <th v-for="header in headers" :key="header">{{ header }}</th>
+            <th v-for="header in filteredHeaders" :key="header">{{ header }}</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="(result, index) in results" :key="index">
-            <td v-for="header in headers" :key="header">{{ getNestedValue(result, header) }}</td>
+            <td v-for="header in filteredHeaders" :key="header">{{ getNestedValue(result, header) }}</td>
           </tr>
         </tbody>
       </table>
@@ -30,7 +30,9 @@ const props = defineProps({
   },
 });
 
-// Dynamically generate headers based on keys in the results
+const EXCLUDED_KEYS = ["matchedQueries", "score"]; // List of keys to exclude
+
+// Dynamically generate headers based on keys in the results, excluding certain keys
 const headers = computed(() => {
   if (!props.results.length) return [];
   const keys = new Set();
@@ -42,6 +44,9 @@ const headers = computed(() => {
 
   return Array.from(keys);
 });
+
+// Filter headers to exclude specified keys
+const filteredHeaders = computed(() => headers.value.filter((key) => !EXCLUDED_KEYS.includes(key)));
 
 // Helper function to get nested values
 function getNestedValue(obj, path) {

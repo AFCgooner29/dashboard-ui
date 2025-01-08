@@ -15,6 +15,11 @@ const routes: Array<RouteRecordRaw> = [
         path: 'documentation',
         name: 'documentation',
         component: ()=> import('../views/website/landingPage/components/Documentation.vue'),
+      },
+      {
+        path: 'privacy',
+        name: 'privacy',
+        component: ()=> import('../views/website/PrivacyPolicy.vue'),
       }
     ]
   },
