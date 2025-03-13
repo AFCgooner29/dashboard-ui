@@ -7,20 +7,20 @@
     </template>
     <template #right>
       <VaButton class="ms-3">
-          <RouterLink :to="{ name: 'documentation' }" style="color:white; text-decoration:none;">
+          <RouterLink :to="{ name: 'smart-search-documentation' }" style="color:white; text-decoration:none;">
             Documentation
           </RouterLink>
         </VaButton>
       <template v-if="!sessionToken">
         <VaButton class="ms-3">
-          <RouterLink :to="{ name: 'authPage' }" style="color:white; text-decoration:none;">
+          <RouterLink :to="{ name: 'smart-search-authPage' }" style="color:white; text-decoration:none;">
             Log in
           </RouterLink>
         </VaButton>
       </template>
       <template v-else>
         <VaButton class="ms-3">
-          <RouterLink :to="{ name: 'client' }" style="color:white; text-decoration:none;">
+          <RouterLink :to="{ name: 'smart-search-client' }" style="color:white; text-decoration:none;">
             Dashboard
           </RouterLink>
         </VaButton>

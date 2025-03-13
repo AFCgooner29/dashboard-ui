@@ -54,7 +54,7 @@
             "headerActions": {
                 "label": "Add New Rule",
                 "link": {
-                    "name": "rule-form",
+                    "name": "smart-search-client-rule-form",
                     "routeParams": {
                         "ruleId": "CREATE"
                     },
@@ -69,7 +69,7 @@
                     "label": "View",
                     "icon": "visibility",
                     "link": {
-                        "name": "rule-form",
+                        "name": "smart-search-client-rule-form",
                         "routeParams": {
                             "ruleId": "ruleId"
                         },
@@ -83,7 +83,7 @@
                     "label": "Edit",
                     "icon": "edit",
                     "link": {
-                        "name": "rule-form",
+                        "name": "smart-search-client-rule-form",
                         "routeParams": {
                             "ruleId": "ruleId"
                         },
@@ -129,7 +129,7 @@
             "headerActions": {
                 "label": "Onboard New Customer",
                 "link": {
-                    "name": "customer-form",
+                    "name": "smart-search-client-customer-form",
                     "routeParams": {
                         "customerId": "CREATE"
                     },
@@ -144,7 +144,7 @@
                     "label": "View",
                     "icon": "visibility",
                     "link": {
-                        "name": "customer-form",
+                        "name": "smart-search-client-customer-form",
                         "routeParams": {
                             "customerId": "customerId"
                         },
@@ -158,7 +158,7 @@
                     "label": "Edit",
                     "icon": "edit",
                     "link": {
-                        "name": "customer-form",
+                        "name": "smart-search-client-customer-form",
                         "routeParams": {
                             "customerId": "customerId"
                         },
@@ -217,7 +217,7 @@
             "headerActions": {
                 "label": "Create New Search Config",
                 "link": {
-                    "name": "search-config-form",
+                    "name": "smart-search-client-search-config-form",
                     "routeParams": {
                         "id": "CREATE"
                     },
@@ -232,7 +232,7 @@
                     "label": "View",
                     "icon": "visibility",
                     "link": {
-                        "name": "search-config-form",
+                        "name": "smart-search-client-search-config-form",
                         "routeParams": {
                             "id": "id"
                         },
@@ -246,7 +246,7 @@
                     "label": "Edit",
                     "icon": "edit",
                     "link": {
-                        "name": "search-config-form",
+                        "name": "smart-search-client-search-config-form",
                         "routeParams": {
                             "id": "id"
                         },
@@ -309,7 +309,7 @@
             "headerActions": {
                 "label": "Create New Search Index",
                 "link": {
-                    "name": "search-index-form",
+                    "name": "smart-search-client-search-index-form",
                     "routeParams": {
                         "id": "CREATE"
                     },
@@ -324,7 +324,7 @@
                     "label": "View",
                     "icon": "visibility",
                     "link": {
-                        "name": "search-index-form",
+                        "name": "smart-search-client-search-index-form",
                         "routeParams": {
                             "id": "id"
                         },
@@ -338,7 +338,7 @@
                     "label": "Edit",
                     "icon": "edit",
                     "link": {
-                        "name": "search-index-form",
+                        "name": "smart-search-client-search-index-form",
                         "routeParams": {
                             "id": "id"
                         },
@@ -384,7 +384,7 @@
             "headerActions": {
                 "label": "Create New Subscription Type",
                 "link": {
-                    "name": "subscription-type-form",
+                    "name": "smart-search-client-subscription-type-form",
                     "routeParams": {
                         "id": "CREATE"
                     },
@@ -399,7 +399,7 @@
                     "label": "View",
                     "icon": "visibility",
                     "link": {
-                        "name": "subscription-type-form",
+                        "name": "smart-search-client-subscription-type-form",
                         "routeParams": {
                             "id": "subscriptionTypeName"
                         },
@@ -413,7 +413,7 @@
                     "label": "Edit",
                     "icon": "edit",
                     "link": {
-                        "name": "search-index-form",
+                        "name": "smart-search-client-search-index-form",
                         "routeParams": {
                             "id": "subscriptionTypeName"
                         },
@@ -463,7 +463,7 @@
             "headerActions": {
                 "label": "Create New Synonym",
                 "link": {
-                    "name": "synonym-form",
+                    "name": "smart-search-client-synonym-form",
                     "routeParams": {
                         "id": "CREATE"
                     },
@@ -478,7 +478,7 @@
                     "label": "View",
                     "icon": "visibility",
                     "link": {
-                        "name": "synonym-form",
+                        "name": "smart-search-client-synonym-form",
                         "routeParams": {
                             "id": "synonymId"
                         },
@@ -492,7 +492,7 @@
                     "label": "Edit",
                     "icon": "edit",
                     "link": {
-                        "name": "synonym-form",
+                        "name": "smart-search-client-synonym-form",
                         "routeParams": {
                             "id": "synonymId"
                         },

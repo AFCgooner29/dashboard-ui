@@ -2,7 +2,7 @@
   "navbarButtons":[
      {
         "label":"AI Assistant",
-        "routeName":"chat",
+        "routeName":"smart-search-client-chat",
         "roles":[
            "PLATFORM_SUPPORT",
            "PLATFORM_ADMIN"
@@ -10,7 +10,7 @@
      },
      {
         "label":"Search Playground",
-        "routeName":"searchPlayground",
+        "routeName":"smart-search-client-searchPlayground",
         "roles":[
            "PLATFORM_SUPPORT",
            "PLATFORM_ADMIN",
@@ -22,7 +22,7 @@
      },
      {
         "label":"Customer Management",
-        "routeName":"customerManagement",
+        "routeName":"smart-search-client-customerManagement",
         "roles":[
            "PLATFORM_SUPPORT",
            "PLATFORM_ADMIN"
@@ -30,7 +30,7 @@
      },
      {
         "label":"Rules Management",
-        "routeName":"ruleManagement",
+        "routeName":"smart-search-client-ruleManagement",
         "roles":[
            "PLATFORM_SUPPORT",
            "PLATFORM_ADMIN",
@@ -40,7 +40,7 @@
      },
      {
         "label":"Search Config Management",
-        "routeName":"searchConfigManagement",
+        "routeName":"smart-search-client-searchConfigManagement",
         "roles":[
            "PLATFORM_SUPPORT",
            "PLATFORM_ADMIN"
@@ -48,7 +48,7 @@
      },
      {
         "label":"Search Index Management",
-        "routeName":"searchIndexManagement",
+        "routeName":"smart-search-client-searchIndexManagement",
         "roles":[
            "PLATFORM_SUPPORT",
            "PLATFORM_ADMIN",
@@ -58,7 +58,7 @@
      },
      {
         "label":"Subscription Type Management",
-        "routeName":"subscriptionTypeManagement",
+        "routeName":"smart-search-client-subscriptionTypeManagement",
         "roles":[
            "PLATFORM_SUPPORT",
            "PLATFORM_ADMIN"
@@ -66,7 +66,7 @@
      },
      {
         "label":"Synonym Management",
-        "routeName":"synonymManagement",
+        "routeName":"smart-search-client-synonymManagement",
         "roles":[
            "PLATFORM_SUPPORT",
            "PLATFORM_ADMIN",
@@ -76,7 +76,7 @@
      },
      {
       "label":"Data Upload",
-      "routeName":"data-upload",
+      "routeName":"smart-search-client-data-upload",
       "roles":[
          "PLATFORM_SUPPORT",
          "PLATFORM_ADMIN",

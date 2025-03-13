@@ -131,7 +131,7 @@ export default {
     padding-top: 5%;
     padding-bottom: 10%;
     box-sizing: border-box;
-    background: linear-gradient(173deg, #000e35, #000e35 28%, #000e35 43%, #080d17 56%, #000 78%, #fff calc(78% + 4px));
+    background: linear-gradient(173deg, #000000, #000000 28%, #363636 43%, #818181 56%, #969696 78%, #fff calc(78% + 4px));
 }
 
 .column {
@@ -173,7 +173,7 @@ export default {
         padding-right: 5%;
         gap: 30px;
         margin-bottom: 10%;
-        background: linear-gradient(173deg, #000e35, #000e35 28%, #000e35 43%, #080d17 56%, #000 78%);
+        background: linear-gradient(173deg, #000000, #000000 28%, #272727 43%, #363636 56%, #535353 78%);
         height: 700px;
     }
 
