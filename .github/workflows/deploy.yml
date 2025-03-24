@@ -15,6 +15,7 @@ jobs:
       # ✅ Build Docker image
       - name: Build Docker image
         run: |
+          ls
           echo "${{ secrets.DOCKER_PUSH_SECRET }}" | docker login ghcr.io -u AFCgooner29 --password-stdin
           docker build -t ghcr.io/afcgooner29/search-dashboard:latest .
           docker push ghcr.io/afcgooner29/search-dashboard:latest
