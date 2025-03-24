@@ -16,7 +16,7 @@ jobs:
         run: |
           cd $GITHUB_WORKSPACE
           echo "${{ secrets.DOCKER_PUSH_SECRET }}" | docker login ghcr.io -u AFCgooner29 --password-stdin
-          docker build -f ./Dockerfile -t ghcr.io/afcgooner29/search-dashboard:latest .
+          docker build -f Dockerfile -t ghcr.io/afcgooner29/search-dashboard:latest .
           docker push ghcr.io/afcgooner29/search-dashboard:latest
           
       - name: Setup SSH Key
