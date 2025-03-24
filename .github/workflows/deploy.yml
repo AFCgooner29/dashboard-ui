@@ -12,13 +12,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-            # ✅ Build Docker image
+      # ✅ Build Docker image
       - name: Build Docker image
         run: |
-          docker login --username AFCgooner29 --password ${{ secrets.DOCKER_PUSH_SECRET }} ghcr.io
+          echo "${{ secrets.DOCKER_PUSH_SECRET }}" | docker login ghcr.io -u AFCgooner29 --password-stdin
           docker build -t ghcr.io/afcgooner29/search-dashboard:latest .
           docker push ghcr.io/afcgooner29/search-dashboard:latest
           
+      # ✅ Setup SSH Key
       - name: Setup SSH Key
         run: |
           echo "${{ secrets.EC2_PRIVATE_KEY }}" > private_key.pem
@@ -28,9 +29,9 @@ jobs:
       - name: Deploy to EC2
         run: |
           ssh -o StrictHostKeyChecking=no -i private_key.pem ec2-user@13.233.65.84 << EOF
-            sudo docker login --username AFCgooner29 --password ${{ secrets.DOCKER_PUSH_SECRET }} ghcr.io
+            echo "${{ secrets.DOCKER_PUSH_SECRET }}" | sudo docker login ghcr.io -u AFCgooner29 --password-stdin
             sudo docker pull ghcr.io/afcgooner29/search-dashboard:latest
             sudo docker stop frontend || true
             sudo docker rm frontend || true
-            sudo docker run -d --name frontend -p 8080:8080 ghcr.io/afcgooner29/search-dashboard:latest
+            sudo docker run -d --name frontend -p 3000:80 ghcr.io/afcgooner29/search-dashboard:latest
           EOF
