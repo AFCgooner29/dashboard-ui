@@ -12,13 +12,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Log in to GitHub Container Registry
+        run: |
+          echo "${{ secrets.DOCKER_PUSH_SECRET }}" | docker login ghcr.io -u AFCgooner29 --password-stdin
+
       - name: Build Docker image
         run: |
-          cd $GITHUB_WORKSPACE
-          echo "${{ secrets.DOCKER_PUSH_SECRET }}" | docker login ghcr.io -u AFCgooner29 --password-stdin
           docker build -f ./Dockerfile -t ghcr.io/afcgooner29/search-dashboard:latest .
+
+      - name: Push Docker image to GitHub Packages
+        run: |
           docker push ghcr.io/afcgooner29/search-dashboard:latest
-          
+
       - name: Setup SSH Key
         run: |
           echo "${{ secrets.EC2_PRIVATE_KEY }}" > private_key.pem
