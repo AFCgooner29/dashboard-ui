@@ -1,13 +1,12 @@
 <template>
+  <AppNavbar />
   <div class="container-website">
-    <!-- Only show HomeNavbar on the root `/` route -->
-    <HomeNavbar v-if="$route.path === '/'" />
     <router-view />
   </div>
 </template>
 
 <script setup lang="ts">
-import HomeNavbar from "../../components/HomeNavbar.vue";
+import AppNavbar from "../../components/AppNavbar.vue";
 </script>
 
 <style>

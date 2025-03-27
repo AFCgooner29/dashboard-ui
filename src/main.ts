@@ -18,8 +18,8 @@ app.use(createVuestic({
       colors: {
         variables: {
           // Default colors
-          primary: "#000000",
-          secondary: "#999999",
+          primary: "#000e35",
+          secondary: "#b3ccff",
           success: "#068700",
           info: "#003f87",
           danger: "#cf0000",
