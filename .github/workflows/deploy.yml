@@ -18,6 +18,7 @@ jobs:
 
       - name: Build Docker image
         run: |
+          ls
           docker build -f ./Dockerfile -t ghcr.io/afcgooner29/search-dashboard:latest .
 
       - name: Push Docker image to GitHub Packages
