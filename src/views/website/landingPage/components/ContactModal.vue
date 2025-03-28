@@ -25,8 +25,6 @@
 import { VaModal, VaInput, VaTextarea, VaButton, VaForm, VaAlert } from "vuestic-ui";
 
 const apiPrefix = process.env.VUE_APP_API_PREFIX;
-const demoApiKey = process.env.VUE_APP_DEMO_API_KEY;
-
 
 export default {
     props: {
@@ -89,10 +87,9 @@ export default {
             }
 
             try {
-                const response = await fetch(apiPrefix + "auth/api/contact/submit", {
+                const response = await fetch(apiPrefix + "api/contact/submit", {
                     method: "POST",
                     headers: {
-                        "API-KEY": demoApiKey,
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify(this.form),

@@ -40,8 +40,6 @@ import { VaButton } from 'vuestic-ui/web-components';
 import SuggestionsList from '../../../../components/SuggestionsList.vue';
 import ContactModal from '../components/ContactModal.vue';
 
-const demoApiKey = process.env.VUE_APP_DEMO_API_KEY;
-
 export default {
     components: { SuggestionsList, ContactModal },
     data() {
@@ -80,24 +78,19 @@ export default {
                 const apiPrefix = process.env.VUE_APP_API_PREFIX;
 
                 try {
-                    const response = await fetch(apiPrefix + 'auth/api/v1/search', {
+                    const response = await fetch(apiPrefix + 'api/demo/autocomplete', {
                         method: 'POST',
                         headers: {
-                            'API-KEY': demoApiKey, // Replace with your actual API key
                             'Content-Type': 'application/json'
                         },
                         body: JSON.stringify({
-                            indexName: 'products',
-                            searchConfigKey: 'AUTOCOMPLETE',
                             queryTerm: query,
-                            searchableFields: ['productName'],
                             size: 5,
-                            filters: []
                         })
                     });
 
                     const data = await response.json();
-                    this.suggestions = data.data.hits.map(hit => hit.productName);
+                    this.suggestions = data.data.hits.map(hit => hit.queryTerm);
                     this.responseTime = data.data.queryTime; // Extract queryTime from API response
                 } catch (error) {
                     console.error('Error fetching suggestions:', error);
