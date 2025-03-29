@@ -14,6 +14,7 @@
           v-for="(option, index) in options"
           :key="index"
           class="select-autocomplete__option"
+          @click="openLink(option)"
         >
           {{ option }}
         </li>
@@ -47,6 +48,10 @@ export default {
       setTimeout(() => {
         this.showDropdown = false;
       }, 200);
+    },
+    openLink(option) {
+      const url = `https://www.google.com/search?q=${encodeURIComponent(option)}`;
+      window.open(url, '_blank');
     },
   },
 };
